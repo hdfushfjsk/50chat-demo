@@ -1947,6 +1947,9 @@ document.addEventListener('DOMContentLoaded', () => {
     var atTaItem = document.getElementById('gm-at-ta');
     var selectedMsg = null;
     var longPressTimer = null;
+    var longPressFired = false;
+    var touchStartX = 0;
+    var touchStartY = 0;
 
     function showGroupMsgMenu(x, y, msgEl) {
       selectedMsg = msgEl;
@@ -1983,6 +1986,8 @@ document.addEventListener('DOMContentLoaded', () => {
       void menu.offsetWidth;
       menu.classList.add('show');
       menuOverlay.classList.add('show');
+
+      if (typeof lucide !== 'undefined') lucide.createIcons();
     }
 
     function hideGroupMsgMenu() {
@@ -1998,20 +2003,37 @@ document.addEventListener('DOMContentLoaded', () => {
       groupChatBody.addEventListener('touchstart', function(e) {
         var msgRow = e.target.closest('.message-row');
         if (!msgRow) return;
-        e.preventDefault();
+        longPressFired = false;
+        var touch = e.touches[0];
+        touchStartX = touch.clientX;
+        touchStartY = touch.clientY;
         longPressTimer = setTimeout(function() {
-          var touch = e.changedTouches ? e.changedTouches[0] : e.touches[0];
-          showGroupMsgMenu(touch.clientX, touch.clientY, msgRow);
+          longPressFired = true;
+          showGroupMsgMenu(touchStartX, touchStartY, msgRow);
         }, 500);
+      }, { passive: true });
+
+      groupChatBody.addEventListener('touchend', function(e) {
+        if (longPressFired) {
+          e.preventDefault();
+        }
+        if (!longPressFired) {
+          clearTimeout(longPressTimer);
+        }
+        longPressTimer = null;
       }, { passive: false });
 
-      groupChatBody.addEventListener('touchend', function() {
-        clearTimeout(longPressTimer);
-      });
-
-      groupChatBody.addEventListener('touchmove', function() {
-        clearTimeout(longPressTimer);
-      });
+      groupChatBody.addEventListener('touchmove', function(e) {
+        if (!longPressFired && longPressTimer) {
+          var touch = e.touches[0];
+          var dx = touch.clientX - touchStartX;
+          var dy = touch.clientY - touchStartY;
+          if (dx * dx + dy * dy > 100) {
+            clearTimeout(longPressTimer);
+            longPressTimer = null;
+          }
+        }
+      }, { passive: true });
 
       groupChatBody.addEventListener('contextmenu', function(e) {
         var msgRow = e.target.closest('.message-row');
@@ -2021,11 +2043,14 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
 
-    document.addEventListener('click', function(e) {
-      if (e.target.closest('#gm-at-ta')) {
+    menu.addEventListener('click', function(e) {
+      var item = e.target.closest('.group-msg-menu-item');
+      if (!item) return;
+
+      if (item.id === 'gm-at-ta') {
         if (selectedMsg) {
           var senderEl = selectedMsg.querySelector('.sender-name');
-          var senderName = senderEl ? (senderEl.getAttribute('data-sender') || senderEl.textContent) : '';
+          var senderName = senderEl ? (senderEl.getAttribute('data-sender') || senderEl.textContent.trim()) : '';
           if (senderName) {
             var input = document.getElementById('group-chat-input');
             if (input) {
@@ -2040,7 +2065,7 @@ document.addEventListener('DOMContentLoaded', () => {
         hideGroupMsgMenu();
         return;
       }
-      if (e.target.closest('#gm-recall')) {
+      if (item.id === 'gm-recall') {
         if (selectedMsg) {
           var bubble = selectedMsg.querySelector('.bubble');
           if (bubble) {
@@ -2053,14 +2078,14 @@ document.addEventListener('DOMContentLoaded', () => {
         hideGroupMsgMenu();
         return;
       }
-      if (e.target.closest('#gm-mute')) {
-        var senderEl = selectedMsg ? selectedMsg.querySelector('.sender-name') : null;
-        var name = senderEl ? senderEl.textContent : '该成员';
+      if (item.id === 'gm-mute') {
+        var senderEl2 = selectedMsg ? selectedMsg.querySelector('.sender-name') : null;
+        var name = senderEl2 ? senderEl2.textContent : '该成员';
         alert('已对 ' + name + ' 禁言');
         hideGroupMsgMenu();
         return;
       }
-      if (e.target.closest('#gm-copy')) {
+      if (item.id === 'gm-copy') {
         if (selectedMsg) {
           var bubble = selectedMsg.querySelector('.bubble');
           if (bubble) {
@@ -2071,7 +2096,7 @@ document.addEventListener('DOMContentLoaded', () => {
         hideGroupMsgMenu();
         return;
       }
-      if (e.target.closest('#gm-delete')) {
+      if (item.id === 'gm-delete') {
         if (selectedMsg) {
           selectedMsg.style.transition = 'opacity 0.3s, max-height 0.3s';
           selectedMsg.style.opacity = '0';
@@ -2082,7 +2107,7 @@ document.addEventListener('DOMContentLoaded', () => {
         hideGroupMsgMenu();
         return;
       }
-      if (e.target.closest('#gm-reply')) {
+      if (item.id === 'gm-reply') {
         if (selectedMsg) {
           var bubble = selectedMsg.querySelector('.bubble');
           var input = document.querySelector('#page-group-chat .chat-input');
