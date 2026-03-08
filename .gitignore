@@ -1,0 +1,9 @@
+node_modules/
+screenshots/
+tests/
+package.json
+package-lock.json
+playwright.config.js
+screenshot-all.js
+screenshot-rp.js
+.DS_Store

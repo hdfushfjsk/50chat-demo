@@ -1,0 +1,2940 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>50聊天</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+</head>
+<body>
+<div class="layout-wrapper">
+
+<!-- 左侧控制面板 -->
+<div class="control-panel" id="control-panel">
+  <div class="panel-header">
+    <span class="panel-icon">🎨</span>
+    <span class="panel-title">UI 原型控制</span>
+  </div>
+
+  <div class="panel-section">
+    <div class="section-label">主题切换</div>
+    <div class="theme-buttons">
+      <button class="theme-btn active" data-theme-mode="light">☀️ 亮色</button>
+      <button class="theme-btn" data-theme-mode="dark">🌙 暗色</button>
+    </div>
+  </div>
+
+  <div class="panel-section">
+    <div class="section-label">页面导航</div>
+    <div class="nav-links">
+      <div class="sidebar-group-title">1. 启动与注册登录</div>
+      <a class="nav-link" data-goto="page-splash"><i data-lucide="play-circle"></i> 启动页</a>
+      <a class="nav-link" data-goto="page-login"><i data-lucide="log-in"></i> 登录页</a>
+      <a class="nav-link" data-goto="page-register"><i data-lucide="user-plus"></i> 注册页</a>
+      <a class="nav-link" data-goto="page-reg-avatar"><i data-lucide="image"></i> 注册选头像</a>
+      <a class="nav-link" data-goto="page-reg-crop"><i data-lucide="crop"></i> 头像裁剪</a>
+
+      <div class="sidebar-group-title">2. 主页面（Tab页）</div>
+      <a class="nav-link" data-goto="page-messages"><i data-lucide="message-circle"></i> 消息列表</a>
+      <a class="nav-link" data-goto="page-contacts"><i data-lucide="users"></i> 通讯录</a>
+      <a class="nav-link" data-goto="page-games"><i data-lucide="gamepad-2"></i> 游戏中心</a>
+      <a class="nav-link" data-goto="page-wallet"><i data-lucide="wallet"></i> 钱包</a>
+      <a class="nav-link" data-goto="page-profile"><i data-lucide="user"></i> 我的</a>
+
+      <div class="sidebar-group-title">3. 消息 → 聊天</div>
+      <a class="nav-link" data-goto="page-search"><i data-lucide="search"></i> 搜索页</a>
+      <a class="nav-link" data-goto="page-chat"><i data-lucide="message-square"></i> 私聊页</a>
+      <a class="nav-link" data-goto="page-group-chat"><i data-lucide="messages-square"></i> 群聊页</a>
+      <a class="nav-link" data-goto="page-group-settings"><i data-lucide="settings"></i> 群聊设置</a>
+      <a class="nav-link" data-goto="page-group-admin"><i data-lucide="shield-check"></i> 群管理员</a>
+      <a class="nav-link" data-goto="page-group-remark-edit"><i data-lucide="tag"></i> 成员备注</a>
+
+      <div class="sidebar-group-title">4. 聊天 → 功能</div>
+      <a class="nav-link" data-goto="page-camera"><i data-lucide="camera"></i> 拍摄</a>
+      <a class="nav-link" data-goto="page-send-redpacket"><i data-lucide="gift"></i> 发红包</a>
+      <a class="nav-link" data-goto="page-open-redpacket"><i data-lucide="package-open"></i> 拆红包</a>
+      <a class="nav-link" data-goto="page-transfer"><i data-lucide="send"></i> 转账</a>
+      <a class="nav-link" data-goto="page-transfer-detail"><i data-lucide="receipt"></i> 转账详情</a>
+
+      <div class="sidebar-group-title">5. 通讯录 → 子页面</div>
+      <a class="nav-link" data-goto="page-new-friends"><i data-lucide="user-plus"></i> 新的朋友</a>
+      <a class="nav-link" data-goto="page-group-list"><i data-lucide="users-round"></i> 群聊列表</a>
+      <a class="nav-link" data-goto="page-create-group"><i data-lucide="user-round-plus"></i> 发起群聊</a>
+      <a class="nav-link" data-goto="page-add-friend"><i data-lucide="user-search"></i> 添加好友</a>
+
+      <div class="sidebar-group-title">6. 钱包 → 子页面</div>
+      <a class="nav-link" data-goto="page-recharge"><i data-lucide="plus-circle"></i> 充值</a>
+      <a class="nav-link" data-goto="page-withdraw"><i data-lucide="arrow-up-circle"></i> 提现</a>
+      <a class="nav-link" data-goto="page-bind-alipay"><i data-lucide="smartphone"></i> 绑定支付宝</a>
+      <a class="nav-link" data-goto="page-bind-bank"><i data-lucide="credit-card"></i> 绑定银行卡</a>
+      <a class="nav-link" data-goto="page-bind-virtual"><i data-lucide="wallet"></i> 虚拟币地址</a>
+      <a class="nav-link" data-goto="page-transactions"><i data-lucide="list"></i> 交易明细</a>
+      <a class="nav-link" data-goto="page-payment"><i data-lucide="credit-card"></i> 收付款</a>
+      <a class="nav-link" data-goto="page-scan"><i data-lucide="scan-line"></i> 扫一扫</a>
+
+      <div class="sidebar-group-title">7. 我的 → 个人信息</div>
+      <a class="nav-link" data-goto="page-my-info"><i data-lucide="id-card"></i> 个人信息</a>
+      <a class="nav-link" data-goto="page-change-avatar"><i data-lucide="image"></i> 更换头像</a>
+      <a class="nav-link" data-goto="page-edit-name"><i data-lucide="pen-line"></i> 修改昵称</a>
+      <a class="nav-link" data-goto="page-edit-gender"><i data-lucide="heart"></i> 修改性别</a>
+      <a class="nav-link" data-goto="page-edit-region"><i data-lucide="map-pin"></i> 选择地区</a>
+      <a class="nav-link" data-goto="page-edit-signature"><i data-lucide="file-text"></i> 个性签名</a>
+
+      <div class="sidebar-group-title">8. 我的 → 设置</div>
+      <a class="nav-link" data-goto="page-vip"><i data-lucide="crown"></i> 会员中心</a>
+      <a class="nav-link" data-goto="page-notification"><i data-lucide="bell"></i> 通知设置</a>
+      <a class="nav-link" data-goto="page-privacy"><i data-lucide="shield"></i> 隐私设置</a>
+      <a class="nav-link" data-goto="page-about"><i data-lucide="info"></i> 关于50聊天</a>
+    </div>
+  </div>
+</div>
+
+<!-- 手机模拟器 -->
+<div class="app-container" id="app">
+
+  <!-- ==================== 1. 启动页 ==================== -->
+  <div class="page active" id="page-splash">
+    <div class="splash-content">
+      <div class="splash-icon">
+        <svg viewBox="0 0 80 80" width="80" height="80">
+          <path d="M16 24 C16 18,22 12,28 12 L52 12 C58 12,64 18,64 24 L64 44 C64 50,58 56,52 56 L38 56 L26 66 L26 56 C20 56,16 50,16 44 Z" fill="white"/>
+          <circle cx="32" cy="35" r="4" fill="#007AFF"/>
+          <circle cx="40" cy="35" r="4" fill="#5AC8FA"/>
+          <circle cx="48" cy="35" r="4" fill="#007AFF"/>
+        </svg>
+      </div>
+      <h1 class="splash-title">50聊天</h1>
+      <p class="splash-slogan">聊天，就这么简单</p>
+    </div>
+  </div>
+
+  <!-- ==================== 2. 登录页 ==================== -->
+  <div class="page" id="page-login">
+    <div class="login-content">
+      <div class="login-logo">
+        <div class="login-logo-icon">
+          <svg viewBox="0 0 60 60" width="60" height="60">
+            <defs>
+              <linearGradient id="login-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#007AFF"/>
+                <stop offset="100%" stop-color="#5AC8FA"/>
+              </linearGradient>
+            </defs>
+            <rect rx="15" width="60" height="60" fill="url(#login-grad)"/>
+            <path d="M16 21 C16 18,19 15,22 15 L38 15 C41 15,44 18,44 21 L44 31 C44 34,41 37,38 37 L29 37 L23 43 L23 37 C19 37,16 34,16 31 Z" fill="white"/>
+            <circle cx="26" cy="26" r="2" fill="#007AFF"/>
+            <circle cx="30" cy="26" r="2" fill="#007AFF"/>
+            <circle cx="34" cy="26" r="2" fill="#007AFF"/>
+          </svg>
+        </div>
+        <span class="login-logo-text">50聊天</span>
+      </div>
+
+      <div class="login-form">
+        <div class="login-tab-bar">
+          <div class="login-tab active" data-login-tab="code">验证码登录</div>
+          <div class="login-tab" data-login-tab="password">密码登录</div>
+        </div>
+
+        <div class="login-tab-content active" id="login-tab-code">
+          <div class="input-group">
+            <i data-lucide="smartphone" class="input-icon"></i>
+            <input type="tel" placeholder="请输入手机号" maxlength="11" id="phone-input">
+          </div>
+          <div class="input-group code-group">
+            <i data-lucide="shield-check" class="input-icon"></i>
+            <input type="text" placeholder="请输入验证码" maxlength="6" id="code-input">
+            <button class="code-btn" id="btn-code">获取验证码</button>
+          </div>
+        </div>
+
+        <div class="login-tab-content" id="login-tab-password">
+          <div class="input-group">
+            <i data-lucide="smartphone" class="input-icon"></i>
+            <input type="tel" placeholder="请输入手机号" maxlength="11" id="phone-input-pw">
+          </div>
+          <div class="input-group">
+            <i data-lucide="lock" class="input-icon"></i>
+            <input type="password" placeholder="请输入密码" maxlength="20" id="password-input">
+          </div>
+        </div>
+
+        <div class="login-btn-group">
+          <button class="login-btn" id="btn-login">登录</button>
+          <button class="login-btn login-btn-register" id="btn-go-register">注册</button>
+        </div>
+      </div>
+
+      <div class="login-agreement">
+        <label class="agreement-checkbox">
+          <input type="checkbox" id="agreement-check">
+          <span class="checkmark"></span>
+        </label>
+        <span>我已阅读并同意<a href="#">《服务协议》</a>和<a href="#">《隐私政策》</a></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 注册页 ==================== -->
+  <div class="page" id="page-register">
+    <nav class="top-nav">
+      <div class="nav-left">
+        <i data-lucide="chevron-left" class="nav-icon back-btn" data-back="page-login"></i>
+      </div>
+      <div class="nav-center"><span class="nav-title">注册账号</span></div>
+      <div class="nav-right"></div>
+    </nav>
+    <div class="page-body">
+      <div class="register-form">
+        <div class="register-avatar-area" id="reg-avatar-area">
+          <div class="register-avatar-placeholder" id="reg-avatar-placeholder">
+            <i data-lucide="camera"></i>
+            <span>设置头像</span>
+          </div>
+          <img class="register-avatar-preview" id="reg-avatar-img" style="display:none;" alt="已选头像">
+        </div>
+        <div class="form-group">
+          <label>昵称</label>
+          <input type="text" placeholder="请输入昵称" id="reg-nickname" maxlength="20">
+        </div>
+        <div class="form-group">
+          <label>手机号</label>
+          <input type="tel" placeholder="请输入手机号" id="reg-phone" maxlength="11">
+        </div>
+        <div class="form-group">
+          <label>验证码</label>
+          <div class="code-input-row">
+            <input type="text" placeholder="请输入验证码" id="reg-code" maxlength="6">
+            <button class="code-btn" id="reg-code-btn">获取验证码</button>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>密码</label>
+          <input type="password" placeholder="请设置密码（6-20位）" id="reg-password" maxlength="20">
+        </div>
+        <div class="form-group">
+          <label>确认密码</label>
+          <input type="password" placeholder="请再次输入密码" id="reg-password2" maxlength="20">
+        </div>
+        <button class="register-btn" id="btn-register">注册</button>
+        <div class="register-footer">
+          <span>已有账号？</span>
+          <a class="register-login-link" id="go-login">去登录</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 注册-选择头像页 ==================== -->
+  <div class="page" id="page-reg-avatar">
+    <nav class="top-nav">
+      <div class="nav-left">
+        <i data-lucide="chevron-left" class="nav-icon back-btn" data-back="page-register"></i>
+      </div>
+      <div class="nav-center"><span class="nav-title">选择头像</span></div>
+      <div class="nav-right"></div>
+    </nav>
+    <div class="page-body">
+      <div class="avatar-change-content">
+        <div class="avatar-preview-area">
+          <img class="avatar-preview-img" id="reg-avatar-preview" src="images/avatar-xiaoming.png" alt="预览头像">
+          <div class="avatar-preview-label">预览头像</div>
+        </div>
+        <div class="avatar-select-title">从相册选择</div>
+        <div class="album-pick-area" id="reg-album-pick">
+          <div class="album-pick-btn">
+            <i data-lucide="image-plus"></i>
+            <span>从相册选取照片</span>
+          </div>
+          <input type="file" accept="image/*" id="reg-album-input" style="display:none;">
+        </div>
+
+        <div class="avatar-select-title">选择预设头像</div>
+        <div class="avatar-select-grid" id="reg-avatar-grid">
+          <div class="avatar-option" data-avatar="images/contact-lina.png">
+            <img src="images/contact-lina.png" alt="头像1">
+          </div>
+          <div class="avatar-option" data-avatar="images/contact-zhangwei.png">
+            <img src="images/contact-zhangwei.png" alt="头像2">
+          </div>
+          <div class="avatar-option" data-avatar="images/contact-wangming.png">
+            <img src="images/contact-wangming.png" alt="头像3">
+          </div>
+          <div class="avatar-option" data-avatar="images/contact-zhaoxue.png">
+            <img src="images/contact-zhaoxue.png" alt="头像4">
+          </div>
+          <div class="avatar-option" data-avatar="images/avatar-xiaoming.png">
+            <img src="images/avatar-xiaoming.png" alt="头像5">
+          </div>
+          <div class="avatar-option" data-avatar="images/avatar-zhangwei.png">
+            <img src="images/avatar-zhangwei.png" alt="头像6">
+          </div>
+          <div class="avatar-option" data-avatar="images/chat-me1.png">
+            <img src="images/chat-me1.png" alt="头像7">
+          </div>
+          <div class="avatar-option" data-avatar="images/avatar-zhaoxue.png">
+            <img src="images/avatar-zhaoxue.png" alt="头像8">
+          </div>
+        </div>
+        <button class="avatar-confirm-btn" id="reg-avatar-confirm">确认选择</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 注册-相册裁剪预览页 ==================== -->
+  <div class="page" id="page-reg-crop">
+    <nav class="top-nav">
+      <div class="nav-left">
+        <i data-lucide="chevron-left" class="nav-icon back-btn" data-back="page-reg-avatar"></i>
+      </div>
+      <div class="nav-center"><span class="nav-title">裁剪头像</span></div>
+      <div class="nav-right"></div>
+    </nav>
+    <div class="page-body">
+      <div class="crop-content">
+        <div class="crop-preview-area">
+          <div class="crop-circle-mask">
+            <img id="crop-preview-img" src="" alt="裁剪预览">
+          </div>
+          <div class="crop-hint">拖动和缩放调整头像</div>
+        </div>
+        <div class="crop-result-preview">
+          <div class="crop-result-label">效果预览</div>
+          <div class="crop-result-sizes">
+            <div class="crop-size-item">
+              <img id="crop-result-lg" src="" alt="大">
+              <span>大</span>
+            </div>
+            <div class="crop-size-item">
+              <img id="crop-result-md" src="" alt="中">
+              <span>中</span>
+            </div>
+            <div class="crop-size-item">
+              <img id="crop-result-sm" src="" alt="小">
+              <span>小</span>
+            </div>
+          </div>
+        </div>
+        <button class="avatar-confirm-btn" id="crop-confirm-btn">使用此头像</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 3. 消息列表页 ==================== -->
+  <div class="page" id="page-messages">
+    <nav class="top-nav">
+      <div class="nav-left">
+        <svg viewBox="0 0 24 24" width="22" height="22" class="nav-icon-svg">
+          <defs><linearGradient id="nav-grad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#007AFF"/><stop offset="100%" stop-color="#5AC8FA"/></linearGradient></defs>
+          <path d="M4 6 C4 4,6 2,8 2 L16 2 C18 2,20 4,20 6 L20 13 C20 15,18 17,16 17 L11 17 L7 21 L7 17 C5 17,4 15,4 13 Z" fill="url(#nav-grad)"/>
+          <circle cx="9" cy="10" r="1.2" fill="white"/><circle cx="12" cy="10" r="1.2" fill="white"/><circle cx="15" cy="10" r="1.2" fill="white"/>
+        </svg>
+        <span class="nav-title">50聊天</span>
+      </div>
+      <div class="nav-right">
+        <i data-lucide="search" class="nav-icon" id="msg-search-btn"></i>
+        <i data-lucide="plus" class="nav-icon" id="msg-plus-btn"></i>
+      </div>
+    </nav>
+
+    <div class="page-body">
+      <div class="chat-list">
+        <!-- 张伟 -->
+        <div class="chat-card" data-chat="page-chat">
+          <img class="chat-avatar" src="images/avatar-zhangwei.png" alt="张伟">
+          <div class="chat-info">
+            <div class="chat-top"><span class="chat-name">张伟</span><span class="chat-time">10:42</span></div>
+            <div class="chat-preview">好的，方案已经收到了，下午开会过一下。</div>
+          </div>
+          <span class="badge">2</span>
+        </div>
+        <!-- 设计组 -->
+        <div class="chat-card" data-chat="page-group-chat">
+          <img class="chat-avatar" src="images/avatar-shejigroup.png" alt="设计组">
+          <div class="chat-info">
+            <div class="chat-top"><span class="chat-name">设计组(5)</span><span class="chat-time">昨天</span></div>
+            <div class="chat-preview"><span class="preview-tag preview-tag-image">[图片]</span></div>
+          </div>
+        </div>
+        <!-- 李娜 -->
+        <div class="chat-card" data-chat="page-chat">
+          <img class="chat-avatar" src="images/avatar-lina.png" alt="李娜">
+          <div class="chat-info">
+            <div class="chat-top"><span class="chat-name">李娜</span><span class="chat-time">星期三</span></div>
+            <div class="chat-preview"><span class="preview-tag preview-tag-voice">[语音]</span> 0:08</div>
+          </div>
+          <span class="badge">1</span>
+        </div>
+        <!-- 王明 -->
+        <div class="chat-card" data-chat="page-chat">
+          <img class="chat-avatar" src="images/avatar-wangming.png" alt="王明">
+          <div class="chat-info">
+            <div class="chat-top"><span class="chat-name">王明</span><span class="chat-time">星期一</span></div>
+            <div class="chat-preview"><span class="preview-tag preview-tag-transfer">[转账]</span> 转账给你200.00元</div>
+          </div>
+        </div>
+        <!-- 赵雪 -->
+        <div class="chat-card" data-chat="page-chat">
+          <img class="chat-avatar" src="images/avatar-zhaoxue.png" alt="赵雪">
+          <div class="chat-info">
+            <div class="chat-top"><span class="chat-name">赵雪</span><span class="chat-time">上周五</span></div>
+            <div class="chat-preview"><span class="preview-tag preview-tag-video">[视频]</span> 0:15</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 长按菜单已移到 #app 外部 -->
+
+    <!-- +号弹出菜单 -->
+    <div class="plus-overlay" id="plus-overlay"></div>
+    <div class="plus-menu" id="plus-menu">
+      <div class="plus-menu-item" data-action="group">
+        <i data-lucide="users"></i>
+        <span>发起群聊</span>
+      </div>
+      <div class="plus-menu-item" data-action="add-friend">
+        <i data-lucide="user-plus"></i>
+        <span>添加朋友</span>
+      </div>
+      <div class="plus-menu-item" data-action="scan">
+        <i data-lucide="scan-line"></i>
+        <span>扫一扫</span>
+      </div>
+      <div class="plus-menu-item" data-action="pay">
+        <i data-lucide="credit-card"></i>
+        <span>收付款</span>
+      </div>
+    </div>
+
+    <div class="tab-bar">
+      <div class="tab-item active" data-tab="page-messages">
+        <i data-lucide="message-circle"></i>
+        <span>消息</span>
+      </div>
+      <div class="tab-item" data-tab="page-contacts">
+        <i data-lucide="users"></i>
+        <span>通讯录</span>
+      </div>
+      <div class="tab-item" data-tab="page-games">
+        <i data-lucide="gamepad-2"></i>
+        <span>游戏</span>
+      </div>
+      <div class="tab-item" data-tab="page-wallet">
+        <i data-lucide="wallet"></i>
+        <span>钱包</span>
+      </div>
+      <div class="tab-item" data-tab="page-profile">
+        <i data-lucide="user"></i>
+        <span>我的</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 搜索页 ==================== -->
+  <div class="page" id="page-search">
+    <nav class="top-nav">
+      <div class="nav-left" style="flex:1">
+        <div class="search-bar-full">
+          <i data-lucide="search" class="search-icon"></i>
+          <input type="text" placeholder="搜索联系人、聊天记录" class="search-input-full" id="search-input" autocomplete="off">
+        </div>
+      </div>
+      <div class="nav-right">
+        <span class="search-cancel" id="search-cancel">取消</span>
+      </div>
+    </nav>
+    <div class="page-body">
+      <div class="search-results" id="search-results">
+        <div class="search-empty" id="search-empty">
+          <i data-lucide="search" style="width:40px;height:40px;color:var(--text-tertiary)"></i>
+          <p>搜索联系人或聊天记录</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 发起群聊页 ==================== -->
+  <div class="page" id="page-create-group">
+    <nav class="top-nav">
+      <div class="nav-left">
+        <i data-lucide="chevron-left" class="nav-icon back-btn" data-back="page-messages"></i>
+        <span class="nav-title">发起群聊</span>
+      </div>
+      <div class="nav-right">
+        <button class="create-group-btn" id="create-group-confirm" disabled>完成(0)</button>
+      </div>
+    </nav>
+    <div class="page-body">
+      <div class="search-bar">
+        <i data-lucide="search" class="search-icon"></i>
+        <input type="text" placeholder="搜索联系人" class="search-input">
+      </div>
+      <div class="selected-contacts-bar" id="selected-bar" style="display:none">
+        <div class="selected-avatars" id="selected-avatars"></div>
+      </div>
+      <div class="group-contact-list">
+        <div class="group-contact-item" data-name="张伟">
+          <div class="group-checkbox"><i data-lucide="check" class="check-icon"></i></div>
+          <img class="avatar" src="images/contact-zhangwei.png" alt="张伟">
+          <span class="contact-name">张伟</span>
+        </div>
+        <div class="group-contact-item" data-name="李娜">
+          <div class="group-checkbox"><i data-lucide="check" class="check-icon"></i></div>
+          <img class="avatar" src="images/contact-lina.png" alt="李娜">
+          <span class="contact-name">李娜</span>
+        </div>
+        <div class="group-contact-item" data-name="王明">
+          <div class="group-checkbox"><i data-lucide="check" class="check-icon"></i></div>
+          <img class="avatar" src="images/contact-wangming.png" alt="王明">
+          <span class="contact-name">王明</span>
+        </div>
+        <div class="group-contact-item" data-name="赵雪">
+          <div class="group-checkbox"><i data-lucide="check" class="check-icon"></i></div>
+          <img class="avatar" src="images/contact-zhaoxue.png" alt="赵雪">
+          <span class="contact-name">赵雪</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 添加朋友页 ==================== -->
+  <div class="page" id="page-add-friend">
+    <nav class="top-nav">
+      <div class="nav-left">
+        <i data-lucide="chevron-left" class="nav-icon back-btn" data-back="page-messages"></i>
+        <span class="nav-title">添加朋友</span>
+      </div>
+      <div class="nav-right"></div>
+    </nav>
+    <div class="page-body">
+      <div class="search-bar" style="margin:12px 16px">
+        <i data-lucide="search" class="search-icon"></i>
+        <input type="text" placeholder="输入手机号/昵称搜索" class="search-input" id="add-friend-input">
+      </div>
+      <div class="add-friend-entries">
+        <div class="add-entry-item">
+          <div class="add-entry-icon" style="background:#007AFF"><i data-lucide="scan-line"></i></div>
+          <span>扫一扫</span>
+          <i data-lucide="chevron-right" class="menu-arrow"></i>
+        </div>
+        <div class="add-entry-item">
+          <div class="add-entry-icon" style="background:#FF9500"><i data-lucide="smartphone"></i></div>
+          <span>手机联系人</span>
+          <i data-lucide="chevron-right" class="menu-arrow"></i>
+        </div>
+      </div>
+      <div class="add-friend-tip">
+        <p>我的50聊天号：50888666</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 扫一扫页 ==================== -->
+  <div class="page" id="page-scan">
+    <div class="scan-page">
+      <nav class="top-nav scan-nav">
+        <div class="nav-left">
+          <i data-lucide="chevron-left" class="nav-icon back-btn" data-back="page-messages" style="color:#fff"></i>
+          <span class="nav-title" style="color:#fff">扫一扫</span>
+        </div>
+        <div class="nav-right"></div>
+      </nav>
+      <div class="scan-body">
+        <div class="scan-frame">
+          <div class="scan-corner tl"></div>
+          <div class="scan-corner tr"></div>
+          <div class="scan-corner bl"></div>
+          <div class="scan-corner br"></div>
+          <div class="scan-line"></div>
+        </div>
+        <p class="scan-tip">将二维码放入框内，即可自动扫描</p>
+      </div>
+      <div class="scan-bottom-bar">
+        <div class="scan-action">
+          <i data-lucide="image" style="width:24px;height:24px;color:#fff"></i>
+          <span>相册</span>
+        </div>
+        <div class="scan-action">
+          <i data-lucide="flashlight" style="width:24px;height:24px;color:#fff"></i>
+          <span>手电筒</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 收付款页 ==================== -->
+  <div class="page" id="page-payment">
+    <nav class="top-nav">
+      <div class="nav-left">
+        <i data-lucide="chevron-left" class="nav-icon back-btn" data-back="page-messages"></i>
+        <span class="nav-title">收付款</span>
+      </div>
+      <div class="nav-right"></div>
+    </nav>
+    <div class="page-body" style="background:var(--bg-primary)">
+      <div class="payment-tabs">
+        <div class="payment-tab active" data-pay-tab="pay">付款</div>
+        <div class="payment-tab" data-pay-tab="receive">收款</div>
+      </div>
+
+      <!-- 付款面板 -->
+      <div class="payment-panel active" id="panel-pay">
+        <div class="payment-card">
+          <div class="payment-title">向商家付款</div>
+          <div class="barcode-area">
+            <div class="barcode-placeholder">
+              <div class="barcode-lines"></div>
+            </div>
+            <div class="barcode-number">5088 8666 1234 5678</div>
+          </div>
+          <div class="qrcode-area">
+            <div class="qrcode-placeholder">
+              <svg viewBox="0 0 100 100" width="120" height="120">
+                <rect width="100" height="100" fill="#fff"/>
+                <rect x="5" y="5" width="25" height="25" rx="2" fill="#333"/>
+                <rect x="70" y="5" width="25" height="25" rx="2" fill="#333"/>
+                <rect x="5" y="70" width="25" height="25" rx="2" fill="#333"/>
+                <rect x="10" y="10" width="15" height="15" rx="1" fill="#fff"/>
+                <rect x="75" y="10" width="15" height="15" rx="1" fill="#fff"/>
+                <rect x="10" y="75" width="15" height="15" rx="1" fill="#fff"/>
+                <rect x="13" y="13" width="9" height="9" fill="#333"/>
+                <rect x="78" y="13" width="9" height="9" fill="#333"/>
+                <rect x="13" y="78" width="9" height="9" fill="#333"/>
+                <rect x="35" y="5" width="5" height="5" fill="#333"/>
+                <rect x="45" y="5" width="5" height="5" fill="#333"/>
+                <rect x="35" y="15" width="5" height="5" fill="#333"/>
+                <rect x="50" y="15" width="5" height="5" fill="#333"/>
+                <rect x="40" y="25" width="5" height="5" fill="#333"/>
+                <rect x="55" y="25" width="5" height="5" fill="#333"/>
+                <rect x="35" y="35" width="30" height="30" rx="4" fill="none" stroke="#333" stroke-width="2"/>
+                <rect x="43" y="43" width="14" height="14" rx="2" fill="#007AFF"/>
+                <rect x="5" y="40" width="5" height="5" fill="#333"/>
+                <rect x="15" y="50" width="5" height="5" fill="#333"/>
+                <rect x="70" y="40" width="5" height="5" fill="#333"/>
+                <rect x="80" y="50" width="5" height="5" fill="#333"/>
+                <rect x="35" y="70" width="5" height="5" fill="#333"/>
+                <rect x="50" y="75" width="5" height="5" fill="#333"/>
+                <rect x="70" y="70" width="5" height="5" fill="#333"/>
+                <rect x="85" y="80" width="5" height="5" fill="#333"/>
+                <rect x="75" y="90" width="5" height="5" fill="#333"/>
+              </svg>
+            </div>
+          </div>
+          <p class="payment-tip">将条形码/二维码对准扫描框</p>
+        </div>
+      </div>
+
+      <!-- 收款面板 -->
+      <div class="payment-panel" id="panel-receive">
+        <div class="payment-card">
+          <div class="payment-title">向他人收款</div>
+          <div class="receive-qr-area">
+            <div class="receive-qr-wrapper">
+              <svg viewBox="0 0 100 100" width="160" height="160">
+                <rect width="100" height="100" fill="#fff"/>
+                <rect x="5" y="5" width="25" height="25" rx="2" fill="#34C759"/>
+                <rect x="70" y="5" width="25" height="25" rx="2" fill="#34C759"/>
+                <rect x="5" y="70" width="25" height="25" rx="2" fill="#34C759"/>
+                <rect x="10" y="10" width="15" height="15" rx="1" fill="#fff"/>
+                <rect x="75" y="10" width="15" height="15" rx="1" fill="#fff"/>
+                <rect x="10" y="75" width="15" height="15" rx="1" fill="#fff"/>
+                <rect x="13" y="13" width="9" height="9" fill="#34C759"/>
+                <rect x="78" y="13" width="9" height="9" fill="#34C759"/>
+                <rect x="13" y="78" width="9" height="9" fill="#34C759"/>
+                <rect x="35" y="35" width="30" height="30" rx="4" fill="none" stroke="#34C759" stroke-width="2"/>
+                <rect x="43" y="43" width="14" height="14" rx="2" fill="#34C759"/>
+                <rect x="35" y="5" width="5" height="5" fill="#34C759"/>
+                <rect x="50" y="15" width="5" height="5" fill="#34C759"/>
+                <rect x="40" y="25" width="5" height="5" fill="#34C759"/>
+                <rect x="5" y="40" width="5" height="5" fill="#34C759"/>
+                <rect x="70" y="40" width="5" height="5" fill="#34C759"/>
+                <rect x="35" y="70" width="5" height="5" fill="#34C759"/>
+                <rect x="70" y="75" width="5" height="5" fill="#34C759"/>
+                <rect x="80" y="85" width="5" height="5" fill="#34C759"/>
+              </svg>
+            </div>
+          </div>
+          <div class="receive-amount-btn">
+            <i data-lucide="edit-3" style="width:16px;height:16px"></i>
+            <span>设置金额</span>
+          </div>
+          <p class="payment-tip">扫二维码向我付钱</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 4. 聊天对话页 ==================== -->
+  <div class="page" id="page-chat">
+    <nav class="top-nav chat-nav">
+      <div class="nav-left">
+        <i data-lucide="chevron-left" class="nav-icon back-btn" data-back="page-messages"></i>
+        <span class="nav-title">张伟</span>
+        <span class="online-dot"></span>
+      </div>
+      <div class="nav-right">
+        <i data-lucide="more-horizontal" class="nav-icon"></i>
+      </div>
+    </nav>
+
+    <div class="page-body chat-body">
+      <div class="messages-area">
+        <div class="time-label"><span>今天 10:30</span></div>
+
+        <!-- 对方消息 -->
+        <div class="message-row other">
+          <img class="msg-avatar" src="images/chat-zhangwei.png" alt="张伟">
+          <div class="bubble">方案已经收到了</div>
+        </div>
+        <div class="msg-status-row other-status">
+          <span class="msg-status read">✓✓ 已读</span>
+        </div>
+
+        <!-- 自己消息1 -->
+        <div class="message-row self">
+          <div class="bubble self-bubble">下午三点可以吗？</div>
+          <img class="msg-avatar" src="images/chat-me1.png" alt="我">
+        </div>
+        <div class="msg-status-row">
+          <span class="msg-status read">✓✓ 已读</span>
+        </div>
+
+        <!-- 对方红包消息 -->
+        <div class="message-row other">
+          <img class="msg-avatar" src="images/chat-redpacket-sender.png" alt="张伟">
+          <div class="red-packet-card">
+            <div class="rp-icon">🧧</div>
+            <div class="rp-info">
+              <div class="rp-text">恭喜发财，大吉大利</div>
+              <div class="rp-label">红包</div>
+            </div>
+          </div>
+        </div>
+        <div class="msg-status-row other-status">
+          <span class="msg-status read">✓✓ 已读</span>
+        </div>
+
+        <!-- 自己发的图片消息 -->
+        <div class="message-row self">
+          <div class="msg-image-wrap">
+            <img class="msg-image" src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=300&fit=crop" alt="图片">
+          </div>
+          <img class="msg-avatar" src="images/chat-me1.png" alt="我">
+        </div>
+        <div class="msg-status-row">
+          <span class="msg-status read">✓✓ 已读</span>
+        </div>
+
+        <!-- 对方发的语音消息 -->
+        <div class="message-row other">
+          <img class="msg-avatar" src="images/chat-zhangwei.png" alt="张伟">
+          <div class="msg-voice-bubble">
+            <i data-lucide="volume-2" class="voice-icon"></i>
+            <div class="voice-wave">
+              <span></span><span></span><span></span><span></span><span></span>
+            </div>
+            <span class="voice-duration">0:08</span>
+          </div>
+        </div>
+        <div class="msg-status-row other-status">
+          <span class="msg-status read">✓✓ 已读</span>
+        </div>
+
+        <!-- 自己发的转账消息 -->
+        <div class="message-row self">
+          <div class="msg-transfer-card">
+            <div class="transfer-icon">💰</div>
+            <div class="transfer-info">
+              <div class="transfer-amount">¥200.00</div>
+              <div class="transfer-label">转账</div>
+            </div>
+          </div>
+          <img class="msg-avatar" src="images/chat-me1.png" alt="我">
+        </div>
+        <div class="msg-status-row">
+          <span class="msg-status read">✓✓ 已读</span>
+        </div>
+
+        <!-- 对方发的视频消息 -->
+        <div class="message-row other">
+          <img class="msg-avatar" src="images/chat-zhangwei.png" alt="张伟">
+          <div class="msg-video-wrap">
+            <div class="msg-video-thumb" style="background: url('https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=400&h=300&fit=crop') center/cover no-repeat;">
+              <div class="video-play-btn"><i data-lucide="play" class="play-icon"></i></div>
+              <span class="video-duration">0:15</span>
+            </div>
+            <video class="msg-video-player" preload="metadata" playsinline webkit-playsinline controls style="display:none;">
+              <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4" type="video/mp4">
+            </video>
+          </div>
+        </div>
+        <div class="msg-status-row other-status">
+          <span class="msg-status read">✓✓ 已读</span>
+        </div>
+
+        <!-- 自己消息2 -->
+        <div class="message-row self">
+          <div class="bubble self-bubble">好的，我准备资料</div>
+          <img class="msg-avatar" src="images/chat-me2.png" alt="我">
+        </div>
+        <div class="msg-status-row">
+          <span class="msg-status read">✓✓ 已读</span>
+        </div>
+
+        <!-- 自己消息3 -->
+        <div class="message-row self">
+          <div class="bubble self-bubble">明天见！</div>
+          <img class="msg-avatar" src="images/chat-me3.png" alt="我">
+        </div>
+        <div class="msg-status-row">
+          <span class="msg-status unread">✓ 未读</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="chat-input-bar">
+      <i data-lucide="mic" class="input-bar-icon"></i>
+      <input type="text" placeholder="输入消息..." class="chat-input">
+      <span class="input-bar-icon" id="chat-smile-btn"><i data-lucide="smile"></i></span>
+      <span class="input-bar-icon" id="chat-plus-btn"><i data-lucide="plus"></i></span>
+    </div>
+
+    <div class="chat-more-panel" id="chat-more-panel">
+      <div class="more-grid">
+        <div class="more-grid-item" data-more="album">
+          <div class="more-icon" style="background:#007AFF"><i data-lucide="image"></i></div>
+          <span>相册</span>
+        </div>
+        <div class="more-grid-item" data-more="camera">
+          <div class="more-icon" style="background:#34C759"><i data-lucide="camera"></i></div>
+          <span>拍摄</span>
+        </div>
+        <div class="more-grid-item" data-more="redpacket">
+          <div class="more-icon" style="background:#FF6B6B"><i data-lucide="gift"></i></div>
+          <span>红包</span>
+        </div>
+        <div class="more-grid-item" data-more="transfer">
+          <div class="more-icon" style="background:#FF9500"><i data-lucide="banknote"></i></div>
+          <span>转账</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="emoji-panel" id="chat-emoji-panel">
+      <div class="emoji-tab-bar">
+        <div class="emoji-tab active" data-emoji-tab="sticker">⭐ 收藏</div>
+        <div class="emoji-tab" data-emoji-tab="emoji">😀 表情</div>
+      </div>
+      <div class="emoji-tab-content" data-tab-type="emoji">
+        <div class="emoji-grid">
+          <span class="emoji-item">😀</span><span class="emoji-item">😂</span><span class="emoji-item">🤣</span>
+          <span class="emoji-item">😊</span><span class="emoji-item">😍</span><span class="emoji-item">🥰</span>
+          <span class="emoji-item">😘</span><span class="emoji-item">😜</span><span class="emoji-item">🤪</span>
+          <span class="emoji-item">😎</span><span class="emoji-item">🥳</span><span class="emoji-item">🤩</span>
+          <span class="emoji-item">😤</span><span class="emoji-item">😡</span><span class="emoji-item">🥺</span>
+          <span class="emoji-item">😭</span><span class="emoji-item">😱</span><span class="emoji-item">🤔</span>
+          <span class="emoji-item">🙄</span><span class="emoji-item">😴</span><span class="emoji-item">💪</span>
+          <span class="emoji-item">👍</span><span class="emoji-item">👎</span><span class="emoji-item">❤️</span>
+          <span class="emoji-item">🔥</span><span class="emoji-item">💯</span><span class="emoji-item">🎉</span>
+          <span class="emoji-item">👏</span><span class="emoji-item">🙏</span><span class="emoji-item">✨</span>
+          <span class="emoji-item">💰</span><span class="emoji-item">🧧</span><span class="emoji-item">🎮</span>
+          <span class="emoji-item">🎲</span><span class="emoji-item">🎯</span><span class="emoji-item">💬</span>
+          <span class="emoji-item">👋</span><span class="emoji-item">🌹</span><span class="emoji-item">🍕</span>
+          <span class="emoji-item">🍔</span><span class="emoji-item">🎂</span><span class="emoji-item">🍺</span>
+          <span class="emoji-item">☕</span><span class="emoji-item">🌙</span><span class="emoji-item">⭐</span>
+          <span class="emoji-item">🌈</span><span class="emoji-item">🐶</span><span class="emoji-item">🐱</span>
+          <span class="emoji-item">🐼</span><span class="emoji-item">🦊</span><span class="emoji-item">🐰</span>
+        </div>
+      </div>
+      <div class="emoji-tab-content active" data-tab-type="sticker">
+        <div class="sticker-grid">
+          <div class="sticker-item" data-gif="https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/200w.gif"><img class="sticker-gif" src="https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/200w.gif" alt="点赞"><span>点赞</span></div>
+          <div class="sticker-item" data-gif="https://media.giphy.com/media/3oEjHI8WJv4x6UPDB6/200w.gif"><img class="sticker-gif" src="https://media.giphy.com/media/3oEjHI8WJv4x6UPDB6/200w.gif" alt="大笑"><span>大笑</span></div>
+          <div class="sticker-item" data-gif="https://media.giphy.com/media/d2lcHJTG5Tscg/200w.gif"><img class="sticker-gif" src="https://media.giphy.com/media/d2lcHJTG5Tscg/200w.gif" alt="鼓掌"><span>鼓掌</span></div>
+          <div class="sticker-item" data-gif="https://media.giphy.com/media/BPJmosVTLhobe/200w.gif"><img class="sticker-gif" src="https://media.giphy.com/media/BPJmosVTLhobe/200w.gif" alt="哭泣"><span>哭泣</span></div>
+          <div class="sticker-item" data-gif="https://media.giphy.com/media/l1J9u3TZfpmeDLkD6/200w.gif"><img class="sticker-gif" src="https://media.giphy.com/media/l1J9u3TZfpmeDLkD6/200w.gif" alt="比心"><span>比心</span></div>
+          <div class="sticker-item" data-gif="https://media.giphy.com/media/3ohzdIuqJoo8QdKlnW/200w.gif"><img class="sticker-gif" src="https://media.giphy.com/media/3ohzdIuqJoo8QdKlnW/200w.gif" alt="震惊"><span>震惊</span></div>
+          <div class="sticker-item" data-gif="https://media.giphy.com/media/l0HlvtIPdijJT1n2w/200w.gif"><img class="sticker-gif" src="https://media.giphy.com/media/l0HlvtIPdijJT1n2w/200w.gif" alt="OK"><span>OK</span></div>
+          <div class="sticker-item" data-gif="https://media.giphy.com/media/xUPGGDNsLvqsBOhuU0/200w.gif"><img class="sticker-gif" src="https://media.giphy.com/media/xUPGGDNsLvqsBOhuU0/200w.gif" alt="再见"><span>再见</span></div>
+          <div class="sticker-item" data-gif="https://media.giphy.com/media/3o7abKhOpu0NwenH3O/200w.gif"><img class="sticker-gif" src="https://media.giphy.com/media/3o7abKhOpu0NwenH3O/200w.gif" alt="思考"><span>思考</span></div>
+          <div class="sticker-item" data-gif="https://media.giphy.com/media/xT77XWum9yH7zNkFW0/200w.gif"><img class="sticker-gif" src="https://media.giphy.com/media/xT77XWum9yH7zNkFW0/200w.gif" alt="开心"><span>开心</span></div>
+          <div class="sticker-item" data-gif="https://media.giphy.com/media/3o6Zt6KHxJTbXCnSvu/200w.gif"><img class="sticker-gif" src="https://media.giphy.com/media/3o6Zt6KHxJTbXCnSvu/200w.gif" alt="加油"><span>加油</span></div>
+          <div class="sticker-item" data-gif="https://media.giphy.com/media/l3q2K5jinAlChoCLS/200w.gif"><img class="sticker-gif" src="https://media.giphy.com/media/l3q2K5jinAlChoCLS/200w.gif" alt="无语"><span>无语</span></div>
+        </div>
+      </div>
+      <div class="emoji-bottom-bar">
+        <span class="emoji-delete-btn">⌫</span>
+        <button class="emoji-add-sticker-btn">+</button>
+        <button class="emoji-send-btn">发送</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 5. 群聊对话页 ==================== -->
+  <div class="page" id="page-group-chat">
+    <nav class="top-nav chat-nav">
+      <div class="nav-left">
+        <i data-lucide="chevron-left" class="nav-icon back-btn" data-back="page-messages"></i>
+        <div class="nav-title-group">
+          <span class="nav-title">设计组(5)</span>
+          <span class="nav-subtitle">3人在线</span>
+        </div>
+      </div>
+      <div class="nav-right">
+        <span id="group-admin-view-toggle" class="nav-admin-badge" title="管理员视角">管</span>
+        <span id="group-settings-btn" class="nav-icon"><i data-lucide="more-horizontal"></i></span>
+      </div>
+    </nav>
+
+    <div class="notice-bar" id="notice-bar">
+      <span class="notice-icon">📢</span>
+      <span class="notice-text"><span>本周五下午设计评审，请提前准备素材</span></span>
+      <i data-lucide="x" class="notice-close" id="close-notice"></i>
+    </div>
+
+    <div class="page-body chat-body">
+      <div class="messages-area" id="group-messages-area">
+        <div class="time-label"><span>今天 14:20</span></div>
+
+        <div class="msg-system-admin" data-admin-only="1">
+          <span class="msg-system-text">赵雪 加入了群聊</span>
+        </div>
+
+        <!-- 李娜 -->
+        <div class="message-row other">
+          <img class="msg-avatar" src="images/group-lina.png" alt="李娜">
+          <div class="msg-content-group">
+            <span class="sender-name" data-sender="李娜">李娜</span>
+            <div class="bubble">素材我已经传到群文件了</div>
+          </div>
+        </div>
+        <div class="msg-status-row other-status">
+          <span class="msg-status read">✓✓ 已读</span>
+        </div>
+
+        <!-- 王明 -->
+        <div class="message-row other">
+          <img class="msg-avatar" src="images/group-wangming.png" alt="王明">
+          <div class="msg-content-group">
+            <span class="sender-name" data-sender="王明">王明</span>
+            <div class="bubble">@李娜 收到，我看一下</div>
+          </div>
+        </div>
+        <div class="msg-status-row other-status">
+          <span class="msg-status read">✓✓ 已读</span>
+        </div>
+
+        <!-- 赵雪发的语音消息 -->
+        <div class="message-row other">
+          <img class="msg-avatar" src="images/group-zhaoxue.png" alt="赵雪">
+          <div class="msg-content-group">
+            <span class="sender-name" data-sender="赵雪">赵雪</span>
+            <div class="msg-voice-bubble">
+              <i data-lucide="volume-2" class="voice-icon"></i>
+              <div class="voice-wave">
+                <span></span><span></span><span></span><span></span><span></span>
+              </div>
+              <span class="voice-duration">0:05</span>
+            </div>
+          </div>
+        </div>
+        <div class="msg-status-row other-status">
+          <span class="msg-status read">✓✓ 已读</span>
+        </div>
+
+        <!-- 自己 -->
+        <div class="message-row self">
+          <div class="bubble self-bubble">我也开始准备</div>
+          <img class="msg-avatar" src="images/group-me.png" alt="我">
+        </div>
+        <div class="msg-status-row">
+          <span class="msg-status read">✓✓ 已读</span>
+        </div>
+
+        <!-- 自己发的图片消息 -->
+        <div class="message-row self">
+          <div class="msg-image-wrap">
+            <img class="msg-image" src="https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=400&h=300&fit=crop" alt="设计稿">
+          </div>
+          <img class="msg-avatar" src="images/group-me.png" alt="我">
+        </div>
+        <div class="msg-status-row">
+          <span class="msg-status read">✓✓ 已读</span>
+        </div>
+
+        <!-- 张伟 群红包 -->
+        <div class="message-row other">
+          <img class="msg-avatar" src="images/group-zhangwei.png" alt="张伟">
+          <div class="msg-content-group">
+            <span class="sender-name" data-sender="张伟">张伟</span>
+            <div class="red-packet-card">
+              <div class="rp-icon">🧧</div>
+              <div class="rp-info">
+                <div class="rp-text">开工大吉</div>
+                <div class="rp-label">拼手气红包</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="msg-status-row other-status">
+          <span class="msg-status read">✓✓ 已读</span>
+        </div>
+
+        <!-- 李娜发的视频消息 -->
+        <div class="message-row other">
+          <img class="msg-avatar" src="images/group-lina.png" alt="李娜">
+          <div class="msg-content-group">
+            <span class="sender-name" data-sender="李娜">李娜</span>
+            <div class="msg-video-wrap">
+              <div class="msg-video-thumb" style="background: url('https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=400&h=300&fit=crop') center/cover no-repeat;">
+                <div class="video-play-btn"><i data-lucide="play" class="play-icon"></i></div>
+                <span class="video-duration">0:23</span>
+              </div>
+              <video class="msg-video-player" preload="metadata" playsinline webkit-playsinline controls style="display:none;">
+                <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4" type="video/mp4">
+              </video>
+            </div>
+          </div>
+        </div>
+        <div class="msg-status-row other-status">
+          <span class="msg-status read">✓✓ 已读</span>
+        </div>
+
+        <div class="msg-system-admin" data-admin-only="1">
+          <span class="msg-system-text">王明 退出了群聊</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="chat-input-bar">
+      <i data-lucide="mic" class="input-bar-icon"></i>
+      <input type="text" placeholder="输入消息..." class="chat-input">
+      <span class="input-bar-icon" id="group-smile-btn"><i data-lucide="smile"></i></span>
+      <span class="input-bar-icon" id="group-plus-btn"><i data-lucide="plus"></i></span>
+    </div>
+
+    <div class="chat-more-panel" id="group-chat-more-panel">
+      <div class="more-grid">
+        <div class="more-grid-item" data-more="album">
+          <div class="more-icon" style="background:#007AFF"><i data-lucide="image"></i></div>
+          <span>相册</span>
+        </div>
+        <div class="more-grid-item" data-more="camera">
+          <div class="more-icon" style="background:#34C759"><i data-lucide="camera"></i></div>
+          <span>拍摄</span>
+        </div>
+        <div class="more-grid-item" data-more="redpacket">
+          <div class="more-icon" style="background:#FF6B6B"><i data-lucide="gift"></i></div>
+          <span>红包</span>
+        </div>
+        <div class="more-grid-item" data-more="transfer">
+          <div class="more-icon" style="background:#FF9500"><i data-lucide="banknote"></i></div>
+          <span>转账</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="emoji-panel" id="group-emoji-panel">
+      <div class="emoji-tab-bar">
+        <div class="emoji-tab active" data-emoji-tab="sticker">⭐ 收藏</div>
+        <div class="emoji-tab" data-emoji-tab="emoji">😀 表情</div>
+      </div>
+      <div class="emoji-tab-content" data-tab-type="emoji">
+        <div class="emoji-grid">
+          <span class="emoji-item">😀</span><span class="emoji-item">😂</span><span class="emoji-item">🤣</span>
+          <span class="emoji-item">😊</span><span class="emoji-item">😍</span><span class="emoji-item">🥰</span>
+          <span class="emoji-item">😘</span><span class="emoji-item">😜</span><span class="emoji-item">🤪</span>
+          <span class="emoji-item">😎</span><span class="emoji-item">🥳</span><span class="emoji-item">🤩</span>
+          <span class="emoji-item">😤</span><span class="emoji-item">😡</span><span class="emoji-item">🥺</span>
+          <span class="emoji-item">😭</span><span class="emoji-item">😱</span><span class="emoji-item">🤔</span>
+          <span class="emoji-item">🙄</span><span class="emoji-item">😴</span><span class="emoji-item">💪</span>
+          <span class="emoji-item">👍</span><span class="emoji-item">👎</span><span class="emoji-item">❤️</span>
+          <span class="emoji-item">🔥</span><span class="emoji-item">💯</span><span class="emoji-item">🎉</span>
+          <span class="emoji-item">👏</span><span class="emoji-item">🙏</span><span class="emoji-item">✨</span>
+          <span class="emoji-item">💰</span><span class="emoji-item">🧧</span><span class="emoji-item">🎮</span>
+          <span class="emoji-item">🎲</span><span class="emoji-item">🎯</span><span class="emoji-item">💬</span>
+          <span class="emoji-item">👋</span><span class="emoji-item">🌹</span><span class="emoji-item">🍕</span>
+          <span class="emoji-item">🍔</span><span class="emoji-item">🎂</span><span class="emoji-item">🍺</span>
+          <span class="emoji-item">☕</span><span class="emoji-item">🌙</span><span class="emoji-item">⭐</span>
+          <span class="emoji-item">🌈</span><span class="emoji-item">🐶</span><span class="emoji-item">🐱</span>
+          <span class="emoji-item">🐼</span><span class="emoji-item">🦊</span><span class="emoji-item">🐰</span>
+        </div>
+      </div>
+      <div class="emoji-tab-content active" data-tab-type="sticker">
+        <div class="sticker-grid">
+          <div class="sticker-item" data-gif="https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/200w.gif"><img class="sticker-gif" src="https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/200w.gif" alt="点赞"><span>点赞</span></div>
+          <div class="sticker-item" data-gif="https://media.giphy.com/media/3oEjHI8WJv4x6UPDB6/200w.gif"><img class="sticker-gif" src="https://media.giphy.com/media/3oEjHI8WJv4x6UPDB6/200w.gif" alt="大笑"><span>大笑</span></div>
+          <div class="sticker-item" data-gif="https://media.giphy.com/media/d2lcHJTG5Tscg/200w.gif"><img class="sticker-gif" src="https://media.giphy.com/media/d2lcHJTG5Tscg/200w.gif" alt="鼓掌"><span>鼓掌</span></div>
+          <div class="sticker-item" data-gif="https://media.giphy.com/media/BPJmosVTLhobe/200w.gif"><img class="sticker-gif" src="https://media.giphy.com/media/BPJmosVTLhobe/200w.gif" alt="哭泣"><span>哭泣</span></div>
+          <div class="sticker-item" data-gif="https://media.giphy.com/media/l1J9u3TZfpmeDLkD6/200w.gif"><img class="sticker-gif" src="https://media.giphy.com/media/l1J9u3TZfpmeDLkD6/200w.gif" alt="比心"><span>比心</span></div>
+          <div class="sticker-item" data-gif="https://media.giphy.com/media/3ohzdIuqJoo8QdKlnW/200w.gif"><img class="sticker-gif" src="https://media.giphy.com/media/3ohzdIuqJoo8QdKlnW/200w.gif" alt="震惊"><span>震惊</span></div>
+          <div class="sticker-item" data-gif="https://media.giphy.com/media/l0HlvtIPdijJT1n2w/200w.gif"><img class="sticker-gif" src="https://media.giphy.com/media/l0HlvtIPdijJT1n2w/200w.gif" alt="OK"><span>OK</span></div>
+          <div class="sticker-item" data-gif="https://media.giphy.com/media/xUPGGDNsLvqsBOhuU0/200w.gif"><img class="sticker-gif" src="https://media.giphy.com/media/xUPGGDNsLvqsBOhuU0/200w.gif" alt="再见"><span>再见</span></div>
+          <div class="sticker-item" data-gif="https://media.giphy.com/media/3o7abKhOpu0NwenH3O/200w.gif"><img class="sticker-gif" src="https://media.giphy.com/media/3o7abKhOpu0NwenH3O/200w.gif" alt="思考"><span>思考</span></div>
+          <div class="sticker-item" data-gif="https://media.giphy.com/media/xT77XWum9yH7zNkFW0/200w.gif"><img class="sticker-gif" src="https://media.giphy.com/media/xT77XWum9yH7zNkFW0/200w.gif" alt="开心"><span>开心</span></div>
+          <div class="sticker-item" data-gif="https://media.giphy.com/media/3o6Zt6KHxJTbXCnSvu/200w.gif"><img class="sticker-gif" src="https://media.giphy.com/media/3o6Zt6KHxJTbXCnSvu/200w.gif" alt="加油"><span>加油</span></div>
+          <div class="sticker-item" data-gif="https://media.giphy.com/media/l3q2K5jinAlChoCLS/200w.gif"><img class="sticker-gif" src="https://media.giphy.com/media/l3q2K5jinAlChoCLS/200w.gif" alt="无语"><span>无语</span></div>
+        </div>
+      </div>
+      <div class="emoji-bottom-bar">
+        <span class="emoji-delete-btn">⌫</span>
+        <button class="emoji-add-sticker-btn">+</button>
+        <button class="emoji-send-btn">发送</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 群聊设置页 ==================== -->
+  <div class="page" id="page-group-settings">
+    <nav class="top-nav">
+      <div class="nav-left">
+        <i data-lucide="chevron-left" class="nav-icon back-btn" data-back="page-group-chat"></i>
+      </div>
+      <div class="nav-center"><span class="nav-title">群聊设置</span></div>
+      <div class="nav-right"></div>
+    </nav>
+    <div class="page-body" style="padding-bottom:80px;">
+      <div class="group-settings-content">
+        <!-- 群成员区域 -->
+        <div class="gs-section">
+          <div class="gs-members-grid">
+            <div class="gs-member-item">
+              <img src="images/avatar-lina.png" alt="李娜">
+              <span>李娜</span>
+            </div>
+            <div class="gs-member-item">
+              <img src="images/avatar-wangming.png" alt="王明">
+              <span>王明</span>
+            </div>
+            <div class="gs-member-item">
+              <img src="images/avatar-zhangwei.png" alt="张伟">
+              <span>张伟</span>
+            </div>
+            <div class="gs-member-item">
+              <img src="images/avatar-zhaoxue.png" alt="赵雪">
+              <span>赵雪</span>
+            </div>
+            <div class="gs-member-item">
+              <img src="images/avatar-xiaoming.png" alt="小明(我)">
+              <span>小明</span>
+            </div>
+            <div class="gs-member-item gs-add-member">
+              <div class="gs-add-icon"><i data-lucide="plus"></i></div>
+              <span>邀请</span>
+            </div>
+            <div class="gs-member-item gs-remove-member">
+              <div class="gs-add-icon gs-remove-icon"><i data-lucide="minus"></i></div>
+              <span>移除</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 群信息 -->
+        <div class="gs-section">
+          <div class="settings-row" id="gs-name-row">
+            <span class="settings-label">群聊名称</span>
+            <span class="settings-value">设计组 ></span>
+          </div>
+          <div class="settings-row" id="gs-notice-row">
+            <span class="settings-label">群公告</span>
+            <span class="settings-value">本周五设计评审 ></span>
+          </div>
+          <div class="settings-row" id="gs-remark-row">
+            <span class="settings-label">备注</span>
+            <span class="settings-value">未设置 ></span>
+          </div>
+          <div class="settings-row" id="gs-qr-row">
+            <span class="settings-label">群二维码</span>
+            <span class="settings-value"><i data-lucide="qr-code" style="width:18px;height:18px;color:var(--text-tertiary)"></i> ></span>
+          </div>
+        </div>
+
+        <!-- 管理员与禁言 -->
+        <div class="gs-section">
+          <div class="settings-row" id="gs-admin-row">
+            <span class="settings-label">群管理员</span>
+            <span class="settings-value">2人 ></span>
+          </div>
+          <div class="settings-toggle-row">
+            <span class="settings-label">全体禁言</span>
+            <label class="toggle-switch"><input type="checkbox" id="gs-mute-all"><span class="toggle-slider"></span></label>
+          </div>
+        </div>
+
+        <!-- 聊天设置 -->
+        <div class="gs-section">
+          <div class="settings-toggle-row">
+            <span class="settings-label">消息免打扰</span>
+            <label class="toggle-switch"><input type="checkbox"><span class="toggle-slider"></span></label>
+          </div>
+          <div class="settings-toggle-row">
+            <span class="settings-label">置顶聊天</span>
+            <label class="toggle-switch"><input type="checkbox"><span class="toggle-slider"></span></label>
+          </div>
+          <div class="settings-toggle-row">
+            <span class="settings-label">保存到通讯录</span>
+            <label class="toggle-switch"><input type="checkbox" checked><span class="toggle-slider"></span></label>
+          </div>
+        </div>
+
+        <!-- 其他 -->
+        <div class="gs-section">
+          <div class="settings-row">
+            <span class="settings-label">我在本群的昵称</span>
+            <span class="settings-value">小明 ></span>
+          </div>
+          <div class="settings-row">
+            <span class="settings-label">聊天记录</span>
+            <span class="settings-value">></span>
+          </div>
+          <div class="settings-row">
+            <span class="settings-label">投诉</span>
+            <span class="settings-value">></span>
+          </div>
+        </div>
+
+        <!-- 清空和退出 -->
+        <div class="gs-section">
+          <div class="gs-danger-btn" id="gs-clear-chat">清空聊天记录</div>
+        </div>
+        <div class="gs-section">
+          <div class="gs-danger-btn gs-exit-btn" id="gs-exit-group">退出群聊</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 群管理员页 ==================== -->
+  <div class="page" id="page-group-admin">
+    <nav class="top-nav">
+      <div class="nav-left">
+        <i data-lucide="chevron-left" class="nav-icon back-btn" data-back="page-group-settings"></i>
+      </div>
+      <div class="nav-center"><span class="nav-title">群管理员</span></div>
+      <div class="nav-right"></div>
+    </nav>
+    <div class="page-body" style="padding-bottom:80px;">
+      <div class="admin-content">
+        <div class="admin-section">
+          <div class="admin-section-title">群主</div>
+          <div class="admin-member-item">
+            <img src="images/avatar-xiaoming.png" alt="小明">
+            <div class="admin-member-info">
+              <span class="admin-member-name">小明</span>
+              <span class="admin-member-role">群主</span>
+            </div>
+          </div>
+        </div>
+        <div class="admin-section">
+          <div class="admin-section-title">管理员 (2人)</div>
+          <div class="admin-member-item">
+            <img src="images/avatar-lina.png" alt="李娜">
+            <div class="admin-member-info">
+              <span class="admin-member-name">李娜</span>
+              <span class="admin-member-tag">管理员</span>
+            </div>
+            <button class="admin-remove-btn">移除</button>
+          </div>
+          <div class="admin-member-item">
+            <img src="images/avatar-zhangwei.png" alt="张伟">
+            <div class="admin-member-info">
+              <span class="admin-member-name">张伟</span>
+              <span class="admin-member-tag">管理员</span>
+            </div>
+            <button class="admin-remove-btn">移除</button>
+          </div>
+        </div>
+        <div class="admin-section">
+          <div class="admin-section-title">添加管理员</div>
+          <div class="admin-member-item admin-add-item" id="admin-add-wangming">
+            <img src="images/avatar-wangming.png" alt="王明">
+            <div class="admin-member-info">
+              <span class="admin-member-name">王明</span>
+            </div>
+            <button class="admin-add-btn">设为管理员</button>
+          </div>
+          <div class="admin-member-item admin-add-item" id="admin-add-zhaoxue">
+            <img src="images/avatar-zhaoxue.png" alt="赵雪">
+            <div class="admin-member-info">
+              <span class="admin-member-name">赵雪</span>
+            </div>
+            <button class="admin-add-btn">设为管理员</button>
+          </div>
+        </div>
+
+        <div class="admin-section">
+          <div class="admin-section-title">进群审批 <span class="admin-badge" id="join-request-count">2</span></div>
+          <div class="join-request-item" data-request-id="1">
+            <img src="images/avatar-zhaoxue.png" alt="赵雪">
+            <div class="admin-member-info">
+              <span class="admin-member-name">赵雪</span>
+              <span class="admin-request-msg">我是设计部的，想加入设计组</span>
+            </div>
+            <div class="join-request-actions">
+              <button class="admin-reject-btn">拒绝</button>
+              <button class="admin-approve-btn">通过</button>
+            </div>
+          </div>
+          <div class="join-request-item" data-request-id="2">
+            <img src="images/avatar-wangming.png" alt="王明">
+            <div class="admin-member-info">
+              <span class="admin-member-name">王明</span>
+              <span class="admin-request-msg">同事推荐加入</span>
+            </div>
+            <div class="join-request-actions">
+              <button class="admin-reject-btn">拒绝</button>
+              <button class="admin-approve-btn">通过</button>
+            </div>
+          </div>
+          <div class="join-request-empty" id="join-request-empty" style="display:none;">
+            <span class="admin-empty-text">暂无待审批申请</span>
+          </div>
+        </div>
+
+        <div class="admin-section">
+          <div class="admin-section-title">成员备注</div>
+          <div class="admin-member-item">
+            <img src="images/avatar-lina.png" alt="李娜">
+            <div class="admin-member-info">
+              <span class="admin-member-name">李娜</span>
+              <span class="admin-remark-display" id="remark-lina">未设置</span>
+            </div>
+            <button class="admin-remark-btn" data-remark-target="李娜">编辑</button>
+          </div>
+          <div class="admin-member-item">
+            <img src="images/avatar-zhangwei.png" alt="张伟">
+            <div class="admin-member-info">
+              <span class="admin-member-name">张伟</span>
+              <span class="admin-remark-display" id="remark-zhangwei">未设置</span>
+            </div>
+            <button class="admin-remark-btn" data-remark-target="张伟">编辑</button>
+          </div>
+          <div class="admin-member-item">
+            <img src="images/avatar-wangming.png" alt="王明">
+            <div class="admin-member-info">
+              <span class="admin-member-name">王明</span>
+              <span class="admin-remark-display" id="remark-wangming">未设置</span>
+            </div>
+            <button class="admin-remark-btn" data-remark-target="王明">编辑</button>
+          </div>
+          <div class="admin-member-item">
+            <img src="images/avatar-zhaoxue.png" alt="赵雪">
+            <div class="admin-member-info">
+              <span class="admin-member-name">赵雪</span>
+              <span class="admin-remark-display" id="remark-zhaoxue">未设置</span>
+            </div>
+            <button class="admin-remark-btn" data-remark-target="赵雪">编辑</button>
+          </div>
+        </div>
+
+        <div class="admin-section">
+          <div class="admin-section-title">成员禁言管理</div>
+          <div class="admin-member-item">
+            <img src="images/avatar-lina.png" alt="李娜">
+            <div class="admin-member-info">
+              <span class="admin-member-name">李娜</span>
+              <span class="admin-mute-status" id="mute-lina">未禁言</span>
+            </div>
+            <button class="admin-mute-btn" data-mute-target="lina">禁言</button>
+          </div>
+          <div class="admin-member-item">
+            <img src="images/avatar-zhangwei.png" alt="张伟">
+            <div class="admin-member-info">
+              <span class="admin-member-name">张伟</span>
+              <span class="admin-mute-status" id="mute-zhangwei">未禁言</span>
+            </div>
+            <button class="admin-mute-btn" data-mute-target="zhangwei">禁言</button>
+          </div>
+          <div class="admin-member-item">
+            <img src="images/avatar-wangming.png" alt="王明">
+            <div class="admin-member-info">
+              <span class="admin-member-name">王明</span>
+              <span class="admin-mute-status" id="mute-wangming">未禁言</span>
+            </div>
+            <button class="admin-mute-btn" data-mute-target="wangming">禁言</button>
+          </div>
+          <div class="admin-member-item">
+            <img src="images/avatar-zhaoxue.png" alt="赵雪">
+            <div class="admin-member-info">
+              <span class="admin-member-name">赵雪</span>
+              <span class="admin-mute-status" id="mute-zhaoxue">未禁言</span>
+            </div>
+            <button class="admin-mute-btn" data-mute-target="zhaoxue">禁言</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 群成员备注编辑页 ==================== -->
+  <div class="page" id="page-group-remark-edit">
+    <nav class="top-nav">
+      <div class="nav-left">
+        <i data-lucide="chevron-left" class="nav-icon back-btn" data-back="page-group-admin"></i>
+      </div>
+      <div class="nav-center"><span class="nav-title">设置备注</span></div>
+      <div class="nav-right"></div>
+    </nav>
+    <div class="page-body">
+      <div class="remark-edit-content">
+        <div class="remark-edit-member" id="remark-edit-preview">
+          <img id="remark-edit-avatar" src="images/avatar-lina.png" alt="">
+          <span id="remark-edit-name">李娜</span>
+        </div>
+        <div class="form-group">
+          <label>备注名</label>
+          <input type="text" id="remark-edit-input" placeholder="请输入备注（如：设计负责人）" maxlength="20">
+        </div>
+        <button class="remark-save-btn" id="remark-save-btn">保存</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 6. 通讯录页 ==================== -->
+  <div class="page" id="page-contacts">
+    <nav class="top-nav">
+      <div class="nav-left"><span class="nav-title">通讯录</span></div>
+      <div class="nav-right"><i data-lucide="user-plus" class="nav-icon"></i></div>
+    </nav>
+
+    <div class="page-body">
+      <div class="search-bar">
+        <i data-lucide="search" class="search-icon"></i>
+        <input type="text" placeholder="搜索" class="search-input">
+      </div>
+
+      <div class="contact-shortcuts">
+        <div class="shortcut-item" id="shortcut-new-friend">
+          <div class="shortcut-icon orange"><i data-lucide="user-plus"></i></div>
+          <span>新朋友</span>
+          <span class="badge">3</span>
+        </div>
+        <div class="shortcut-item" id="shortcut-groups">
+          <div class="shortcut-icon green"><i data-lucide="users"></i></div>
+          <span>群聊</span>
+        </div>
+      </div>
+
+      <div class="contact-divider"></div>
+
+      <div class="contact-group">
+        <div class="group-letter">L</div>
+        <div class="contact-item">
+          <img class="avatar" src="images/contact-lina.png" alt="李娜">
+          <span class="contact-name">李娜</span>
+          <span class="online-indicator online"></span>
+          <span class="status-tag online">在线</span>
+        </div>
+      </div>
+      <div class="contact-group">
+        <div class="group-letter">W</div>
+        <div class="contact-item">
+          <img class="avatar" src="images/contact-wangming.png" alt="王明">
+          <span class="contact-name">王明</span>
+          <span class="online-indicator offline"></span>
+          <span class="status-tag offline">离线</span>
+        </div>
+      </div>
+      <div class="contact-group">
+        <div class="group-letter">Z</div>
+        <div class="contact-item">
+          <img class="avatar" src="images/contact-zhangwei.png" alt="张伟">
+          <span class="contact-name">张伟</span>
+          <span class="online-indicator online"></span>
+          <span class="status-tag online">在线</span>
+        </div>
+        <div class="contact-item">
+          <img class="avatar" src="images/contact-zhaoxue.png" alt="赵雪">
+          <span class="contact-name">赵雪</span>
+          <span class="online-indicator online"></span>
+          <span class="status-tag online">在线</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="tab-bar">
+      <div class="tab-item" data-tab="page-messages">
+        <i data-lucide="message-circle"></i>
+        <span>消息</span>
+      </div>
+      <div class="tab-item active" data-tab="page-contacts">
+        <i data-lucide="users"></i>
+        <span>通讯录</span>
+      </div>
+      <div class="tab-item" data-tab="page-games">
+        <i data-lucide="gamepad-2"></i>
+        <span>游戏</span>
+      </div>
+      <div class="tab-item" data-tab="page-wallet">
+        <i data-lucide="wallet"></i>
+        <span>钱包</span>
+      </div>
+      <div class="tab-item" data-tab="page-profile">
+        <i data-lucide="user"></i>
+        <span>我的</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 7. 游戏中心页 ==================== -->
+  <div class="page" id="page-games">
+    <nav class="top-nav">
+      <div class="nav-left"><span class="nav-title">游戏中心</span></div>
+      <div class="nav-right"></div>
+    </nav>
+
+    <div class="page-body">
+      <div class="game-banner">
+        <img class="game-banner-img" src="images/game-banner.png" alt="经典老虎机">
+      </div>
+
+      <div class="section-header">
+        <span class="section-title">热门推荐</span>
+      </div>
+
+      <div class="game-grid">
+        <div class="game-card">
+          <img class="game-cover" src="images/game-1.png" alt="经典水果机">
+          <div class="game-card-info">
+            <span class="game-name">经典水果机</span>
+            <span class="game-desc">3轴经典</span>
+          </div>
+        </div>
+        <div class="game-card">
+          <img class="game-cover" src="images/game-2.png" alt="幸运777">
+          <div class="game-card-info">
+            <span class="game-name">幸运777</span>
+            <span class="game-desc">拉斯维加斯风</span>
+          </div>
+        </div>
+        <div class="game-card">
+          <img class="game-cover" src="images/game-5.png" alt="金龙夺宝">
+          <div class="game-card-info">
+            <span class="game-name">金龙夺宝</span>
+            <span class="game-desc">中国风·5轴</span>
+          </div>
+        </div>
+        <div class="game-card">
+          <img class="game-cover" src="images/game-6.png" alt="海洋寻宝">
+          <div class="game-card-info">
+            <span class="game-name">海洋寻宝</span>
+            <span class="game-desc">海洋冒险</span>
+          </div>
+        </div>
+        <div class="game-card">
+          <img class="game-cover" src="images/game-3.png" alt="埃及法老">
+          <div class="game-card-info">
+            <span class="game-name">埃及法老</span>
+            <span class="game-desc">古埃及风</span>
+          </div>
+        </div>
+        <div class="game-card">
+          <img class="game-cover" src="images/game-4.png" alt="糖果乐园">
+          <div class="game-card-info">
+            <span class="game-name">糖果乐园</span>
+            <span class="game-desc">可爱休闲</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tab-bar">
+      <div class="tab-item" data-tab="page-messages">
+        <i data-lucide="message-circle"></i>
+        <span>消息</span>
+      </div>
+      <div class="tab-item" data-tab="page-contacts">
+        <i data-lucide="users"></i>
+        <span>通讯录</span>
+      </div>
+      <div class="tab-item active" data-tab="page-games">
+        <i data-lucide="gamepad-2"></i>
+        <span>游戏</span>
+      </div>
+      <div class="tab-item" data-tab="page-wallet">
+        <i data-lucide="wallet"></i>
+        <span>钱包</span>
+      </div>
+      <div class="tab-item" data-tab="page-profile">
+        <i data-lucide="user"></i>
+        <span>我的</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 8. 钱包页 ==================== -->
+  <div class="page" id="page-wallet">
+    <nav class="top-nav">
+      <div class="nav-left"><span class="nav-title">钱包</span></div>
+      <div class="nav-right"></div>
+    </nav>
+
+    <div class="page-body">
+      <div class="wallet-balance-card">
+        <div class="balance-label">账户余额</div>
+        <div class="balance-amount">¥ 1,280.50</div>
+        <div class="balance-actions">
+          <button class="balance-btn" id="wallet-recharge-btn">+ 充值</button>
+          <button class="balance-btn outline" id="wallet-withdraw-btn">↑ 提现</button>
+        </div>
+      </div>
+
+      <div class="rp-summary">
+        <div class="rp-summary-card">
+          <div class="rp-summary-item income">
+            <span class="rp-summary-label">红包收入</span>
+            <span class="rp-summary-amount">+¥328.88</span>
+            <span class="rp-summary-count">共收12个</span>
+          </div>
+        </div>
+        <div class="rp-summary-card">
+          <div class="rp-summary-item expense">
+            <span class="rp-summary-label">红包支出</span>
+            <span class="rp-summary-amount">-¥188.00</span>
+            <span class="rp-summary-count">共发5个</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-header">
+        <span class="section-title">最近交易</span>
+        <a class="section-link" data-goto-tx="page-transactions">全部 ›</a>
+      </div>
+
+      <div class="transaction-list">
+        <div class="transaction-item">
+          <div class="tx-icon expense-icon"><i data-lucide="arrow-up-right"></i></div>
+          <div class="tx-info">
+            <span class="tx-name">发红包 - 张伟</span>
+            <span class="tx-time">今天 10:42</span>
+          </div>
+          <span class="tx-amount expense">-¥88.00</span>
+        </div>
+        <div class="transaction-item">
+          <div class="tx-icon income-icon"><i data-lucide="arrow-down-left"></i></div>
+          <div class="tx-info">
+            <span class="tx-name">收红包 - 李娜</span>
+            <span class="tx-time">昨天 18:30</span>
+          </div>
+          <span class="tx-amount income">+¥66.66</span>
+        </div>
+        <div class="transaction-item">
+          <div class="tx-icon income-icon"><i data-lucide="arrow-down-left"></i></div>
+          <div class="tx-info">
+            <span class="tx-name">充值</span>
+            <span class="tx-time">3/1 09:19</span>
+          </div>
+          <span class="tx-amount income">+¥500.00</span>
+        </div>
+        <div class="transaction-item">
+          <div class="tx-icon income-icon"><i data-lucide="arrow-down-left"></i></div>
+          <div class="tx-info">
+            <span class="tx-name">收红包 - 赵雪</span>
+            <span class="tx-time">3月18日</span>
+          </div>
+          <span class="tx-amount income">+¥8.88</span>
+        </div>
+        <div class="transaction-item">
+          <div class="tx-icon income-icon"><i data-lucide="arrow-down-left"></i></div>
+          <div class="tx-info">
+            <span class="tx-name">收红包 - 赵雪</span>
+            <span class="tx-time">3月17日</span>
+          </div>
+          <span class="tx-amount income">+¥8.88</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="tab-bar">
+      <div class="tab-item" data-tab="page-messages">
+        <i data-lucide="message-circle"></i>
+        <span>消息</span>
+      </div>
+      <div class="tab-item" data-tab="page-contacts">
+        <i data-lucide="users"></i>
+        <span>通讯录</span>
+      </div>
+      <div class="tab-item" data-tab="page-games">
+        <i data-lucide="gamepad-2"></i>
+        <span>游戏</span>
+      </div>
+      <div class="tab-item active" data-tab="page-wallet">
+        <i data-lucide="wallet"></i>
+        <span>钱包</span>
+      </div>
+      <div class="tab-item" data-tab="page-profile">
+        <i data-lucide="user"></i>
+        <span>我的</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 9. 我的页面 ==================== -->
+  <div class="page" id="page-profile">
+    <nav class="top-nav">
+      <div class="nav-left"><span class="nav-title">我的</span></div>
+      <div class="nav-right"></div>
+    </nav>
+
+    <div class="page-body">
+      <div class="profile-card" id="profile-card-btn">
+        <img class="profile-avatar" src="images/avatar-xiaoming.png" alt="小明">
+        <div class="profile-info">
+          <span class="profile-name">小明</span>
+          <span class="profile-id">ID: 50888666</span>
+        </div>
+        <i data-lucide="chevron-right" class="profile-arrow"></i>
+      </div>
+
+      <div class="menu-group">
+        <div class="menu-item" id="menu-vip">
+          <i data-lucide="crown" class="menu-icon" style="color:#FFD700"></i>
+          <span>会员中心</span>
+          <i data-lucide="chevron-right" class="menu-arrow"></i>
+        </div>
+        <div class="menu-item">
+          <i data-lucide="moon" class="menu-icon" style="color:#6C5CE7"></i>
+          <span>主题切换</span>
+          <div class="toggle-switch" id="theme-toggle"><div class="toggle-knob"></div></div>
+        </div>
+      </div>
+
+      <div class="menu-group">
+        <div class="menu-item" id="menu-notification">
+          <i data-lucide="bell" class="menu-icon" style="color:#FF6B6B"></i>
+          <span>通知设置</span>
+          <i data-lucide="chevron-right" class="menu-arrow"></i>
+        </div>
+        <div class="menu-item" id="menu-privacy">
+          <i data-lucide="shield" class="menu-icon" style="color:#00B894"></i>
+          <span>隐私设置</span>
+          <i data-lucide="chevron-right" class="menu-arrow"></i>
+        </div>
+        <div class="menu-item" id="menu-about">
+          <i data-lucide="info" class="menu-icon" style="color:#0984E3"></i>
+          <span>关于50聊天</span>
+          <i data-lucide="chevron-right" class="menu-arrow"></i>
+        </div>
+      </div>
+
+      <button class="logout-btn" id="btn-logout">退出登录</button>
+    </div>
+
+    <div class="tab-bar">
+      <div class="tab-item" data-tab="page-messages">
+        <i data-lucide="message-circle"></i>
+        <span>消息</span>
+      </div>
+      <div class="tab-item" data-tab="page-contacts">
+        <i data-lucide="users"></i>
+        <span>通讯录</span>
+      </div>
+      <div class="tab-item" data-tab="page-games">
+        <i data-lucide="gamepad-2"></i>
+        <span>游戏</span>
+      </div>
+      <div class="tab-item" data-tab="page-wallet">
+        <i data-lucide="wallet"></i>
+        <span>钱包</span>
+      </div>
+      <div class="tab-item active" data-tab="page-profile">
+        <i data-lucide="user"></i>
+        <span>我的</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 充值页 ==================== -->
+  <div class="page" id="page-recharge">
+    <nav class="top-nav">
+      <div class="nav-left">
+        <i data-lucide="chevron-left" class="nav-icon back-btn" data-back="page-wallet"></i>
+      </div>
+      <div class="nav-center"><span class="nav-title">充值</span></div>
+      <div class="nav-right"></div>
+    </nav>
+    <div class="page-body">
+      <div class="wallet-form-card">
+        <div class="wallet-form-row">
+          <span class="wallet-form-label">充值金额</span>
+          <div class="wallet-amount-input">
+            <span class="wallet-yen">¥</span>
+            <input type="number" placeholder="0.00" id="recharge-amount" min="1" step="0.01">
+          </div>
+        </div>
+        <div class="wallet-quick-amounts">
+          <button type="button" class="quick-amount" data-amount="100">100</button>
+          <button type="button" class="quick-amount" data-amount="200">200</button>
+          <button type="button" class="quick-amount" data-amount="500">500</button>
+          <button type="button" class="quick-amount" data-amount="1000">1000</button>
+          <button type="button" class="quick-amount" data-amount="2000">2000</button>
+          <button type="button" class="quick-amount" data-amount="5000">5000</button>
+        </div>
+        <div class="wallet-form-row">
+          <span class="wallet-form-label">支付方式</span>
+          <div class="wallet-pay-method">
+            <div class="pay-method-item selected">
+              <i data-lucide="credit-card"></i>
+              <span>银行卡</span>
+            </div>
+            <div class="pay-method-item">
+              <i data-lucide="smartphone"></i>
+              <span>零钱</span>
+            </div>
+          </div>
+        </div>
+        <button class="wallet-submit-btn" id="recharge-submit">确认充值</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 提现页 ==================== -->
+  <div class="page" id="page-withdraw">
+    <nav class="top-nav">
+      <div class="nav-left">
+        <i data-lucide="chevron-left" class="nav-icon back-btn" data-back="page-wallet"></i>
+      </div>
+      <div class="nav-center"><span class="nav-title">提现</span></div>
+      <div class="nav-right"></div>
+    </nav>
+    <div class="page-body">
+      <div class="wallet-form-card">
+        <div class="wallet-form-row">
+          <span class="wallet-form-label">提现金额</span>
+          <div class="wallet-amount-input">
+            <span class="wallet-yen">¥</span>
+            <input type="number" placeholder="0.00" id="withdraw-amount" min="1" step="0.01">
+          </div>
+        </div>
+        <div class="wallet-available">
+          <span>可提现余额</span>
+          <span class="wallet-available-num">¥ 1,280.50</span>
+        </div>
+        <div class="wallet-form-row">
+          <span class="wallet-form-label">提现到</span>
+          <div class="withdraw-method-tabs">
+            <div class="withdraw-method-tab active" data-withdraw-method="alipay">支付宝</div>
+            <div class="withdraw-method-tab" data-withdraw-method="bank">银行卡</div>
+            <div class="withdraw-method-tab" data-withdraw-method="virtual">虚拟币</div>
+          </div>
+        </div>
+        <div class="withdraw-account-area" id="withdraw-alipay-area">
+          <div class="bank-card-preview alipay-preview" id="alipay-bound-preview" style="display:none;">
+            <span class="bank-name">支付宝账号</span>
+            <span class="bank-no" id="alipay-account-display">138****8888</span>
+            <span class="bank-name" id="alipay-name-display">小明</span>
+          </div>
+          <a class="bind-alipay-link" id="bind-alipay-btn">
+            <i data-lucide="plus-circle"></i>
+            <span>绑定支付宝账号</span>
+          </a>
+        </div>
+        <div class="withdraw-account-area" id="withdraw-bank-area" style="display:none;">
+          <div class="bank-card-preview" id="bank-bound-preview" style="display:none;">
+            <span class="bank-name" id="bank-name-display">中国工商银行</span>
+            <span class="bank-no" id="bank-no-display">**** **** **** 8888</span>
+          </div>
+          <a class="bind-alipay-link" id="bind-bank-btn">
+            <i data-lucide="plus-circle"></i>
+            <span>绑定银行卡</span>
+          </a>
+        </div>
+        <div class="withdraw-account-area" id="withdraw-virtual-area" style="display:none;">
+          <div class="bank-card-preview" id="virtual-bound-preview" style="display:none;">
+            <span class="bank-name" id="virtual-type-display">USDT (TRC20)</span>
+            <span class="bank-no" id="virtual-addr-display">T9yD14...3xK8</span>
+          </div>
+          <a class="bind-alipay-link" id="bind-virtual-btn">
+            <i data-lucide="plus-circle"></i>
+            <span>绑定虚拟币地址</span>
+          </a>
+        </div>
+        <div class="wallet-form-tip">预计2小时内到账，免手续费</div>
+        <button class="wallet-submit-btn" id="withdraw-submit">确认提现</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 绑定银行卡页 ==================== -->
+  <div class="page" id="page-bind-bank">
+    <nav class="top-nav">
+      <div class="nav-left">
+        <i data-lucide="chevron-left" class="nav-icon back-btn" data-back="page-withdraw"></i>
+      </div>
+      <div class="nav-center"><span class="nav-title">绑定银行卡</span></div>
+      <div class="nav-right"></div>
+    </nav>
+    <div class="page-body">
+      <div class="wallet-form-card">
+        <div class="alipay-bind-tip">
+          <i data-lucide="shield-check"></i>
+          <span>请绑定持卡人本人的储蓄卡，暂不支持信用卡</span>
+        </div>
+        <div class="wallet-form-row">
+          <label class="wallet-form-label">持卡人姓名</label>
+          <input type="text" class="wallet-input" id="bank-holder-name" placeholder="请输入持卡人真实姓名" maxlength="20">
+        </div>
+        <div class="wallet-form-row">
+          <label class="wallet-form-label">银行卡号</label>
+          <input type="tel" class="wallet-input" id="bank-card-no" placeholder="请输入银行卡号" maxlength="19">
+        </div>
+        <div class="wallet-form-row">
+          <label class="wallet-form-label">开户银行</label>
+          <select class="wallet-select" id="bank-select">
+            <option value="">请选择银行</option>
+            <option value="中国工商银行">中国工商银行</option>
+            <option value="中国建设银行">中国建设银行</option>
+            <option value="中国农业银行">中国农业银行</option>
+            <option value="中国银行">中国银行</option>
+            <option value="招商银行">招商银行</option>
+            <option value="交通银行">交通银行</option>
+            <option value="中国邮政储蓄银行">中国邮政储蓄银行</option>
+            <option value="中信银行">中信银行</option>
+            <option value="兴业银行">兴业银行</option>
+            <option value="民生银行">民生银行</option>
+          </select>
+        </div>
+        <div class="wallet-form-row">
+          <label class="wallet-form-label">预留手机号</label>
+          <input type="tel" class="wallet-input" id="bank-phone" placeholder="请输入银行预留手机号" maxlength="11">
+        </div>
+        <div class="wallet-form-tip">银行卡信息经加密传输，请放心填写</div>
+        <button class="wallet-submit-btn" id="bank-bind-submit">确认绑定</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 绑定虚拟币地址页 ==================== -->
+  <div class="page" id="page-bind-virtual">
+    <nav class="top-nav">
+      <div class="nav-left">
+        <i data-lucide="chevron-left" class="nav-icon back-btn" data-back="page-wallet"></i>
+      </div>
+      <div class="nav-center"><span class="nav-title">虚拟币地址</span></div>
+      <div class="nav-right"></div>
+    </nav>
+    <div class="page-body" style="padding-bottom:80px;">
+      <div class="wallet-form-card">
+        <div class="wallet-form-row">
+          <label class="wallet-form-label">币种 / 网络</label>
+          <select class="wallet-select" id="virtual-coin-type">
+            <option value="USDT-TRC20">USDT (TRC20)</option>
+            <option value="USDT-ERC20">USDT (ERC20)</option>
+            <option value="USDT-OMNI">USDT (OMNI)</option>
+            <option value="ETH">ETH</option>
+            <option value="BTC">BTC</option>
+          </select>
+        </div>
+        <div class="wallet-form-row">
+          <label class="wallet-form-label">钱包地址</label>
+          <input type="text" class="wallet-input" id="virtual-address" placeholder="请输入或粘贴钱包地址">
+        </div>
+        <div class="wallet-form-row">
+          <label class="wallet-form-label">备注（选填）</label>
+          <input type="text" class="wallet-input" id="virtual-remark" placeholder="如：主钱包" maxlength="20">
+        </div>
+        <div class="wallet-form-tip">请仔细核对地址，错误地址将导致资产无法找回</div>
+        <button class="wallet-submit-btn" id="virtual-bind-submit">确认绑定</button>
+      </div>
+
+      <div class="virtual-list-section" id="virtual-list-section">
+        <div class="admin-section-title">已绑定地址</div>
+        <div class="virtual-address-list" id="virtual-address-list">
+          <!-- 动态插入已绑定项 -->
+        </div>
+        <div class="virtual-list-empty" id="virtual-list-empty">暂无绑定地址</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 绑定支付宝页 ==================== -->
+  <div class="page" id="page-bind-alipay">
+    <nav class="top-nav">
+      <div class="nav-left">
+        <i data-lucide="chevron-left" class="nav-icon back-btn" data-back="page-withdraw"></i>
+      </div>
+      <div class="nav-center"><span class="nav-title">绑定支付宝</span></div>
+      <div class="nav-right"></div>
+    </nav>
+    <div class="page-body">
+      <div class="wallet-form-card">
+        <div class="alipay-bind-tip">
+          <i data-lucide="shield-check"></i>
+          <span>为保障资金安全，请绑定本人实名支付宝账号</span>
+        </div>
+        <div class="wallet-form-row">
+          <label class="wallet-form-label">支付宝账号（手机号）</label>
+          <input type="tel" class="wallet-input" id="alipay-account" placeholder="请输入支付宝绑定的手机号" maxlength="11">
+        </div>
+        <div class="wallet-form-row">
+          <label class="wallet-form-label">真实姓名</label>
+          <input type="text" class="wallet-input" id="alipay-realname" placeholder="请输入支付宝实名认证的姓名" maxlength="20">
+        </div>
+        <div class="wallet-form-tip">姓名需与支付宝实名信息一致，否则无法到账</div>
+        <button class="wallet-submit-btn" id="alipay-bind-submit">确认绑定</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 交易明细页 ==================== -->
+  <div class="page" id="page-transactions">
+    <div class="top-nav">
+      <i data-lucide="chevron-left" class="nav-icon back-btn" data-back="page-wallet"></i>
+      <span class="nav-title">交易明细</span>
+      <span style="width:24px"></span>
+    </div>
+
+    <!-- 筛选栏 -->
+    <div class="tx-filter-bar">
+      <button class="tx-filter-btn active" data-filter="all">全部</button>
+      <button class="tx-filter-btn" data-filter="income">收入</button>
+      <button class="tx-filter-btn" data-filter="expense">支出</button>
+      <button class="tx-filter-btn" data-filter="recharge">充值</button>
+    </div>
+
+    <div class="page-body">
+      <div class="tx-detail-list">
+        <!-- 月份分组 -->
+        <div class="tx-month-header">2026年3月</div>
+
+        <div class="tx-detail-item" data-type="expense">
+          <div class="tx-icon expense-icon"><i data-lucide="arrow-up-right"></i></div>
+          <div class="tx-detail-info">
+            <div class="tx-detail-title">发红包 – 张伟</div>
+            <div class="tx-detail-time">3月20日 10:42</div>
+          </div>
+          <div class="tx-amount negative">-¥88.00</div>
+        </div>
+
+        <div class="tx-detail-item" data-type="income">
+          <div class="tx-icon income-icon"><i data-lucide="arrow-down-left"></i></div>
+          <div class="tx-detail-info">
+            <div class="tx-detail-title">收红包 – 李娜</div>
+            <div class="tx-detail-time">3月19日 18:30</div>
+          </div>
+          <div class="tx-amount positive">+¥66.66</div>
+        </div>
+
+        <div class="tx-detail-item" data-type="recharge">
+          <div class="tx-icon income-icon"><i data-lucide="arrow-down-left"></i></div>
+          <div class="tx-detail-info">
+            <div class="tx-detail-title">充值</div>
+            <div class="tx-detail-time">3月19日 09:19</div>
+          </div>
+          <div class="tx-amount positive">+¥500.00</div>
+        </div>
+
+        <div class="tx-detail-item" data-type="income">
+          <div class="tx-icon income-icon"><i data-lucide="arrow-down-left"></i></div>
+          <div class="tx-detail-info">
+            <div class="tx-detail-title">收红包 – 赵雪</div>
+            <div class="tx-detail-time">3月18日 14:20</div>
+          </div>
+          <div class="tx-amount positive">+¥8.88</div>
+        </div>
+
+        <div class="tx-detail-item" data-type="income">
+          <div class="tx-icon income-icon"><i data-lucide="arrow-down-left"></i></div>
+          <div class="tx-detail-info">
+            <div class="tx-detail-title">收红包 – 赵雪</div>
+            <div class="tx-detail-time">3月17日 09:00</div>
+          </div>
+          <div class="tx-amount positive">+¥8.88</div>
+        </div>
+
+        <div class="tx-detail-item" data-type="expense">
+          <div class="tx-icon expense-icon"><i data-lucide="arrow-up-right"></i></div>
+          <div class="tx-detail-info">
+            <div class="tx-detail-title">发红包 – 设计组</div>
+            <div class="tx-detail-time">3月16日 11:30</div>
+          </div>
+          <div class="tx-amount negative">-¥66.00</div>
+        </div>
+
+        <div class="tx-detail-item" data-type="recharge">
+          <div class="tx-icon income-icon"><i data-lucide="arrow-down-left"></i></div>
+          <div class="tx-detail-info">
+            <div class="tx-detail-title">充值</div>
+            <div class="tx-detail-time">3月15日 08:00</div>
+          </div>
+          <div class="tx-amount positive">+¥200.00</div>
+        </div>
+
+        <div class="tx-detail-item" data-type="expense">
+          <div class="tx-icon expense-icon"><i data-lucide="arrow-up-right"></i></div>
+          <div class="tx-detail-info">
+            <div class="tx-detail-title">发红包 – 王明</div>
+            <div class="tx-detail-time">3月14日 20:15</div>
+          </div>
+          <div class="tx-amount negative">-¥18.88</div>
+        </div>
+
+        <div class="tx-detail-item" data-type="income">
+          <div class="tx-icon income-icon"><i data-lucide="arrow-down-left"></i></div>
+          <div class="tx-detail-info">
+            <div class="tx-detail-title">收红包 – 张伟</div>
+            <div class="tx-detail-time">3月13日 15:40</div>
+          </div>
+          <div class="tx-amount positive">+¥88.88</div>
+        </div>
+
+        <div class="tx-detail-item" data-type="expense">
+          <div class="tx-icon expense-icon"><i data-lucide="arrow-up-right"></i></div>
+          <div class="tx-detail-info">
+            <div class="tx-detail-title">发红包 – 李娜</div>
+            <div class="tx-detail-time">3月12日 12:00</div>
+          </div>
+          <div class="tx-amount negative">-¥6.66</div>
+        </div>
+
+        <!-- 2月分组 -->
+        <div class="tx-month-header">2026年2月</div>
+
+        <div class="tx-detail-item" data-type="recharge">
+          <div class="tx-icon income-icon"><i data-lucide="arrow-down-left"></i></div>
+          <div class="tx-detail-info">
+            <div class="tx-detail-title">充值</div>
+            <div class="tx-detail-time">2月28日 10:00</div>
+          </div>
+          <div class="tx-amount positive">+¥1,000.00</div>
+        </div>
+
+        <div class="tx-detail-item" data-type="expense">
+          <div class="tx-icon expense-icon"><i data-lucide="arrow-up-right"></i></div>
+          <div class="tx-detail-info">
+            <div class="tx-detail-title">发红包 – 赵雪</div>
+            <div class="tx-detail-time">2月14日 00:00</div>
+          </div>
+          <div class="tx-amount negative">-¥52.00</div>
+        </div>
+
+        <div class="tx-detail-item" data-type="income">
+          <div class="tx-icon income-icon"><i data-lucide="arrow-down-left"></i></div>
+          <div class="tx-detail-info">
+            <div class="tx-detail-title">收红包 – 王明</div>
+            <div class="tx-detail-time">2月10日 19:30</div>
+          </div>
+          <div class="tx-amount positive">+¥16.66</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 拍摄页 ==================== -->
+  <div class="page" id="page-camera">
+    <div class="camera-page">
+      <div class="camera-top-bar">
+        <i data-lucide="chevron-left" class="nav-icon back-btn" data-back="page-chat" style="color:#fff"></i>
+        <i data-lucide="zap" style="width:24px;height:24px;color:#fff;cursor:pointer"></i>
+      </div>
+      <div class="camera-viewfinder">
+        <div class="viewfinder-frame"></div>
+      </div>
+      <div class="camera-bottom-bar">
+        <div class="camera-gallery"><i data-lucide="image" style="width:28px;height:28px;color:#fff"></i></div>
+        <div class="camera-shutter"></div>
+        <div class="camera-flip"><i data-lucide="refresh-cw" style="width:24px;height:24px;color:#fff"></i></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 发红包页 ==================== -->
+  <div class="page" id="page-send-redpacket">
+    <nav class="top-nav" style="background:linear-gradient(135deg,#e74c3c,#e67e22)">
+      <div class="nav-left">
+        <i data-lucide="chevron-left" class="nav-icon back-btn" data-back="page-chat" style="color:#fff"></i>
+        <span class="nav-title" style="color:#fff">发红包</span>
+      </div>
+      <div class="nav-right"></div>
+    </nav>
+    <div class="page-body" style="background:var(--bg-primary)">
+      <div class="rp-type-tabs">
+        <div class="rp-type-tab active" data-rp-type="lucky">拼手气红包</div>
+        <div class="rp-type-tab" data-rp-type="normal">普通红包</div>
+      </div>
+      <div class="rp-send-card">
+        <div class="rp-send-row">
+          <span class="rp-send-label">红包个数</span>
+          <div class="rp-count-input">
+            <input type="number" placeholder="1" min="1" max="100" value="1" class="rp-count-field" id="rp-count">
+            <span class="rp-count-unit">个</span>
+          </div>
+        </div>
+        <div class="rp-send-row">
+          <span class="rp-send-label" id="rp-amount-label">总金额</span>
+          <div class="rp-amount-input">
+            <span class="rp-yen">¥</span>
+            <input type="number" placeholder="0.00" class="rp-amount-field" id="rp-amount">
+          </div>
+        </div>
+        <div class="rp-send-row">
+          <span class="rp-send-label">祝福语</span>
+          <input type="text" placeholder="恭喜发财，大吉大利" class="rp-wish-field" id="rp-wish">
+        </div>
+      </div>
+      <div class="rp-summary" id="rp-summary"></div>
+      <button class="rp-send-submit" id="rp-submit">塞钱进红包</button>
+      <p class="rp-hint" id="rp-hint">未填写金额</p>
+    </div>
+  </div>
+
+  <!-- ==================== 拆红包页 ==================== -->
+  <div class="page" id="page-open-redpacket">
+    <div class="rp-open-bg">
+      <!-- 顶部关闭按钮 -->
+      <div class="rp-open-close" id="rp-open-close">
+        <i data-lucide="x"></i>
+      </div>
+
+      <!-- 未拆开状态 -->
+      <div class="rp-open-envelope" id="rp-envelope">
+        <div class="rp-open-top">
+          <div class="rp-open-flap"></div>
+          <img class="rp-open-avatar" src="images/chat-redpacket-sender.png" alt="发送者">
+          <div class="rp-open-sender">张伟的红包</div>
+          <div class="rp-open-wish">恭喜发财，大吉大利</div>
+        </div>
+        <div class="rp-open-body">
+          <div class="rp-open-btn" id="rp-open-btn">
+            <span>開</span>
+          </div>
+        </div>
+        <div class="rp-open-footer">
+          <div class="rp-open-logo">50聊天红包</div>
+        </div>
+      </div>
+
+      <!-- 已拆开状态（默认隐藏） -->
+      <div class="rp-opened-result" id="rp-opened-result" style="display:none;">
+        <img class="rp-opened-avatar" src="images/chat-redpacket-sender.png" alt="发送者">
+        <div class="rp-opened-sender">张伟的红包</div>
+        <div class="rp-opened-wish">恭喜发财，大吉大利</div>
+        <div class="rp-opened-amount">
+          <span class="rp-opened-yen">¥</span>
+          <span class="rp-opened-num" id="rp-opened-num">8.88</span>
+        </div>
+        <div class="rp-opened-saved">已存入50聊天钱包</div>
+
+        <!-- 红包领取记录 -->
+        <div class="rp-detail-card">
+          <div class="rp-detail-title">领取详情</div>
+          <div class="rp-detail-list">
+            <div class="rp-detail-item">
+              <img src="images/avatar-xiaoming.png" alt="小明">
+              <div class="rp-detail-info">
+                <span class="rp-detail-name">小明</span>
+                <span class="rp-detail-time">刚刚</span>
+              </div>
+              <span class="rp-detail-amount">¥8.88</span>
+            </div>
+            <div class="rp-detail-item">
+              <img src="images/avatar-lina.png" alt="李娜">
+              <div class="rp-detail-info">
+                <span class="rp-detail-name">李娜</span>
+                <span class="rp-detail-time">1分钟前</span>
+              </div>
+              <span class="rp-detail-amount">¥12.50</span>
+            </div>
+            <div class="rp-detail-item">
+              <img src="images/avatar-wangming.png" alt="王明">
+              <div class="rp-detail-info">
+                <span class="rp-detail-name">王明</span>
+                <span class="rp-detail-time">2分钟前</span>
+              </div>
+              <span class="rp-detail-amount">¥6.62</span>
+            </div>
+          </div>
+          <div class="rp-detail-summary">共3人领取，总金额 ¥28.00</div>
+        </div>
+        <button class="rp-back-btn" id="rp-back-btn">返回聊天</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 转账页 ==================== -->
+  <div class="page" id="page-transfer">
+    <nav class="top-nav">
+      <div class="nav-left">
+        <i data-lucide="chevron-left" class="nav-icon back-btn" data-back="page-chat"></i>
+        <span class="nav-title">转账</span>
+      </div>
+      <div class="nav-right"></div>
+    </nav>
+    <div class="page-body">
+      <div class="transfer-target">
+        <span>转账给</span>
+        <img class="transfer-avatar" src="images/avatar-zhangwei.png" alt="张伟">
+        <span class="transfer-name">张伟</span>
+      </div>
+      <div class="transfer-amount-area">
+        <span class="transfer-yen">¥</span>
+        <input type="number" placeholder="0.00" class="transfer-amount-field" id="transfer-amount">
+      </div>
+      <div class="transfer-note-area">
+        <input type="text" placeholder="添加转账说明" class="transfer-note-field">
+      </div>
+      <button class="transfer-submit">转账</button>
+    </div>
+  </div>
+
+  <!-- ==================== 转账详情页 ==================== -->
+  <div class="page" id="page-transfer-detail">
+    <nav class="top-nav">
+      <div class="nav-left">
+        <i data-lucide="chevron-left" class="nav-icon back-btn" data-back="page-chat"></i>
+      </div>
+      <div class="nav-center"><span class="nav-title">转账详情</span></div>
+      <div class="nav-right"></div>
+    </nav>
+    <div class="page-body">
+      <div class="transfer-detail-card">
+        <div class="transfer-detail-status" id="transfer-detail-status">
+          <div class="transfer-status-icon">
+            <i data-lucide="circle-dollar-sign" class="transfer-status-lucide"></i>
+          </div>
+          <div class="transfer-status-text">待收款</div>
+        </div>
+        <div class="transfer-detail-amount" id="transfer-detail-amount">¥200.00</div>
+        <div class="transfer-detail-desc">
+          <div class="transfer-desc-row">
+            <span class="transfer-desc-label">转账说明</span>
+            <span class="transfer-desc-value" id="transfer-detail-note">转账</span>
+          </div>
+          <div class="transfer-desc-row">
+            <span class="transfer-desc-label">转账时间</span>
+            <span class="transfer-desc-value">2026-03-07 10:42</span>
+          </div>
+          <div class="transfer-desc-row">
+            <span class="transfer-desc-label">收款时间</span>
+            <span class="transfer-desc-value" id="transfer-receive-time">-</span>
+          </div>
+        </div>
+        <button class="transfer-receive-btn" id="transfer-receive-btn">确认收款</button>
+        <div class="transfer-received-tag" id="transfer-received-tag" style="display:none;">
+          <i data-lucide="check-circle-2"></i>
+          <span>已收款</span>
+        </div>
+      </div>
+      <div class="transfer-detail-tip">
+        <i data-lucide="info"></i>
+        <span>转账将在24小时后自动退还给对方</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 新的朋友页 ==================== -->
+  <div class="page" id="page-new-friends">
+    <nav class="top-nav">
+      <div class="nav-left">
+        <i data-lucide="chevron-left" class="nav-icon back-btn" data-back="page-contacts"></i>
+        <span class="nav-title">新的朋友</span>
+      </div>
+      <div class="nav-right">
+        <i data-lucide="user-plus" class="nav-icon"></i>
+      </div>
+    </nav>
+    <div class="page-body">
+      <div class="search-bar">
+        <i data-lucide="search" class="search-icon"></i>
+        <input type="text" placeholder="搜索手机号/ID" class="search-input">
+      </div>
+
+      <div class="friend-request-list">
+        <div class="friend-request-item">
+          <img class="friend-req-avatar" src="images/contact-lina.png" alt="李娜">
+          <div class="friend-req-info">
+            <div class="friend-req-name">陈晓明</div>
+            <div class="friend-req-msg">我是陈晓明，通过搜索添加</div>
+          </div>
+          <button class="friend-req-btn accept">接受</button>
+        </div>
+        <div class="friend-request-item">
+          <img class="friend-req-avatar" src="images/contact-wangming.png" alt="王明">
+          <div class="friend-req-info">
+            <div class="friend-req-name">刘芳</div>
+            <div class="friend-req-msg">你好，我是你同事刘芳</div>
+          </div>
+          <button class="friend-req-btn accept">接受</button>
+        </div>
+        <div class="friend-request-item">
+          <img class="friend-req-avatar" src="images/contact-zhaoxue.png" alt="赵雪">
+          <div class="friend-req-info">
+            <div class="friend-req-name">孙强</div>
+            <div class="friend-req-msg">我是孙强，来自群聊"设计组"</div>
+          </div>
+          <button class="friend-req-btn accept">接受</button>
+        </div>
+
+        <div class="friend-req-section-title">已添加</div>
+        <div class="friend-request-item">
+          <img class="friend-req-avatar" src="images/contact-zhangwei.png" alt="张伟">
+          <div class="friend-req-info">
+            <div class="friend-req-name">张伟</div>
+            <div class="friend-req-msg">通过群聊添加</div>
+          </div>
+          <span class="friend-req-done">已添加</span>
+        </div>
+        <div class="friend-request-item">
+          <img class="friend-req-avatar" src="images/contact-lina.png" alt="李娜">
+          <div class="friend-req-info">
+            <div class="friend-req-name">周悦</div>
+            <div class="friend-req-msg">通过手机号添加</div>
+          </div>
+          <span class="friend-req-done">已添加</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 群聊列表页 ==================== -->
+  <div class="page" id="page-group-list">
+    <nav class="top-nav">
+      <div class="nav-left">
+        <i data-lucide="chevron-left" class="nav-icon back-btn" data-back="page-contacts"></i>
+        <span class="nav-title">群聊</span>
+      </div>
+    </nav>
+    <div class="page-body">
+      <div class="search-bar">
+        <i data-lucide="search" class="search-icon"></i>
+        <input type="text" placeholder="搜索群聊" class="search-input">
+      </div>
+
+      <div class="group-list-container">
+        <div class="group-list-item" data-goto="page-group-chat">
+          <img class="group-list-avatar" src="images/avatar-shejigroup.png" alt="设计组">
+          <div class="group-list-info">
+            <div class="group-list-name">设计组 <span class="group-member-count">(5)</span></div>
+            <div class="group-list-desc">小王: [图片]</div>
+          </div>
+        </div>
+        <div class="group-list-item">
+          <div class="group-list-avatar group-avatar-multi">
+            <span>项</span>
+          </div>
+          <div class="group-list-info">
+            <div class="group-list-name">项目讨论组 <span class="group-member-count">(12)</span></div>
+            <div class="group-list-desc">张伟: 方案我看了，还不错</div>
+          </div>
+        </div>
+        <div class="group-list-item">
+          <div class="group-list-avatar group-avatar-multi">
+            <span>老</span>
+          </div>
+          <div class="group-list-info">
+            <div class="group-list-name">老同学群 <span class="group-member-count">(28)</span></div>
+            <div class="group-list-desc">赵雪: 周末聚一下？</div>
+          </div>
+        </div>
+        <div class="group-list-item">
+          <div class="group-list-avatar group-avatar-multi">
+            <span>家</span>
+          </div>
+          <div class="group-list-info">
+            <div class="group-list-name">家人群 <span class="group-member-count">(6)</span></div>
+            <div class="group-list-desc">妈妈: 周末回家吃饭</div>
+          </div>
+        </div>
+        <div class="group-list-item">
+          <div class="group-list-avatar group-avatar-multi">
+            <span>运</span>
+          </div>
+          <div class="group-list-info">
+            <div class="group-list-name">运动打卡群 <span class="group-member-count">(15)</span></div>
+            <div class="group-list-desc">王明: 今天跑了5公里</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 个人信息页 ==================== -->
+  <div class="page" id="page-my-info">
+    <nav class="top-nav">
+      <div class="nav-left">
+        <i data-lucide="chevron-left" class="nav-icon back-btn" data-back="page-profile"></i>
+        <span class="nav-title">个人信息</span>
+      </div>
+      <div class="nav-right"></div>
+    </nav>
+    <div class="page-body">
+      <div class="info-avatar-area">
+        <img class="info-avatar-large" src="images/avatar-xiaoming.png" alt="小明">
+        <span class="info-change-avatar" id="change-avatar-btn">更换头像</span>
+      </div>
+      <div class="settings-list">
+        <div class="settings-row" id="edit-name-row">
+          <span class="settings-label">昵称</span>
+          <span class="settings-value">小明 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></span>
+        </div>
+        <div class="settings-row">
+          <span class="settings-label">账号</span>
+          <span class="settings-value">50888666 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></span>
+        </div>
+        <div class="settings-row" id="edit-gender-row">
+          <span class="settings-label">性别</span>
+          <span class="settings-value">男 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></span>
+        </div>
+        <div class="settings-row" id="edit-region-row">
+          <span class="settings-label">地区</span>
+          <span class="settings-value">北京 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></span>
+        </div>
+        <div class="settings-row" id="edit-signature-row">
+          <span class="settings-label">签名</span>
+          <span class="settings-value">这个人很懒，什么都没写 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 会员中心页 ==================== -->
+  <div class="page" id="page-vip">
+    <nav class="top-nav">
+      <div class="nav-left">
+        <i data-lucide="chevron-left" class="nav-icon back-btn" data-back="page-profile"></i>
+        <span class="nav-title">会员中心</span>
+      </div>
+      <div class="nav-right"></div>
+    </nav>
+    <div class="page-body">
+      <div class="vip-card">
+        <div class="vip-level">VIP 3</div>
+        <div class="vip-expire">有效期至 2026-12-31</div>
+      </div>
+      <div class="privilege-list">
+        <div class="privilege-title">会员特权</div>
+        <div class="privilege-item">
+          <span class="privilege-icon">🎨</span>
+          <div class="privilege-info">
+            <div class="privilege-name">专属皮肤</div>
+            <div class="privilege-desc">解锁多款精美主题皮肤</div>
+          </div>
+        </div>
+        <div class="privilege-item">
+          <span class="privilege-icon">✅</span>
+          <div class="privilege-info">
+            <div class="privilege-name">消息已读回执</div>
+            <div class="privilege-desc">查看对方是否已读消息</div>
+          </div>
+        </div>
+        <div class="privilege-item">
+          <span class="privilege-icon">☁️</span>
+          <div class="privilege-info">
+            <div class="privilege-name">聊天记录云备份</div>
+            <div class="privilege-desc">自动备份聊天记录到云端</div>
+          </div>
+        </div>
+        <div class="privilege-item">
+          <span class="privilege-icon">📁</span>
+          <div class="privilege-info">
+            <div class="privilege-name">更大文件传输</div>
+            <div class="privilege-desc">单文件最大支持200MB</div>
+          </div>
+        </div>
+      </div>
+      <button class="vip-subscribe-btn">开通/续费 VIP</button>
+    </div>
+  </div>
+
+  <!-- ==================== 通知设置页 ==================== -->
+  <div class="page" id="page-notification">
+    <nav class="top-nav">
+      <div class="nav-left">
+        <i data-lucide="chevron-left" class="nav-icon back-btn" data-back="page-profile"></i>
+        <span class="nav-title">通知设置</span>
+      </div>
+      <div class="nav-right"></div>
+    </nav>
+    <div class="page-body">
+      <div class="settings-group-title">消息通知</div>
+      <div class="settings-list">
+        <div class="settings-toggle-row">
+          <span class="settings-toggle-label">新消息通知</span>
+          <div class="toggle-switch active"><div class="toggle-knob"></div></div>
+        </div>
+        <div class="settings-toggle-row">
+          <span class="settings-toggle-label">声音</span>
+          <div class="toggle-switch active"><div class="toggle-knob"></div></div>
+        </div>
+        <div class="settings-toggle-row">
+          <span class="settings-toggle-label">震动</span>
+          <div class="toggle-switch active"><div class="toggle-knob"></div></div>
+        </div>
+        <div class="settings-toggle-row">
+          <span class="settings-toggle-label">消息预览</span>
+          <div class="toggle-switch active"><div class="toggle-knob"></div></div>
+        </div>
+      </div>
+      <div class="settings-group-title">其他通知</div>
+      <div class="settings-list">
+        <div class="settings-toggle-row">
+          <span class="settings-toggle-label">朋友圈更新提醒</span>
+          <div class="toggle-switch"><div class="toggle-knob"></div></div>
+        </div>
+        <div class="settings-toggle-row">
+          <div>
+            <span class="settings-toggle-label">免打扰</span>
+            <div class="settings-toggle-sub">22:00 - 8:00</div>
+          </div>
+          <div class="toggle-switch"><div class="toggle-knob"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 隐私设置页 ==================== -->
+  <div class="page" id="page-privacy">
+    <nav class="top-nav">
+      <div class="nav-left">
+        <i data-lucide="chevron-left" class="nav-icon back-btn" data-back="page-profile"></i>
+        <span class="nav-title">隐私设置</span>
+      </div>
+      <div class="nav-right"></div>
+    </nav>
+    <div class="page-body">
+      <div class="settings-group-title">隐私</div>
+      <div class="settings-list">
+        <div class="settings-toggle-row">
+          <span class="settings-toggle-label">加我为朋友时需要验证</span>
+          <div class="toggle-switch active"><div class="toggle-knob"></div></div>
+        </div>
+        <div class="settings-toggle-row">
+          <span class="settings-toggle-label">向我推荐通讯录朋友</span>
+          <div class="toggle-switch"><div class="toggle-knob"></div></div>
+        </div>
+        <div class="settings-toggle-row">
+          <span class="settings-toggle-label">允许陌生人查看十条朋友圈</span>
+          <div class="toggle-switch"><div class="toggle-knob"></div></div>
+        </div>
+      </div>
+      <div class="settings-group-title">权限管理</div>
+      <div class="settings-list">
+        <div class="settings-row">
+          <span class="settings-label">黑名单</span>
+          <span class="settings-value">0人 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></span>
+        </div>
+        <div class="settings-row">
+          <span class="settings-label">朋友权限</span>
+          <span class="settings-value">全部朋友 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 关于50聊天页 ==================== -->
+  <div class="page" id="page-about">
+    <nav class="top-nav">
+      <div class="nav-left">
+        <i data-lucide="chevron-left" class="nav-icon back-btn" data-back="page-profile"></i>
+        <span class="nav-title">关于50聊天</span>
+      </div>
+      <div class="nav-right"></div>
+    </nav>
+    <div class="page-body">
+      <div class="about-logo-area">
+        <div class="about-app-icon">
+          <svg viewBox="0 0 80 80" width="40" height="40">
+            <path d="M16 24 C16 18,22 12,28 12 L52 12 C58 12,64 18,64 24 L64 44 C64 50,58 56,52 56 L38 56 L26 66 L26 56 C20 56,16 50,16 44 Z" fill="white"/>
+            <circle cx="32" cy="35" r="4" fill="#007AFF"/>
+            <circle cx="40" cy="35" r="4" fill="#5AC8FA"/>
+            <circle cx="48" cy="35" r="4" fill="#007AFF"/>
+          </svg>
+        </div>
+        <span class="about-version">50聊天 v2.0.0</span>
+      </div>
+      <div class="settings-list">
+        <div class="settings-row">
+          <span class="settings-label">功能介绍</span>
+          <span class="settings-value"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></span>
+        </div>
+        <div class="settings-row">
+          <span class="settings-label">检查更新</span>
+          <span class="settings-value"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></span>
+        </div>
+        <div class="settings-row">
+          <span class="settings-label">隐私政策</span>
+          <span class="settings-value"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></span>
+        </div>
+        <div class="settings-row">
+          <span class="settings-label">用户协议</span>
+          <span class="settings-value"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></span>
+        </div>
+        <div class="settings-row">
+          <span class="settings-label">投诉举报</span>
+          <span class="settings-value"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></span>
+        </div>
+      </div>
+      <div class="about-copyright">&copy; 2026 50聊天 All Rights Reserved</div>
+    </div>
+  </div>
+
+  <!-- 添加表情包弹窗 -->
+  <div class="sticker-modal-overlay" id="sticker-modal">
+    <div class="sticker-modal">
+      <div class="sticker-modal-header">
+        <span class="sticker-modal-title">表情包商店</span>
+        <span class="sticker-modal-close" id="sticker-modal-close">✕</span>
+      </div>
+      <div class="sticker-modal-body">
+        <div class="sticker-shop-list">
+          <div class="sticker-shop-item">
+            <div class="sticker-shop-preview">🐶</div>
+            <div class="sticker-shop-info">
+              <div class="sticker-shop-name">旺柴表情包</div>
+              <div class="sticker-shop-count">24个表情</div>
+            </div>
+            <button class="sticker-download-btn downloaded">已下载</button>
+          </div>
+          <div class="sticker-shop-item">
+            <div class="sticker-shop-preview">🐱</div>
+            <div class="sticker-shop-info">
+              <div class="sticker-shop-name">猫咪日常</div>
+              <div class="sticker-shop-count">18个表情</div>
+            </div>
+            <button class="sticker-download-btn downloaded">已下载</button>
+          </div>
+          <div class="sticker-shop-item">
+            <div class="sticker-shop-preview">🐼</div>
+            <div class="sticker-shop-info">
+              <div class="sticker-shop-name">熊猫滚滚</div>
+              <div class="sticker-shop-count">20个表情</div>
+            </div>
+            <button class="sticker-download-btn">下载</button>
+          </div>
+          <div class="sticker-shop-item">
+            <div class="sticker-shop-preview">🦊</div>
+            <div class="sticker-shop-info">
+              <div class="sticker-shop-name">小狐狸</div>
+              <div class="sticker-shop-count">16个表情</div>
+            </div>
+            <button class="sticker-download-btn">下载</button>
+          </div>
+          <div class="sticker-shop-item">
+            <div class="sticker-shop-preview">🐰</div>
+            <div class="sticker-shop-info">
+              <div class="sticker-shop-name">兔兔萌宠</div>
+              <div class="sticker-shop-count">22个表情</div>
+            </div>
+            <button class="sticker-download-btn">下载</button>
+          </div>
+          <div class="sticker-shop-item">
+            <div class="sticker-shop-preview">🐸</div>
+            <div class="sticker-shop-info">
+              <div class="sticker-shop-name">蛙蛙生活</div>
+              <div class="sticker-shop-count">15个表情</div>
+            </div>
+            <button class="sticker-download-btn">下载</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 编辑昵称页 ==================== -->
+  <div class="page" id="page-edit-name">
+    <nav class="top-nav">
+      <div class="nav-left">
+        <i data-lucide="chevron-left" class="nav-icon back-btn" data-back="page-my-info"></i>
+        <span class="nav-title">修改昵称</span>
+      </div>
+      <div class="nav-right">
+        <span class="nav-text-btn" id="save-name-btn">保存</span>
+      </div>
+    </nav>
+    <div class="page-body">
+      <div class="edit-name-area">
+        <input type="text" class="edit-name-input" id="edit-name-input" value="小明" maxlength="20" placeholder="请输入昵称">
+        <span class="edit-name-clear" id="edit-name-clear">✕</span>
+      </div>
+      <div class="edit-name-tip">好名字能让朋友更容易记住你，限20字以内。</div>
+    </div>
+  </div>
+
+  <!-- ==================== 更换头像页 ==================== -->
+  <div class="page" id="page-change-avatar">
+    <nav class="top-nav">
+      <div class="nav-left">
+        <i data-lucide="chevron-left" class="nav-icon back-btn" data-back="page-my-info"></i>
+        <span class="nav-title">更换头像</span>
+      </div>
+    </nav>
+    <div class="page-body">
+      <div class="avatar-preview-area">
+        <img class="avatar-preview-img" id="avatar-preview-img" src="images/avatar-xiaoming.png" alt="当前头像">
+        <div class="avatar-preview-label">当前头像</div>
+      </div>
+
+      <div class="avatar-select-title">选择新头像</div>
+      <div class="avatar-select-grid">
+        <div class="avatar-option" data-avatar="images/contact-lina.png">
+          <img src="images/contact-lina.png" alt="头像1">
+        </div>
+        <div class="avatar-option" data-avatar="images/contact-zhangwei.png">
+          <img src="images/contact-zhangwei.png" alt="头像2">
+        </div>
+        <div class="avatar-option" data-avatar="images/contact-wangming.png">
+          <img src="images/contact-wangming.png" alt="头像3">
+        </div>
+        <div class="avatar-option" data-avatar="images/contact-zhaoxue.png">
+          <img src="images/contact-zhaoxue.png" alt="头像4">
+        </div>
+        <div class="avatar-option" data-avatar="images/avatar-xiaoming.png">
+          <img src="images/avatar-xiaoming.png" alt="头像5">
+        </div>
+        <div class="avatar-option" data-avatar="images/avatar-zhangwei.png">
+          <img src="images/avatar-zhangwei.png" alt="头像6">
+        </div>
+        <div class="avatar-option" data-avatar="images/avatar-shejigroup.png">
+          <img src="images/avatar-shejigroup.png" alt="头像7">
+        </div>
+        <div class="avatar-option" data-avatar="images/chat-me1.png">
+          <img src="images/chat-me1.png" alt="头像8">
+        </div>
+      </div>
+
+      <button class="avatar-confirm-btn" id="avatar-confirm-btn">确认更换</button>
+    </div>
+  </div>
+
+  <!-- ==================== 修改性别页 ==================== -->
+  <div class="page" id="page-edit-gender">
+    <nav class="top-nav">
+      <div class="nav-left">
+        <i data-lucide="chevron-left" class="nav-icon back-btn" data-back="page-my-info"></i>
+        <span class="nav-title">修改性别</span>
+      </div>
+    </nav>
+    <div class="page-body">
+      <div class="select-option-list">
+        <div class="select-option-item selected" data-gender="男">
+          <span>男</span>
+          <span class="select-check">✓</span>
+        </div>
+        <div class="select-option-item" data-gender="女">
+          <span>女</span>
+          <span class="select-check">✓</span>
+        </div>
+      </div>
+      <div class="select-tip">选择后自动保存</div>
+    </div>
+  </div>
+
+  <!-- ==================== 修改地区页 ==================== -->
+  <div class="page" id="page-edit-region">
+    <nav class="top-nav">
+      <div class="nav-left">
+        <i data-lucide="chevron-left" class="nav-icon back-btn" data-back="page-my-info"></i>
+        <span class="nav-title">选择地区</span>
+      </div>
+    </nav>
+    <div class="page-body">
+      <div class="region-search-bar">
+        <input type="text" placeholder="搜索城市" class="region-search-input" id="region-search-input">
+      </div>
+      <div class="select-option-list" id="region-list">
+        <div class="select-option-item selected" data-region="北京">
+          <span>北京</span>
+          <span class="select-check">✓</span>
+        </div>
+        <div class="select-option-item" data-region="上海">
+          <span>上海</span>
+          <span class="select-check">✓</span>
+        </div>
+        <div class="select-option-item" data-region="广州">
+          <span>广州</span>
+          <span class="select-check">✓</span>
+        </div>
+        <div class="select-option-item" data-region="深圳">
+          <span>深圳</span>
+          <span class="select-check">✓</span>
+        </div>
+        <div class="select-option-item" data-region="杭州">
+          <span>杭州</span>
+          <span class="select-check">✓</span>
+        </div>
+        <div class="select-option-item" data-region="成都">
+          <span>成都</span>
+          <span class="select-check">✓</span>
+        </div>
+        <div class="select-option-item" data-region="武汉">
+          <span>武汉</span>
+          <span class="select-check">✓</span>
+        </div>
+        <div class="select-option-item" data-region="南京">
+          <span>南京</span>
+          <span class="select-check">✓</span>
+        </div>
+        <div class="select-option-item" data-region="重庆">
+          <span>重庆</span>
+          <span class="select-check">✓</span>
+        </div>
+        <div class="select-option-item" data-region="西安">
+          <span>西安</span>
+          <span class="select-check">✓</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 修改签名页 ==================== -->
+  <div class="page" id="page-edit-signature">
+    <nav class="top-nav">
+      <div class="nav-left">
+        <i data-lucide="chevron-left" class="nav-icon back-btn" data-back="page-my-info"></i>
+        <span class="nav-title">个性签名</span>
+      </div>
+      <div class="nav-right">
+        <span class="nav-text-btn" id="save-signature-btn">保存</span>
+      </div>
+    </nav>
+    <div class="page-body">
+      <div class="signature-edit-area">
+        <textarea class="signature-textarea" id="signature-textarea" maxlength="50" placeholder="写点什么介绍一下自己吧">这个人很懒，什么都没写</textarea>
+        <div class="signature-counter"><span id="signature-count">14</span>/50</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- 长按上下文菜单（放在 #app 外部避免层叠上下文遮挡） -->
+<div class="context-menu-overlay" id="context-overlay"></div>
+<div class="context-menu" id="context-menu">
+  <div class="context-menu-item" id="ctx-pin">
+    <i data-lucide="pin"></i>
+    <span>置顶</span>
+  </div>
+  <div class="context-menu-item" id="ctx-read">
+    <i data-lucide="check-check"></i>
+    <span>标为已读</span>
+  </div>
+  <div class="context-menu-item" id="ctx-mute">
+    <i data-lucide="bell-off"></i>
+    <span>消息免打扰</span>
+  </div>
+  <div class="context-menu-item" id="ctx-hide">
+    <i data-lucide="eye-off"></i>
+    <span>不显示</span>
+  </div>
+  <div class="context-menu-item danger" id="ctx-delete">
+    <i data-lucide="trash-2"></i>
+    <span>删除</span>
+  </div>
+</div>
+
+<div class="group-msg-menu-overlay" id="group-msg-menu-overlay"></div>
+<div class="group-msg-menu" id="group-msg-menu">
+  <div class="group-msg-menu-item" id="gm-reply"><i data-lucide="reply"></i><span>回复</span></div>
+  <div class="group-msg-menu-item" id="gm-copy"><i data-lucide="copy"></i><span>复制</span></div>
+  <div class="group-msg-menu-item" id="gm-recall"><i data-lucide="undo-2"></i><span>撤回消息</span></div>
+  <div class="group-msg-menu-item" id="gm-mute"><i data-lucide="volume-x"></i><span>禁言此人</span></div>
+  <div class="group-msg-menu-item danger" id="gm-delete"><i data-lucide="trash-2"></i><span>删除</span></div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
