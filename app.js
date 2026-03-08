@@ -1944,13 +1944,43 @@ document.addEventListener('DOMContentLoaded', () => {
   (function() {
     var menuOverlay = document.getElementById('group-msg-menu-overlay');
     var menu = document.getElementById('group-msg-menu');
+    var atTaItem = document.getElementById('gm-at-ta');
     var selectedMsg = null;
     var longPressTimer = null;
 
     function showGroupMsgMenu(x, y, msgEl) {
       selectedMsg = msgEl;
-      menu.style.left = Math.min(x, window.innerWidth - 160) + 'px';
-      menu.style.top = Math.min(y, window.innerHeight - 250) + 'px';
+      var isOther = msgEl.classList.contains('other');
+      if (atTaItem) {
+        atTaItem.style.display = isOther ? '' : 'none';
+      }
+
+      menu.classList.remove('show');
+      menu.style.transition = 'none';
+      menu.style.visibility = 'visible';
+      menu.style.opacity = '0';
+      menu.style.pointerEvents = 'none';
+      menu.style.transform = 'scale(1)';
+      menu.style.left = '0px';
+      menu.style.top = '0px';
+      var menuW = menu.offsetWidth;
+      var menuH = menu.offsetHeight;
+
+      var vw = window.innerWidth;
+      var vh = window.innerHeight;
+      var posX = Math.max(8, Math.min(x - menuW / 2, vw - menuW - 8));
+      var posY = y - menuH - 12;
+      if (posY < 8) posY = y + 12;
+      if (posY + menuH > vh - 8) posY = vh - menuH - 8;
+
+      menu.style.left = posX + 'px';
+      menu.style.top = posY + 'px';
+      menu.style.removeProperty('visibility');
+      menu.style.removeProperty('opacity');
+      menu.style.removeProperty('pointer-events');
+      menu.style.removeProperty('transform');
+      menu.style.removeProperty('transition');
+      void menu.offsetWidth;
       menu.classList.add('show');
       menuOverlay.classList.add('show');
     }
@@ -1968,11 +1998,12 @@ document.addEventListener('DOMContentLoaded', () => {
       groupChatBody.addEventListener('touchstart', function(e) {
         var msgRow = e.target.closest('.message-row');
         if (!msgRow) return;
+        e.preventDefault();
         longPressTimer = setTimeout(function() {
-          var touch = e.touches[0];
+          var touch = e.changedTouches ? e.changedTouches[0] : e.touches[0];
           showGroupMsgMenu(touch.clientX, touch.clientY, msgRow);
-        }, 600);
-      }, { passive: true });
+        }, 500);
+      }, { passive: false });
 
       groupChatBody.addEventListener('touchend', function() {
         clearTimeout(longPressTimer);
@@ -1991,6 +2022,24 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     document.addEventListener('click', function(e) {
+      if (e.target.closest('#gm-at-ta')) {
+        if (selectedMsg) {
+          var senderEl = selectedMsg.querySelector('.sender-name');
+          var senderName = senderEl ? (senderEl.getAttribute('data-sender') || senderEl.textContent) : '';
+          if (senderName) {
+            var input = document.getElementById('group-chat-input');
+            if (input) {
+              var current = input.value;
+              var mention = '@' + senderName + ' ';
+              input.value = current + mention;
+              input.focus();
+              input.setSelectionRange(input.value.length, input.value.length);
+            }
+          }
+        }
+        hideGroupMsgMenu();
+        return;
+      }
       if (e.target.closest('#gm-recall')) {
         if (selectedMsg) {
           var bubble = selectedMsg.querySelector('.bubble');
