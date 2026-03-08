@@ -2244,6 +2244,15 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!panel || !list || !groupInput) return;
 
     var atTriggerPos = -1;
+    var isComposing = false;
+
+    groupInput.addEventListener('compositionstart', function() {
+      isComposing = true;
+    });
+    groupInput.addEventListener('compositionend', function() {
+      isComposing = false;
+      handleInput.call(this);
+    });
 
     function showPanel() {
       panel.classList.add('show');
@@ -2267,7 +2276,9 @@ document.addEventListener('DOMContentLoaded', () => {
       return anyVisible;
     }
 
-    groupInput.addEventListener('input', function() {
+    function handleInput() {
+      if (isComposing) return;
+
       var val = this.value;
       var cursor = this.selectionStart;
 
@@ -2292,14 +2303,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
       var charBefore = val.charAt(cursor - 1);
       if (charBefore === '@') {
-        var charBeforeAt = cursor >= 2 ? val.charAt(cursor - 2) : '';
-        if (cursor === 1 || charBeforeAt === ' ' || charBeforeAt === '\n') {
-          atTriggerPos = cursor - 1;
-          filterMembers('');
-          showPanel();
-        }
+        atTriggerPos = cursor - 1;
+        filterMembers('');
+        showPanel();
       }
-    });
+    }
+
+    groupInput.addEventListener('input', handleInput);
 
     groupInput.addEventListener('keydown', function(e) {
       if (e.key === 'Escape' && panel.classList.contains('show')) {
