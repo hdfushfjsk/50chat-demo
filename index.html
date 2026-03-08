@@ -88,6 +88,7 @@
       <a class="nav-link" data-goto="page-notification"><i data-lucide="bell"></i> 通知设置</a>
       <a class="nav-link" data-goto="page-privacy"><i data-lucide="shield"></i> 隐私设置</a>
       <a class="nav-link" data-goto="page-about"><i data-lucide="info"></i> 关于50聊天</a>
+      <a class="nav-link" data-goto="page-chat-manage"><i data-lucide="database"></i> 聊天记录管理</a>
     </div>
   </div>
 </div>
@@ -100,10 +101,15 @@
     <div class="splash-content">
       <div class="splash-icon">
         <svg viewBox="0 0 80 80" width="80" height="80">
-          <path d="M16 24 C16 18,22 12,28 12 L52 12 C58 12,64 18,64 24 L64 44 C64 50,58 56,52 56 L38 56 L26 66 L26 56 C20 56,16 50,16 44 Z" fill="white"/>
-          <circle cx="32" cy="35" r="4" fill="#007AFF"/>
-          <circle cx="40" cy="35" r="4" fill="#5AC8FA"/>
-          <circle cx="48" cy="35" r="4" fill="#007AFF"/>
+          <defs>
+            <linearGradient id="splash-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#007AFF"/>
+              <stop offset="100%" stop-color="#5AC8FA"/>
+            </linearGradient>
+          </defs>
+          <rect rx="18" width="80" height="80" fill="url(#splash-grad)"/>
+          <circle cx="40" cy="35" r="15" fill="none" stroke="white" stroke-width="4"/>
+          <path d="M30 45 Q28 52,24 54 Q32 52,35 48" fill="white"/>
         </svg>
       </div>
       <h1 class="splash-title">50聊天</h1>
@@ -123,11 +129,9 @@
                 <stop offset="100%" stop-color="#5AC8FA"/>
               </linearGradient>
             </defs>
-            <rect rx="15" width="60" height="60" fill="url(#login-grad)"/>
-            <path d="M16 21 C16 18,19 15,22 15 L38 15 C41 15,44 18,44 21 L44 31 C44 34,41 37,38 37 L29 37 L23 43 L23 37 C19 37,16 34,16 31 Z" fill="white"/>
-            <circle cx="26" cy="26" r="2" fill="#007AFF"/>
-            <circle cx="30" cy="26" r="2" fill="#007AFF"/>
-            <circle cx="34" cy="26" r="2" fill="#007AFF"/>
+            <rect rx="14" width="60" height="60" fill="url(#login-grad)"/>
+            <circle cx="30" cy="26" r="11" fill="none" stroke="white" stroke-width="3"/>
+            <path d="M23 34 Q21 39,18 41 Q24 39,26 36" fill="white"/>
           </svg>
         </div>
         <span class="login-logo-text">50聊天</span>
@@ -1365,6 +1369,7 @@
               <span class="admin-member-name">李娜</span>
               <span class="admin-mute-status" id="mute-lina">未禁言</span>
             </div>
+            <button class="admin-recall-all-btn" data-member="李娜">撤回所有</button>
             <button class="admin-mute-btn" data-mute-target="lina">禁言</button>
           </div>
           <div class="admin-member-item">
@@ -1373,6 +1378,7 @@
               <span class="admin-member-name">张伟</span>
               <span class="admin-mute-status" id="mute-zhangwei">未禁言</span>
             </div>
+            <button class="admin-recall-all-btn" data-member="张伟">撤回所有</button>
             <button class="admin-mute-btn" data-mute-target="zhangwei">禁言</button>
           </div>
           <div class="admin-member-item">
@@ -1381,6 +1387,7 @@
               <span class="admin-member-name">王明</span>
               <span class="admin-mute-status" id="mute-wangming">未禁言</span>
             </div>
+            <button class="admin-recall-all-btn" data-member="王明">撤回所有</button>
             <button class="admin-mute-btn" data-mute-target="wangming">禁言</button>
           </div>
           <div class="admin-member-item">
@@ -1389,6 +1396,7 @@
               <span class="admin-member-name">赵雪</span>
               <span class="admin-mute-status" id="mute-zhaoxue">未禁言</span>
             </div>
+            <button class="admin-recall-all-btn" data-member="赵雪">撤回所有</button>
             <button class="admin-mute-btn" data-mute-target="zhaoxue">禁言</button>
           </div>
         </div>
@@ -1743,6 +1751,11 @@
         <div class="menu-item" id="menu-about">
           <i data-lucide="info" class="menu-icon" style="color:#0984E3"></i>
           <span>关于50聊天</span>
+          <i data-lucide="chevron-right" class="menu-arrow"></i>
+        </div>
+        <div class="menu-item" id="menu-chat-manage">
+          <i data-lucide="database" class="menu-icon" style="color:#A29BFE"></i>
+          <span>聊天记录管理</span>
           <i data-lucide="chevron-right" class="menu-arrow"></i>
         </div>
       </div>
@@ -2376,7 +2389,10 @@
             <div class="friend-req-name">陈晓明</div>
             <div class="friend-req-msg">我是陈晓明，通过搜索添加</div>
           </div>
-          <button class="friend-req-btn accept">接受</button>
+          <div class="friend-req-actions">
+            <button class="friend-req-btn accept">接受</button>
+            <button class="friend-req-btn reject">拒绝</button>
+          </div>
         </div>
         <div class="friend-request-item">
           <img class="friend-req-avatar" src="images/contact-wangming.png" alt="王明">
@@ -2384,7 +2400,10 @@
             <div class="friend-req-name">刘芳</div>
             <div class="friend-req-msg">你好，我是你同事刘芳</div>
           </div>
-          <button class="friend-req-btn accept">接受</button>
+          <div class="friend-req-actions">
+            <button class="friend-req-btn accept">接受</button>
+            <button class="friend-req-btn reject">拒绝</button>
+          </div>
         </div>
         <div class="friend-request-item">
           <img class="friend-req-avatar" src="images/contact-zhaoxue.png" alt="赵雪">
@@ -2392,7 +2411,10 @@
             <div class="friend-req-name">孙强</div>
             <div class="friend-req-msg">我是孙强，来自群聊"设计组"</div>
           </div>
-          <button class="friend-req-btn accept">接受</button>
+          <div class="friend-req-actions">
+            <button class="friend-req-btn accept">接受</button>
+            <button class="friend-req-btn reject">拒绝</button>
+          </div>
         </div>
 
         <div class="friend-req-section-title">已添加</div>
@@ -2698,6 +2720,94 @@
     </div>
   </div>
 
+  <!-- ==================== 聊天记录管理页 ==================== -->
+  <div class="page" id="page-chat-manage">
+    <nav class="top-nav">
+      <div class="nav-left">
+        <i data-lucide="chevron-left" class="nav-icon back-btn" data-back="page-profile"></i>
+        <span class="nav-title">聊天记录管理</span>
+      </div>
+      <div class="nav-right"></div>
+    </nav>
+    <div class="page-body">
+      <div class="chat-manage-header">
+        <div class="chat-manage-select-all">
+          <input type="checkbox" id="chat-manage-all-check" class="chat-manage-check">
+          <label for="chat-manage-all-check">全选</label>
+        </div>
+        <span class="chat-manage-selected-count">已选择 0 项</span>
+      </div>
+      <div class="chat-manage-list">
+        <div class="chat-manage-item" data-chat="小美">
+          <input type="checkbox" class="chat-manage-check chat-manage-item-check">
+          <img class="chat-manage-avatar" src="https://i.pravatar.cc/100?img=5" alt="">
+          <div class="chat-manage-info">
+            <div class="chat-manage-name">小美</div>
+            <div class="chat-manage-detail">23 条消息 · 1.2 MB</div>
+          </div>
+        </div>
+        <div class="chat-manage-item" data-chat="工作群">
+          <input type="checkbox" class="chat-manage-check chat-manage-item-check">
+          <img class="chat-manage-avatar" src="https://i.pravatar.cc/100?img=12" alt="">
+          <div class="chat-manage-info">
+            <div class="chat-manage-name">工作群</div>
+            <div class="chat-manage-detail">156 条消息 · 8.5 MB</div>
+          </div>
+        </div>
+        <div class="chat-manage-item" data-chat="Lina">
+          <input type="checkbox" class="chat-manage-check chat-manage-item-check">
+          <img class="chat-manage-avatar" src="https://i.pravatar.cc/100?img=32" alt="">
+          <div class="chat-manage-info">
+            <div class="chat-manage-name">Lina</div>
+            <div class="chat-manage-detail">45 条消息 · 3.1 MB</div>
+          </div>
+        </div>
+        <div class="chat-manage-item" data-chat="老王">
+          <input type="checkbox" class="chat-manage-check chat-manage-item-check">
+          <img class="chat-manage-avatar" src="https://i.pravatar.cc/100?img=60" alt="">
+          <div class="chat-manage-info">
+            <div class="chat-manage-name">老王</div>
+            <div class="chat-manage-detail">12 条消息 · 0.5 MB</div>
+          </div>
+        </div>
+        <div class="chat-manage-item" data-chat="李雷">
+          <input type="checkbox" class="chat-manage-check chat-manage-item-check">
+          <img class="chat-manage-avatar" src="https://i.pravatar.cc/100?img=15" alt="">
+          <div class="chat-manage-info">
+            <div class="chat-manage-name">李雷</div>
+            <div class="chat-manage-detail">8 条消息 · 0.3 MB</div>
+          </div>
+        </div>
+        <div class="chat-manage-item" data-chat="韩梅梅">
+          <input type="checkbox" class="chat-manage-check chat-manage-item-check">
+          <img class="chat-manage-avatar" src="https://i.pravatar.cc/100?img=25" alt="">
+          <div class="chat-manage-info">
+            <div class="chat-manage-name">韩梅梅</div>
+            <div class="chat-manage-detail">67 条消息 · 4.2 MB</div>
+          </div>
+        </div>
+        <div class="chat-manage-item" data-chat="家人群">
+          <input type="checkbox" class="chat-manage-check chat-manage-item-check">
+          <img class="chat-manage-avatar" src="https://i.pravatar.cc/100?img=45" alt="">
+          <div class="chat-manage-info">
+            <div class="chat-manage-name">家人群</div>
+            <div class="chat-manage-detail">203 条消息 · 12.8 MB</div>
+          </div>
+        </div>
+      </div>
+      <div class="chat-manage-actions">
+        <button class="chat-manage-delete-btn" id="chat-manage-delete-btn" disabled>删除选中记录</button>
+        <button class="chat-manage-clear-btn" id="chat-manage-clear-all-btn">一键清空全部</button>
+      </div>
+      <div class="chat-manage-storage">
+        <div class="storage-bar">
+          <div class="storage-used" style="width: 35%"></div>
+        </div>
+        <div class="storage-text">已使用 30.6 MB / 1 GB</div>
+      </div>
+    </div>
+  </div>
+
   <!-- 添加表情包弹窗 -->
   <div class="sticker-modal-overlay" id="sticker-modal">
     <div class="sticker-modal">
@@ -2975,6 +3085,7 @@
   <div class="group-msg-menu-item" id="gm-at-ta" style="display:none"><i data-lucide="at-sign"></i><span>@TA</span></div>
   <div class="group-msg-menu-item" id="gm-recall"><i data-lucide="undo-2"></i><span>撤回消息</span></div>
   <div class="group-msg-menu-item" id="gm-mute"><i data-lucide="volume-x"></i><span>禁言此人</span></div>
+  <div class="group-msg-menu-item" id="gm-recall-all"><i data-lucide="trash"></i><span>撤回TA所有消息</span></div>
   <div class="group-msg-menu-item danger" id="gm-delete"><i data-lucide="trash-2"></i><span>删除</span></div>
 </div>
 
@@ -2983,17 +3094,68 @@
 <div class="action-sheet" id="mass-send-sheet">
   <div class="action-sheet-handle"></div>
   <div class="action-sheet-title">群发消息</div>
-  <div class="action-sheet-subtitle">选择发送目标并输入消息内容</div>
-  <div class="action-sheet-targets">
-    <button class="target-btn active" data-target="friends">
-      <i data-lucide="users"></i>
-      <span>所有好友</span>
-    </button>
-    <button class="target-btn" data-target="groups">
-      <i data-lucide="messages-square"></i>
-      <span>所有群组</span>
-    </button>
+  
+  <!-- Tab切换：好友/群组 -->
+  <div class="mass-send-tabs">
+    <div class="mass-send-tab active" data-mass-tab="friends">好友</div>
+    <div class="mass-send-tab" data-mass-tab="groups">群组</div>
   </div>
+  
+  <!-- 好友列表（可多选） -->
+  <div class="mass-send-list" id="mass-friends-list">
+    <label class="mass-select-all">
+      <input type="checkbox" id="mass-friends-all">
+      <span>全选</span>
+    </label>
+    <div class="mass-contact-item">
+      <input type="checkbox" class="mass-check" data-name="张伟">
+      <img class="mass-avatar" src="images/avatar-zhangwei.png" alt="">
+      <span class="mass-name">张伟</span>
+    </div>
+    <div class="mass-contact-item">
+      <input type="checkbox" class="mass-check" data-name="李娜">
+      <img class="mass-avatar" src="images/avatar-lina.png" alt="">
+      <span class="mass-name">李娜</span>
+    </div>
+    <div class="mass-contact-item">
+      <input type="checkbox" class="mass-check" data-name="王明">
+      <img class="mass-avatar" src="images/avatar-wangming.png" alt="">
+      <span class="mass-name">王明</span>
+    </div>
+    <div class="mass-contact-item">
+      <input type="checkbox" class="mass-check" data-name="赵雪">
+      <img class="mass-avatar" src="images/avatar-zhaoxue.png" alt="">
+      <span class="mass-name">赵雪</span>
+    </div>
+  </div>
+  
+  <!-- 群组列表（可多选） -->
+  <div class="mass-send-list" id="mass-groups-list" style="display:none;">
+    <label class="mass-select-all">
+      <input type="checkbox" id="mass-groups-all">
+      <span>全选</span>
+    </label>
+    <div class="mass-contact-item">
+      <input type="checkbox" class="mass-check" data-name="设计组">
+      <img class="mass-avatar" src="images/avatar-shejigroup.png" alt="">
+      <span class="mass-name">设计组(5)</span>
+    </div>
+    <div class="mass-contact-item">
+      <input type="checkbox" class="mass-check" data-name="项目组">
+      <img class="mass-avatar" src="images/avatar-xiaoming.png" alt="">
+      <span class="mass-name">项目组(12)</span>
+    </div>
+    <div class="mass-contact-item">
+      <input type="checkbox" class="mass-check" data-name="技术交流">
+      <img class="mass-avatar" src="images/avatar-wangming.png" alt="">
+      <span class="mass-name">技术交流群(28)</span>
+    </div>
+  </div>
+  
+  <!-- 已选数量提示 -->
+  <div class="mass-selected-count" id="mass-selected-count">已选择 0 人</div>
+  
+  <!-- 消息输入 -->
   <textarea class="action-sheet-input" id="mass-send-input" placeholder="输入群发消息内容…" rows="3"></textarea>
   <button class="action-sheet-btn primary" id="mass-send-confirm">发送</button>
   <button class="action-sheet-btn cancel" id="mass-send-cancel">取消</button>
@@ -3018,6 +3180,18 @@
   </div>
   <button class="action-sheet-btn primary" id="forward-confirm">确认转发</button>
   <button class="action-sheet-btn cancel" id="forward-cancel">取消</button>
+</div>
+
+<!-- 撤回所有消息确认弹窗 -->
+<div class="recall-confirm-overlay" id="recall-confirm-overlay">
+  <div class="recall-confirm-dialog">
+    <div class="recall-confirm-title">撤回所有消息</div>
+    <div class="recall-confirm-msg" id="recall-confirm-msg">确认撤回该成员的所有消息？此操作不可恢复。</div>
+    <div class="recall-confirm-btns">
+      <button class="recall-confirm-btn cancel" id="recall-confirm-cancel">取消</button>
+      <button class="recall-confirm-btn danger" id="recall-confirm-ok">确认撤回</button>
+    </div>
+  </div>
 </div>
 
 <!-- Toast 提示 -->

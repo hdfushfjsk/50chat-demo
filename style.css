@@ -4070,12 +4070,14 @@ label.toggle-switch:has(input:checked) {
   color: #666;
 }
 
-.rp-summary {
+#page-send-redpacket .rp-summary {
+  display: block;
   text-align: center;
   font-size: 13px;
   color: #e67e22;
   margin: 0 16px 8px;
   min-height: 18px;
+  gap: 0;
 }
 
 .rp-hint {
@@ -4394,7 +4396,23 @@ label.toggle-switch:has(input:checked) {
   transform: scale(0.95);
 }
 
-.friend-req-btn.accepted {
+.friend-req-btn.reject {
+  background: var(--bg-input);
+  color: var(--text-secondary);
+}
+
+.friend-req-btn.reject:active {
+  transform: scale(0.95);
+}
+
+.friend-req-actions {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.friend-req-btn.accepted,
+.friend-req-btn.rejected {
   background: var(--bg-input);
   color: var(--text-tertiary);
   cursor: default;
@@ -5304,9 +5322,10 @@ label.toggle-switch:has(input:checked) {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: safe center;
   overflow-y: auto;
   overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
 }
 
 .rp-open-bg::before {
@@ -5567,8 +5586,7 @@ label.toggle-switch:has(input:checked) {
   position: relative;
   z-index: 2;
   animation: rpResultPop 0.6s ease;
-  max-height: 100%;
-  overflow-y: auto;
+  flex-shrink: 0;
 }
 
 @keyframes rpResultPop {
@@ -6357,16 +6375,17 @@ label.toggle-switch:has(input:checked) {
 
 .action-sheet {
   position: fixed;
-  left: 0;
-  right: 0;
   bottom: 0;
   z-index: 1001;
+  width: 100%;
+  max-width: 350px;
+  left: 0;
+  transform: translateY(100%);
   background: rgba(255, 255, 255, 0.82);
   backdrop-filter: blur(40px) saturate(180%);
   -webkit-backdrop-filter: blur(40px) saturate(180%);
   border-radius: 20px 20px 0 0;
   padding: 12px 20px calc(env(safe-area-inset-bottom, 0px) + 20px);
-  transform: translateY(100%);
   transition: transform 0.35s cubic-bezier(0.32, 0.72, 0, 1);
   box-shadow: 0 -8px 40px rgba(0, 0, 0, 0.12);
   border-top: 1px solid rgba(255, 255, 255, 0.5);
@@ -6442,6 +6461,90 @@ label.toggle-switch:has(input:checked) {
 
 .target-btn:active {
   transform: scale(0.97);
+}
+
+/* 群发Tab */
+.mass-send-tabs {
+  display: flex;
+  background: var(--bg-input);
+  border-radius: 10px;
+  padding: 3px;
+  margin-bottom: 12px;
+}
+.mass-send-tab {
+  flex: 1;
+  text-align: center;
+  padding: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 8px;
+  cursor: pointer;
+  color: var(--text-secondary);
+  transition: all 0.2s;
+}
+.mass-send-tab.active {
+  background: var(--bg-card);
+  color: var(--text-primary);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+}
+
+/* 群发列表 */
+.mass-send-list {
+  max-height: 200px;
+  overflow-y: auto;
+  margin-bottom: 10px;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+}
+.mass-select-all {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  font-size: 14px;
+  color: var(--text-primary);
+  font-weight: 500;
+  border-bottom: 1px solid var(--border-color);
+  cursor: pointer;
+}
+.mass-contact-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.mass-contact-item:hover {
+  background: rgba(0,122,255,0.04);
+}
+.mass-contact-item + .mass-contact-item {
+  border-top: 1px solid var(--border-color);
+}
+.mass-check {
+  width: 18px;
+  height: 18px;
+  accent-color: #007AFF;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.mass-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+.mass-name {
+  font-size: 14px;
+  color: var(--text-primary);
+}
+.mass-selected-count {
+  font-size: 13px;
+  color: var(--text-secondary);
+  text-align: right;
+  margin-bottom: 8px;
+  padding-right: 4px;
 }
 
 .action-sheet-input {
@@ -6608,4 +6711,240 @@ label.toggle-switch:has(input:checked) {
 
 [data-theme="dark"] .app-toast.success {
   background: rgba(48, 209, 88, 0.92);
+}
+
+/* 撤回所有消息按钮 */
+.admin-recall-all-btn {
+  padding: 4px 10px;
+  border-radius: 8px;
+  border: 1px solid #FF3B30;
+  background: transparent;
+  color: #FF3B30;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+.admin-recall-all-btn:hover {
+  background: #FF3B30;
+  color: #FFF;
+}
+.admin-recall-all-btn:active {
+  transform: scale(0.95);
+}
+
+/* 确认弹窗 */
+.recall-confirm-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  z-index: 2000;
+  align-items: center;
+  justify-content: center;
+}
+.recall-confirm-overlay.show {
+  display: flex;
+}
+.recall-confirm-dialog {
+  background: var(--bg-card);
+  border-radius: 16px;
+  padding: 24px;
+  width: 280px;
+  text-align: center;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+}
+.recall-confirm-title {
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+.recall-confirm-msg {
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+.recall-confirm-btns {
+  display: flex;
+  gap: 12px;
+}
+.recall-confirm-btn {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.recall-confirm-btn.cancel {
+  background: var(--bg-input);
+  color: var(--text-primary);
+}
+.recall-confirm-btn.danger {
+  background: #FF3B30;
+  color: #FFF;
+}
+.recall-confirm-btn:active {
+  transform: scale(0.96);
+}
+
+/* ===== 聊天记录管理页面 ===== */
+.chat-manage-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background: var(--bg-card);
+  border-radius: 12px;
+  margin-bottom: 12px;
+  box-shadow: var(--shadow-sm);
+}
+.chat-manage-select-all {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
+  color: var(--text-primary);
+  cursor: pointer;
+}
+.chat-manage-selected-count {
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+.chat-manage-check {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  accent-color: var(--primary);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.chat-manage-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.chat-manage-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: var(--bg-card);
+  border-radius: 12px;
+  transition: all 0.25s cubic-bezier(0.4,0,0.2,1);
+  cursor: pointer;
+}
+.chat-manage-item:hover {
+  background: var(--bg-hover, rgba(0,0,0,0.03));
+}
+.chat-manage-item.selected {
+  background: rgba(0, 122, 255, 0.06);
+  border: 1px solid rgba(0, 122, 255, 0.15);
+}
+.chat-manage-item.removing {
+  opacity: 0;
+  max-height: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  margin: 0;
+  overflow: hidden;
+  transition: all 0.35s ease;
+}
+.chat-manage-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  object-fit: cover;
+  flex-shrink: 0;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+.chat-manage-info {
+  flex: 1;
+  min-width: 0;
+}
+.chat-manage-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 2px;
+}
+.chat-manage-detail {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+.chat-manage-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 16px;
+  padding: 0 4px;
+}
+.chat-manage-delete-btn {
+  flex: 1;
+  padding: 12px;
+  border: 1.5px solid #FF3B30;
+  background: transparent;
+  color: #FF3B30;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.chat-manage-delete-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.chat-manage-delete-btn:not(:disabled):hover {
+  background: #FF3B30;
+  color: #fff;
+}
+.chat-manage-delete-btn:not(:disabled):active {
+  transform: scale(0.97);
+}
+.chat-manage-clear-btn {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  background: #FF3B30;
+  color: #fff;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.chat-manage-clear-btn:hover {
+  background: #E0352B;
+}
+.chat-manage-clear-btn:active {
+  transform: scale(0.97);
+}
+.chat-manage-storage {
+  margin-top: 20px;
+  padding: 16px;
+  background: var(--bg-card);
+  border-radius: 12px;
+  box-shadow: var(--shadow-sm);
+}
+.storage-bar {
+  height: 6px;
+  background: var(--bg-input, #e5e5ea);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+.storage-used {
+  height: 100%;
+  background: linear-gradient(90deg, #007AFF, #5856D6);
+  border-radius: 3px;
+  transition: width 0.5s ease;
+}
+.storage-text {
+  font-size: 12px;
+  color: var(--text-secondary);
+  text-align: center;
 }

@@ -769,20 +769,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
     hideBtn.addEventListener('click', function() {
       if (!activeCard) return;
-      activeCard.style.transition = 'opacity 0.3s, max-height 0.3s';
-      activeCard.style.opacity = '0';
-      activeCard.style.maxHeight = '0';
-      activeCard.style.overflow = 'hidden';
-      setTimeout(() => activeCard.remove(), 300);
+      var cardToHide = activeCard;
+      cardToHide.style.transition = 'opacity 0.3s, max-height 0.3s';
+      cardToHide.style.opacity = '0';
+      cardToHide.style.maxHeight = '0';
+      cardToHide.style.overflow = 'hidden';
+      setTimeout(function() { cardToHide.remove(); }, 300);
       hideMenu();
     });
 
     deleteBtn.addEventListener('click', function() {
       if (!activeCard) return;
-      activeCard.style.transition = 'opacity 0.3s, transform 0.3s';
-      activeCard.style.opacity = '0';
-      activeCard.style.transform = 'translateX(-100%)';
-      setTimeout(() => activeCard.remove(), 300);
+      var cardToDelete = activeCard;
+      cardToDelete.style.transition = 'opacity 0.3s, transform 0.3s';
+      cardToDelete.style.opacity = '0';
+      cardToDelete.style.transform = 'translateX(-100%)';
+      setTimeout(function() { cardToDelete.remove(); }, 300);
       hideMenu();
     });
   })();
@@ -1063,6 +1065,9 @@ document.addEventListener('DOMContentLoaded', () => {
             }
           }
         } else if (moreActionMap[action]) {
+          if (action === 'redpacket' && window._setRpSourcePage) {
+            window._setRpSourcePage(currentPage);
+          }
           navigateTo(moreActionMap[action], { direction: 'forward' });
         }
         return;
@@ -1182,9 +1187,9 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
-      // 全局事件委托处理返回按钮
-      const backBtn = e.target.closest('[data-back]');
-      if (backBtn) {
+      // 全局事件委托处理返回按钮（只匹配 .back-btn，排除 .page 容器）
+      const backBtn = e.target.closest('.back-btn[data-back]');
+      if (backBtn && !backBtn.classList.contains('page')) {
         const targetPage = backBtn.getAttribute('data-back');
         if (targetPage) {
           navigateTo(targetPage, { direction: 'back' });
@@ -1210,10 +1215,20 @@ document.addEventListener('DOMContentLoaded', () => {
       // 好友申请接受按钮
       var acceptBtn = e.target.closest('.friend-req-btn.accept');
       if (acceptBtn) {
-        acceptBtn.textContent = '已添加';
-        acceptBtn.classList.remove('accept');
-        acceptBtn.classList.add('accepted');
-        acceptBtn.disabled = true;
+        var actions = acceptBtn.closest('.friend-req-actions');
+        if (actions) {
+          actions.innerHTML = '<span class="friend-req-done" style="color:#34C759;">已添加</span>';
+        }
+        return;
+      }
+
+      // 好友申请拒绝按钮
+      var rejectBtn = e.target.closest('.friend-req-btn.reject');
+      if (rejectBtn) {
+        var actions = rejectBtn.closest('.friend-req-actions');
+        if (actions) {
+          actions.innerHTML = '<span class="friend-req-done" style="color:#FF3B30;">已拒绝</span>';
+        }
         return;
       }
 
@@ -1626,6 +1641,7 @@ document.addEventListener('DOMContentLoaded', () => {
     var rpAmountLabel = document.getElementById('rp-amount-label');
     var rpSubmit = document.getElementById('rp-submit');
     var currentRpType = 'lucky';
+    var rpSourcePage = 'page-chat';
 
     rpTypeTabs.forEach(function(tab) {
       tab.addEventListener('click', function() {
@@ -1660,6 +1676,12 @@ document.addEventListener('DOMContentLoaded', () => {
     if (rpCount) rpCount.addEventListener('input', updateRpSummary);
     if (rpAmount) rpAmount.addEventListener('input', updateRpSummary);
 
+    window._setRpSourcePage = function(page) {
+      rpSourcePage = page;
+      var backBtn = document.querySelector('#page-send-redpacket .back-btn');
+      if (backBtn) backBtn.setAttribute('data-back', page);
+    };
+
     if (rpSubmit) {
       rpSubmit.addEventListener('click', function(e) {
         e.stopPropagation();
@@ -1668,22 +1690,57 @@ document.addEventListener('DOMContentLoaded', () => {
         if (amount <= 0) { alert('请输入金额'); return; }
         if (count <= 0) { alert('请输入红包个数'); return; }
         var typeText = currentRpType === 'lucky' ? '拼手气红包' : '普通红包';
-        alert('已发送' + count + '个' + typeText + '！');
-        navigateTo('page-chat', { direction: 'back' });
+        var wish = document.getElementById('rp-wish');
+        var wishText = (wish && wish.value.trim()) || '恭喜发财，大吉大利';
+
+        var targetPage = document.getElementById(rpSourcePage);
+        if (targetPage) {
+          var msgArea = targetPage.querySelector('.messages-area');
+          if (msgArea) {
+            var isGroup = rpSourcePage === 'page-group-chat';
+            var avatarSrc = isGroup ? 'images/group-me.png' : 'images/chat-me1.png';
+
+            var row = document.createElement('div');
+            row.className = 'message-row self';
+
+            if (isGroup) {
+              row.innerHTML =
+                '<div class="msg-content-group">' +
+                  '<span class="sender-name" data-sender="我">我</span>' +
+                  '<div class="red-packet-card">' +
+                    '<div class="rp-icon">🧧</div>' +
+                    '<div class="rp-info">' +
+                      '<div class="rp-text">' + wishText + '</div>' +
+                      '<div class="rp-label">' + typeText + '</div>' +
+                    '</div>' +
+                  '</div>' +
+                '</div>' +
+                '<img class="msg-avatar" src="' + avatarSrc + '" alt="我">';
+            } else {
+              row.innerHTML =
+                '<div class="red-packet-card">' +
+                  '<div class="rp-icon">🧧</div>' +
+                  '<div class="rp-info">' +
+                    '<div class="rp-text">' + wishText + '</div>' +
+                    '<div class="rp-label">' + typeText + '</div>' +
+                  '</div>' +
+                '</div>' +
+                '<img class="msg-avatar" src="' + avatarSrc + '" alt="我">';
+            }
+            msgArea.appendChild(row);
+
+            var statusRow = document.createElement('div');
+            statusRow.className = 'msg-status-row';
+            statusRow.innerHTML = '<span class="msg-status unread">✓ 已发送</span>';
+            msgArea.appendChild(statusRow);
+
+            msgArea.scrollTop = msgArea.scrollHeight;
+          }
+        }
+
+        navigateTo(rpSourcePage, { direction: 'back' });
       });
     }
-
-    document.addEventListener('click', function(e) {
-      if (e.target.closest('#rp-submit')) {
-        var count = parseInt(rpCount ? rpCount.value : 1) || 0;
-        var amount = parseFloat(rpAmount ? rpAmount.value : 0) || 0;
-        if (amount <= 0) { alert('请输入金额'); return; }
-        if (count <= 0) { alert('请输入红包个数'); return; }
-        var typeText = currentRpType === 'lucky' ? '拼手气红包' : '普通红包';
-        alert('已发送' + count + '个' + typeText + '！');
-        navigateTo('page-chat', { direction: 'back' });
-      }
-    });
   })();
 
   // =============================================
@@ -1757,18 +1814,10 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
-      // 关闭按钮
-      var closeBtn = e.target.closest('#rp-open-close');
-      if (closeBtn) {
-        navigateTo(rpLastChatPage, { direction: 'fade' });
-        return;
-      }
-    });
-
-    // 独立绑定关闭/返回按钮（防止Lucide替换导致事件丢失）
-    document.addEventListener('click', function(e) {
+      // 关闭按钮 / 返回聊天按钮
       if (e.target.closest('#rp-open-close') || e.target.closest('#rp-back-btn')) {
         navigateTo(rpLastChatPage, { direction: 'fade' });
+        return;
       }
     });
 
@@ -1957,9 +2006,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function showGroupMsgMenu(x, y, msgEl) {
       selectedMsg = msgEl;
+      window._groupMenuSelectedMsg = msgEl;
       var isOther = msgEl.classList.contains('other');
       if (atTaItem) {
         atTaItem.style.display = isOther ? '' : 'none';
+      }
+      var recallAllItem = document.getElementById('gm-recall-all');
+      if (recallAllItem) {
+        recallAllItem.style.display = isOther ? '' : 'none';
       }
 
       menu.classList.remove('show');
@@ -2451,6 +2505,21 @@ document.addEventListener('DOMContentLoaded', () => {
   })();
 
   // =============================================
+  //  弹窗定位：对齐 app-container
+  // =============================================
+  function alignSheetToApp(sheetEl) {
+    if (!sheetEl) return;
+    var appContainer = document.getElementById('app');
+    if (appContainer) {
+      var rect = appContainer.getBoundingClientRect();
+      sheetEl.style.left = rect.left + 'px';
+      sheetEl.style.width = rect.width + 'px';
+      sheetEl.style.maxWidth = rect.width + 'px';
+    }
+  }
+  window._alignSheetToApp = alignSheetToApp;
+
+  // =============================================
   //  Toast 提示
   // =============================================
   var toastTimer = null;
@@ -2476,10 +2545,22 @@ document.addEventListener('DOMContentLoaded', () => {
     var input = document.getElementById('mass-send-input');
     var confirmBtn = document.getElementById('mass-send-confirm');
     var cancelBtn = document.getElementById('mass-send-cancel');
+    var friendsList = document.getElementById('mass-friends-list');
+    var groupsList = document.getElementById('mass-groups-list');
+    var countEl = document.getElementById('mass-selected-count');
 
     function open() {
       if (!sheet || !overlay) return;
       if (input) input.value = '';
+      sheet.querySelectorAll('.mass-check, .mass-select-all input').forEach(function(cb) { cb.checked = false; });
+      updateCount();
+      sheet.querySelectorAll('.mass-send-tab').forEach(function(t) { t.classList.remove('active'); });
+      var firstTab = sheet.querySelector('.mass-send-tab[data-mass-tab="friends"]');
+      if (firstTab) firstTab.classList.add('active');
+      if (friendsList) friendsList.style.display = '';
+      if (groupsList) groupsList.style.display = 'none';
+
+      if (window._alignSheetToApp) window._alignSheetToApp(sheet);
       overlay.classList.add('show');
       requestAnimationFrame(function() {
         sheet.classList.add('show');
@@ -2495,17 +2576,55 @@ document.addEventListener('DOMContentLoaded', () => {
       }, 350);
     }
 
+    function updateCount() {
+      var checked = sheet ? sheet.querySelectorAll('.mass-check:checked').length : 0;
+      if (countEl) countEl.textContent = '已选择 ' + checked + ' 人';
+    }
+
     window.showMassSendSheet = open;
 
     if (overlay) overlay.addEventListener('click', close);
     if (cancelBtn) cancelBtn.addEventListener('click', close);
 
     if (sheet) {
-      sheet.querySelectorAll('.target-btn').forEach(function(btn) {
-        btn.addEventListener('click', function() {
-          sheet.querySelectorAll('.target-btn').forEach(function(b) { b.classList.remove('active'); });
-          btn.classList.add('active');
+      sheet.querySelectorAll('.mass-send-tab').forEach(function(tab) {
+        tab.addEventListener('click', function() {
+          sheet.querySelectorAll('.mass-send-tab').forEach(function(t) { t.classList.remove('active'); });
+          tab.classList.add('active');
+          var tabType = tab.getAttribute('data-mass-tab');
+          if (friendsList) friendsList.style.display = tabType === 'friends' ? '' : 'none';
+          if (groupsList) groupsList.style.display = tabType === 'groups' ? '' : 'none';
         });
+      });
+
+      sheet.addEventListener('change', function(e) {
+        if (e.target.id === 'mass-friends-all') {
+          friendsList.querySelectorAll('.mass-check').forEach(function(cb) { cb.checked = e.target.checked; });
+        }
+        if (e.target.id === 'mass-groups-all') {
+          groupsList.querySelectorAll('.mass-check').forEach(function(cb) { cb.checked = e.target.checked; });
+        }
+        if (e.target.classList.contains('mass-check')) {
+          var list = e.target.closest('.mass-send-list');
+          var allCheck = list ? list.querySelector('.mass-select-all input') : null;
+          if (allCheck) {
+            var all = list.querySelectorAll('.mass-check');
+            var checked = list.querySelectorAll('.mass-check:checked');
+            allCheck.checked = all.length === checked.length;
+          }
+        }
+        updateCount();
+      });
+
+      sheet.addEventListener('click', function(e) {
+        var item = e.target.closest('.mass-contact-item');
+        if (item && !e.target.classList.contains('mass-check')) {
+          var cb = item.querySelector('.mass-check');
+          if (cb) {
+            cb.checked = !cb.checked;
+            cb.dispatchEvent(new Event('change', { bubbles: true }));
+          }
+        }
       });
     }
 
@@ -2516,9 +2635,16 @@ document.addEventListener('DOMContentLoaded', () => {
           showToast('请输入消息内容');
           return;
         }
+        var checked = sheet.querySelectorAll('.mass-check:checked');
+        if (checked.length === 0) {
+          showToast('请选择发送对象');
+          return;
+        }
+        var names = [];
+        checked.forEach(function(cb) { names.push(cb.getAttribute('data-name')); });
         close();
         setTimeout(function() {
-          showToast('群发成功', 'success');
+          showToast('已群发给 ' + names.length + ' 人', 'success');
         }, 400);
       });
     }
@@ -2539,6 +2665,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (preview) {
         preview.textContent = msgText || '';
       }
+      if (window._alignSheetToApp) window._alignSheetToApp(sheet);
       overlay.classList.add('show');
       requestAnimationFrame(function() {
         sheet.classList.add('show');
@@ -2574,6 +2701,213 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(function() {
           showToast('转发成功', 'success');
         }, 400);
+      });
+    }
+  })();
+
+  // =============================================
+  // ==================== 通用确认弹窗管理 ====================
+  (function() {
+    var overlay = document.getElementById('recall-confirm-overlay');
+    var titleEl = overlay ? overlay.querySelector('.recall-confirm-title') : null;
+    var msgEl = document.getElementById('recall-confirm-msg');
+    var okBtn = document.getElementById('recall-confirm-ok');
+    var cancelBtn = document.getElementById('recall-confirm-cancel');
+    var _pendingCallback = null;
+
+    function showConfirmDialog(opts) {
+      if (!overlay) return;
+      if (titleEl) titleEl.textContent = opts.title || '确认操作';
+      if (msgEl) msgEl.textContent = opts.message || '确认执行此操作？';
+      if (okBtn) okBtn.textContent = opts.okText || '确认';
+      _pendingCallback = opts.onConfirm || null;
+      overlay.classList.add('show');
+    }
+
+    function hideConfirmDialog() {
+      if (overlay) overlay.classList.remove('show');
+      _pendingCallback = null;
+    }
+
+    if (okBtn) okBtn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      if (_pendingCallback) _pendingCallback();
+      hideConfirmDialog();
+    });
+    if (cancelBtn) cancelBtn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      hideConfirmDialog();
+    });
+    if (overlay) overlay.addEventListener('click', function(e) {
+      if (e.target === overlay) hideConfirmDialog();
+    });
+
+    window._showConfirmDialog = showConfirmDialog;
+  })();
+
+  //  36. 一键撤回指定成员所有消息
+  // =============================================
+  (function() {
+    function doRecallAll(memberName) {
+      var msgArea = document.getElementById('group-messages-area');
+      if (!msgArea) return;
+      var rows = msgArea.querySelectorAll('.message-row.other');
+      var removedCount = 0;
+      rows.forEach(function(row) {
+        var senderEl = row.querySelector('.sender-name');
+        if (senderEl) {
+          var sender = senderEl.getAttribute('data-sender') || senderEl.textContent.trim();
+          if (sender === memberName) {
+            var next = row.nextElementSibling;
+            if (next && next.classList.contains('msg-status-row')) next.remove();
+            row.style.transition = 'opacity 0.3s, max-height 0.3s';
+            row.style.opacity = '0';
+            row.style.maxHeight = '0';
+            row.style.overflow = 'hidden';
+            setTimeout(function() { row.remove(); }, 300);
+            removedCount++;
+          }
+        }
+      });
+      if (typeof showToast === 'function') {
+        showToast('已撤回 ' + memberName + ' 的 ' + removedCount + ' 条消息', 'success');
+      }
+    }
+
+    function showRecallConfirm(memberName) {
+      window._showConfirmDialog({
+        title: '撤回所有消息',
+        message: '确认撤回 "' + memberName + '" 的所有消息？此操作不可恢复。',
+        okText: '确认撤回',
+        onConfirm: function() { doRecallAll(memberName); }
+      });
+    }
+
+    var gmRecallAll = document.getElementById('gm-recall-all');
+    if (gmRecallAll) {
+      gmRecallAll.addEventListener('click', function() {
+        var menuEl = document.getElementById('group-msg-menu');
+        if (window._groupMenuSelectedMsg) {
+          var senderEl = window._groupMenuSelectedMsg.querySelector('.sender-name');
+          if (senderEl) {
+            var name = senderEl.getAttribute('data-sender') || senderEl.textContent.trim();
+            var gmOverlay = document.getElementById('group-msg-menu-overlay');
+            if (menuEl) menuEl.classList.remove('show');
+            if (gmOverlay) gmOverlay.classList.remove('show');
+            showRecallConfirm(name);
+          }
+        }
+      });
+    }
+
+    document.getElementById('app').addEventListener('click', function(e) {
+      var btn = e.target.closest('.admin-recall-all-btn');
+      if (btn) {
+        var memberName = btn.getAttribute('data-member');
+        if (memberName) showRecallConfirm(memberName);
+      }
+    });
+  })();
+
+  // ==================== 聊天记录管理 ====================
+  (function() {
+    var app = document.getElementById('app');
+
+    var chatManageEntry = document.getElementById('menu-chat-manage');
+    if (chatManageEntry) chatManageEntry.addEventListener('click', function() { navigateTo('page-chat-manage', 'forward'); });
+
+    var allCheck = document.getElementById('chat-manage-all-check');
+    var deleteBtn = document.getElementById('chat-manage-delete-btn');
+    var clearAllBtn = document.getElementById('chat-manage-clear-all-btn');
+
+    function getItemChecks() {
+      return document.querySelectorAll('#page-chat-manage .chat-manage-item-check');
+    }
+
+    function updateCount() {
+      var checks = getItemChecks();
+      var checked = 0;
+      checks.forEach(function(c) { if (c.checked) checked++; });
+      var countEl = document.querySelector('#page-chat-manage .chat-manage-selected-count');
+      if (countEl) countEl.textContent = '已选择 ' + checked + ' 项';
+      if (deleteBtn) deleteBtn.disabled = (checked === 0);
+      if (allCheck) allCheck.checked = (checked === checks.length && checks.length > 0);
+      checks.forEach(function(c) {
+        var item = c.closest('.chat-manage-item');
+        if (item) {
+          if (c.checked) item.classList.add('selected');
+          else item.classList.remove('selected');
+        }
+      });
+    }
+
+    if (allCheck) {
+      allCheck.addEventListener('change', function() {
+        var checks = getItemChecks();
+        checks.forEach(function(c) { c.checked = allCheck.checked; });
+        updateCount();
+      });
+    }
+
+    app.addEventListener('click', function(e) {
+      var item = e.target.closest('.chat-manage-item');
+      if (item && !e.target.closest('.chat-manage-check')) {
+        var check = item.querySelector('.chat-manage-item-check');
+        if (check) {
+          check.checked = !check.checked;
+          updateCount();
+        }
+      }
+    });
+
+    app.addEventListener('change', function(e) {
+      if (e.target.classList.contains('chat-manage-item-check')) {
+        updateCount();
+      }
+    });
+
+    if (deleteBtn) {
+      deleteBtn.addEventListener('click', function() {
+        var checks = getItemChecks();
+        var selected = [];
+        checks.forEach(function(c) { if (c.checked) selected.push(c); });
+        if (selected.length === 0) return;
+        var count = selected.length;
+
+        window._showConfirmDialog({
+          title: '删除聊天记录',
+          message: '确认删除选中的 ' + count + ' 个聊天记录？删除后将无法恢复。',
+          okText: '确认删除',
+          onConfirm: function() {
+            selected.forEach(function(c) {
+              var item = c.closest('.chat-manage-item');
+              if (item) {
+                item.classList.add('removing');
+                setTimeout(function() { item.remove(); updateCount(); }, 350);
+              }
+            });
+            if (typeof showToast === 'function') showToast('已删除 ' + count + ' 个聊天记录', 'success');
+          }
+        });
+      });
+    }
+
+    if (clearAllBtn) {
+      clearAllBtn.addEventListener('click', function() {
+        window._showConfirmDialog({
+          title: '清空所有聊天记录',
+          message: '确认清空所有聊天记录？清空后将无法恢复。',
+          okText: '确认清空',
+          onConfirm: function() {
+            var items = document.querySelectorAll('#page-chat-manage .chat-manage-item');
+            items.forEach(function(item) { item.classList.add('removing'); });
+            setTimeout(function() {
+              items.forEach(function(item) { item.remove(); });
+              updateCount();
+            }, 350);
+            if (typeof showToast === 'function') showToast('已清空所有聊天记录', 'success');
+          }
+        });
       });
     }
   })();
