@@ -3159,7 +3159,7 @@ label.toggle-switch:has(input:checked) {
 }
 
 /* ============================== */
-/*  发起群聊页                    */
+/*  发起群聊 - 选择成员            */
 /* ============================== */
 .create-group-btn {
   padding: 6px 14px;
@@ -3170,6 +3170,7 @@ label.toggle-switch:has(input:checked) {
   font-size: 13px;
   font-weight: 500;
   cursor: pointer;
+  transition: opacity 0.2s;
 }
 
 .create-group-btn:disabled {
@@ -3178,14 +3179,19 @@ label.toggle-switch:has(input:checked) {
 }
 
 .selected-contacts-bar {
-  padding: 8px 16px;
-  border-bottom: 0.5px solid var(--border-color);
+  position: sticky;
+  bottom: 0;
+  padding: 10px 16px;
+  background: var(--bg-card);
+  border-top: 0.5px solid var(--border-color);
+  z-index: 5;
 }
 
 .selected-avatars {
   display: flex;
   gap: 8px;
   overflow-x: auto;
+  padding-bottom: 2px;
 }
 
 .selected-avatars img {
@@ -3194,10 +3200,13 @@ label.toggle-switch:has(input:checked) {
   border-radius: 50%;
   object-fit: cover;
   flex-shrink: 0;
+  border: 2px solid var(--accent);
 }
 
 .group-contact-list {
   padding: 0 16px;
+  flex: 1;
+  overflow-y: auto;
 }
 
 .group-contact-item {
@@ -3208,6 +3217,15 @@ label.toggle-switch:has(input:checked) {
   border-bottom: 0.5px solid var(--border-color);
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
+  transition: background 0.15s;
+}
+
+.group-contact-item:active {
+  background: var(--bg-hover);
+}
+
+.group-contact-item.hidden {
+  display: none;
 }
 
 .group-checkbox {
@@ -3236,6 +3254,141 @@ label.toggle-switch:has(input:checked) {
 
 .group-contact-item.selected .group-checkbox .check-icon {
   display: block;
+}
+
+/* ============================== */
+/*  发起群聊 - 设置群信息          */
+/* ============================== */
+.cg-info-card {
+  padding: 20px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.cg-avatar-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.cg-default-avatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+}
+
+.cg-default-avatar i,
+.cg-default-avatar svg {
+  width: 36px;
+  height: 36px;
+}
+
+.cg-avatar-hint {
+  font-size: 12px;
+  color: var(--text-tertiary);
+}
+
+.cg-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  background: var(--bg-card);
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.cg-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.cg-label {
+  font-size: 13px;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.cg-input {
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-page);
+  color: var(--text-primary);
+  font-size: 15px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.cg-input:focus {
+  border-color: var(--accent);
+}
+
+.cg-textarea {
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-page);
+  color: var(--text-primary);
+  font-size: 14px;
+  outline: none;
+  resize: none;
+  font-family: inherit;
+  transition: border-color 0.2s;
+}
+
+.cg-textarea:focus {
+  border-color: var(--accent);
+}
+
+.cg-members-preview {
+  background: var(--bg-card);
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.cg-members-title {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: 12px;
+}
+
+.cg-members-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+}
+
+.cg-member-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.cg-member-item img {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.cg-member-item span {
+  font-size: 11px;
+  color: var(--text-secondary);
+  text-align: center;
+  max-width: 56px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 /* ============================== */

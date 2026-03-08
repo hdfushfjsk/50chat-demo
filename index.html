@@ -62,7 +62,8 @@
       <div class="sidebar-group-title">5. 通讯录 → 子页面</div>
       <a class="nav-link" data-goto="page-new-friends"><i data-lucide="user-plus"></i> 新的朋友</a>
       <a class="nav-link" data-goto="page-group-list"><i data-lucide="users-round"></i> 群聊列表</a>
-      <a class="nav-link" data-goto="page-create-group"><i data-lucide="user-round-plus"></i> 发起群聊</a>
+      <a class="nav-link" data-goto="page-create-group"><i data-lucide="user-round-plus"></i> 发起群聊(选人)</a>
+      <a class="nav-link" data-goto="page-create-group-info"><i data-lucide="edit"></i> 发起群聊(设置)</a>
       <a class="nav-link" data-goto="page-add-friend"><i data-lucide="user-search"></i> 添加好友</a>
 
       <div class="sidebar-group-title">6. 钱包 → 子页面</div>
@@ -465,45 +466,112 @@
     </div>
   </div>
 
-  <!-- ==================== 发起群聊页 ==================== -->
+  <!-- ==================== 发起群聊 - 选择成员 ==================== -->
   <div class="page" id="page-create-group">
     <nav class="top-nav">
       <div class="nav-left">
         <i data-lucide="chevron-left" class="nav-icon back-btn" data-back="page-messages"></i>
-        <span class="nav-title">发起群聊</span>
+        <span class="nav-title">选择群成员</span>
       </div>
       <div class="nav-right">
-        <button class="create-group-btn" id="create-group-confirm" disabled>完成(0)</button>
+        <button class="create-group-btn" id="create-group-next" disabled>下一步(0)</button>
       </div>
     </nav>
     <div class="page-body">
       <div class="search-bar">
         <i data-lucide="search" class="search-icon"></i>
-        <input type="text" placeholder="搜索联系人" class="search-input">
+        <input type="text" placeholder="搜索好友" class="search-input" id="create-group-search-input">
+      </div>
+      <div class="group-contact-list" id="create-group-list">
+        <div class="group-contact-item" data-name="小美">
+          <div class="group-checkbox"><i data-lucide="check" class="check-icon"></i></div>
+          <img class="avatar" src="https://i.pravatar.cc/100?img=5" alt="小美">
+          <span class="contact-name">小美</span>
+        </div>
+        <div class="group-contact-item" data-name="Lina">
+          <div class="group-checkbox"><i data-lucide="check" class="check-icon"></i></div>
+          <img class="avatar" src="https://i.pravatar.cc/100?img=32" alt="Lina">
+          <span class="contact-name">Lina</span>
+        </div>
+        <div class="group-contact-item" data-name="老王">
+          <div class="group-checkbox"><i data-lucide="check" class="check-icon"></i></div>
+          <img class="avatar" src="https://i.pravatar.cc/100?img=60" alt="老王">
+          <span class="contact-name">老王</span>
+        </div>
+        <div class="group-contact-item" data-name="李雷">
+          <div class="group-checkbox"><i data-lucide="check" class="check-icon"></i></div>
+          <img class="avatar" src="https://i.pravatar.cc/100?img=15" alt="李雷">
+          <span class="contact-name">李雷</span>
+        </div>
+        <div class="group-contact-item" data-name="韩梅梅">
+          <div class="group-checkbox"><i data-lucide="check" class="check-icon"></i></div>
+          <img class="avatar" src="https://i.pravatar.cc/100?img=25" alt="韩梅梅">
+          <span class="contact-name">韩梅梅</span>
+        </div>
+        <div class="group-contact-item" data-name="张伟">
+          <div class="group-checkbox"><i data-lucide="check" class="check-icon"></i></div>
+          <img class="avatar" src="https://i.pravatar.cc/100?img=52" alt="张伟">
+          <span class="contact-name">张伟</span>
+        </div>
+        <div class="group-contact-item" data-name="王芳">
+          <div class="group-checkbox"><i data-lucide="check" class="check-icon"></i></div>
+          <img class="avatar" src="https://i.pravatar.cc/100?img=44" alt="王芳">
+          <span class="contact-name">王芳</span>
+        </div>
+        <div class="group-contact-item" data-name="赵敏">
+          <div class="group-checkbox"><i data-lucide="check" class="check-icon"></i></div>
+          <img class="avatar" src="https://i.pravatar.cc/100?img=9" alt="赵敏">
+          <span class="contact-name">赵敏</span>
+        </div>
+        <div class="group-contact-item" data-name="陈浩">
+          <div class="group-checkbox"><i data-lucide="check" class="check-icon"></i></div>
+          <img class="avatar" src="https://i.pravatar.cc/100?img=68" alt="陈浩">
+          <span class="contact-name">陈浩</span>
+        </div>
+        <div class="group-contact-item" data-name="刘洋">
+          <div class="group-checkbox"><i data-lucide="check" class="check-icon"></i></div>
+          <img class="avatar" src="https://i.pravatar.cc/100?img=11" alt="刘洋">
+          <span class="contact-name">刘洋</span>
+        </div>
       </div>
       <div class="selected-contacts-bar" id="selected-bar" style="display:none">
         <div class="selected-avatars" id="selected-avatars"></div>
       </div>
-      <div class="group-contact-list">
-        <div class="group-contact-item" data-name="张伟">
-          <div class="group-checkbox"><i data-lucide="check" class="check-icon"></i></div>
-          <img class="avatar" src="images/contact-zhangwei.png" alt="张伟">
-          <span class="contact-name">张伟</span>
+    </div>
+  </div>
+
+  <!-- ==================== 发起群聊 - 设置群信息 ==================== -->
+  <div class="page" id="page-create-group-info">
+    <nav class="top-nav">
+      <div class="nav-left">
+        <i data-lucide="chevron-left" class="nav-icon back-btn" data-back="page-create-group"></i>
+        <span class="nav-title">新建群聊</span>
+      </div>
+      <div class="nav-right">
+        <button class="create-group-btn" id="create-group-submit">创建</button>
+      </div>
+    </nav>
+    <div class="page-body">
+      <div class="cg-info-card">
+        <div class="cg-avatar-section">
+          <div class="cg-default-avatar" id="cg-default-avatar">
+            <i data-lucide="users"></i>
+          </div>
+          <span class="cg-avatar-hint">默认群头像</span>
         </div>
-        <div class="group-contact-item" data-name="李娜">
-          <div class="group-checkbox"><i data-lucide="check" class="check-icon"></i></div>
-          <img class="avatar" src="images/contact-lina.png" alt="李娜">
-          <span class="contact-name">李娜</span>
+        <div class="cg-form">
+          <div class="cg-field">
+            <label class="cg-label">群名称</label>
+            <input type="text" class="cg-input" id="cg-name-input" placeholder="请输入群名称" maxlength="20">
+          </div>
+          <div class="cg-field">
+            <label class="cg-label">群公告</label>
+            <textarea class="cg-textarea" id="cg-announce-input" placeholder="群公告（可选）" rows="3" maxlength="200"></textarea>
+          </div>
         </div>
-        <div class="group-contact-item" data-name="王明">
-          <div class="group-checkbox"><i data-lucide="check" class="check-icon"></i></div>
-          <img class="avatar" src="images/contact-wangming.png" alt="王明">
-          <span class="contact-name">王明</span>
-        </div>
-        <div class="group-contact-item" data-name="赵雪">
-          <div class="group-checkbox"><i data-lucide="check" class="check-icon"></i></div>
-          <img class="avatar" src="images/contact-zhaoxue.png" alt="赵雪">
-          <span class="contact-name">赵雪</span>
+        <div class="cg-members-preview">
+          <div class="cg-members-title">已选成员 (<span id="cg-info-count">0</span>人)</div>
+          <div class="cg-members-grid" id="cg-members-grid"></div>
         </div>
       </div>
     </div>

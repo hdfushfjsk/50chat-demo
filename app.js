@@ -919,15 +919,16 @@ document.addEventListener('DOMContentLoaded', () => {
   })();
 
   // =============================================
-  //  20. 发起群聊 - 联系人选择
+  //  20. 发起群聊 - 选择成员 + 设置群信息 + 创建
   // =============================================
   (function() {
-    const confirmBtn = document.getElementById('create-group-confirm');
+    const nextBtn = document.getElementById('create-group-next');
     const selectedBar = document.getElementById('selected-bar');
     const selectedAvatars = document.getElementById('selected-avatars');
     const items = document.querySelectorAll('.group-contact-item');
+    const searchInput = document.getElementById('create-group-search-input');
 
-    if (!confirmBtn || !items.length) return;
+    if (!nextBtn || !items.length) return;
 
     items.forEach(item => {
       item.addEventListener('click', function() {
@@ -936,11 +937,21 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
 
+    if (searchInput) {
+      searchInput.addEventListener('input', function() {
+        const kw = this.value.trim().toLowerCase();
+        items.forEach(item => {
+          const name = (item.dataset.name || '').toLowerCase();
+          item.classList.toggle('hidden', kw !== '' && !name.includes(kw));
+        });
+      });
+    }
+
     function updateSelection() {
       const selected = document.querySelectorAll('.group-contact-item.selected');
       const count = selected.length;
-      confirmBtn.textContent = '完成(' + count + ')';
-      confirmBtn.disabled = count === 0;
+      nextBtn.textContent = '下一步(' + count + ')';
+      nextBtn.disabled = count < 2;
 
       if (selectedAvatars) {
         selectedAvatars.innerHTML = '';
@@ -955,8 +966,93 @@ document.addEventListener('DOMContentLoaded', () => {
         });
       }
       if (selectedBar) {
-        selectedBar.style.display = count > 0 ? 'block' : 'none';
+        selectedBar.style.display = count > 0 ? 'flex' : 'none';
       }
+    }
+
+    nextBtn.addEventListener('click', function() {
+      if (this.disabled) return;
+      const selected = document.querySelectorAll('.group-contact-item.selected');
+      if (selected.length < 2) return;
+
+      const membersGrid = document.getElementById('cg-members-grid');
+      const countEl = document.getElementById('cg-info-count');
+      if (membersGrid) {
+        membersGrid.innerHTML = '';
+        selected.forEach(item => {
+          const img = item.querySelector('img');
+          const nameEl = item.querySelector('.contact-name');
+          const div = document.createElement('div');
+          div.className = 'cg-member-item';
+          div.innerHTML = '<img src="' + (img ? img.src : '') + '" alt="' + (nameEl ? nameEl.textContent : '') + '">'
+            + '<span>' + (nameEl ? nameEl.textContent : '') + '</span>';
+          membersGrid.appendChild(div);
+        });
+      }
+      if (countEl) countEl.textContent = selected.length;
+
+      var nameInput = document.getElementById('cg-name-input');
+      if (nameInput) nameInput.value = '';
+      var announceInput = document.getElementById('cg-announce-input');
+      if (announceInput) announceInput.value = '';
+
+      navigateTo('page-create-group-info', { direction: 'forward' });
+      lucide.createIcons({ icons: lucide.icons });
+    });
+
+    var submitBtn = document.getElementById('create-group-submit');
+    if (submitBtn) {
+      submitBtn.addEventListener('click', function() {
+        var nameInput = document.getElementById('cg-name-input');
+        var groupName = nameInput ? nameInput.value.trim() : '';
+        if (!groupName) {
+          showToast('请输入群名称');
+          return;
+        }
+
+        var selected = document.querySelectorAll('.group-contact-item.selected');
+        var memberCount = selected.length + 1;
+
+        showToast('群聊创建成功', 'success');
+
+        var titleEl = document.querySelector('#page-group-chat .nav-title');
+        if (titleEl) titleEl.textContent = groupName + '(' + memberCount + ')';
+
+        var msgArea = document.getElementById('group-messages-area');
+        if (msgArea) {
+          var sysMsg = document.createElement('div');
+          sysMsg.className = 'msg-system-admin';
+          sysMsg.innerHTML = '<span class="msg-system-text">你 创建了群聊</span>';
+          var firstChild = msgArea.firstChild;
+          if (firstChild) {
+            msgArea.insertBefore(sysMsg, firstChild);
+          } else {
+            msgArea.appendChild(sysMsg);
+          }
+        }
+
+        var chatList = document.querySelector('#page-messages .chat-list');
+        if (chatList) {
+          var card = document.createElement('div');
+          card.className = 'chat-card';
+          card.dataset.chat = 'page-group-chat';
+          card.innerHTML = '<div class="chat-avatar" style="width:48px;height:48px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;color:#fff;flex-shrink:0"><i data-lucide="users" style="width:24px;height:24px"></i></div>'
+            + '<div class="chat-info">'
+            + '<div class="chat-top"><span class="chat-name">' + groupName + '(' + memberCount + ')</span><span class="chat-time">刚刚</span></div>'
+            + '<div class="chat-preview">你创建了群聊</div>'
+            + '</div>';
+          chatList.insertBefore(card, chatList.firstChild);
+          card.addEventListener('click', function() {
+            navigateTo('page-group-chat', { direction: 'forward' });
+          });
+          lucide.createIcons({ icons: lucide.icons });
+        }
+
+        items.forEach(item => item.classList.remove('selected'));
+        updateSelection();
+
+        navigateTo('page-group-chat', { direction: 'forward' });
+      });
     }
   })();
 
