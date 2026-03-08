@@ -408,6 +408,10 @@
         <i data-lucide="credit-card"></i>
         <span>收付款</span>
       </div>
+      <div class="plus-menu-item" data-action="mass-send">
+        <i data-lucide="send"></i>
+        <span>群发</span>
+      </div>
     </div>
 
     <div class="tab-bar">
@@ -2952,6 +2956,9 @@
   <div class="chat-msg-menu-item" data-action="copy">
     <i data-lucide="copy"></i><span>复制</span>
   </div>
+  <div class="chat-msg-menu-item" data-action="forward">
+    <i data-lucide="share"></i><span>转发</span>
+  </div>
   <div class="chat-msg-menu-item" data-action="recall">
     <i data-lucide="rotate-ccw"></i><span>撤回</span>
   </div>
@@ -2964,11 +2971,57 @@
 <div class="group-msg-menu" id="group-msg-menu">
   <div class="group-msg-menu-item" id="gm-reply"><i data-lucide="reply"></i><span>回复</span></div>
   <div class="group-msg-menu-item" id="gm-copy"><i data-lucide="copy"></i><span>复制</span></div>
+  <div class="group-msg-menu-item" id="gm-forward"><i data-lucide="share"></i><span>转发</span></div>
   <div class="group-msg-menu-item" id="gm-at-ta" style="display:none"><i data-lucide="at-sign"></i><span>@TA</span></div>
   <div class="group-msg-menu-item" id="gm-recall"><i data-lucide="undo-2"></i><span>撤回消息</span></div>
   <div class="group-msg-menu-item" id="gm-mute"><i data-lucide="volume-x"></i><span>禁言此人</span></div>
   <div class="group-msg-menu-item danger" id="gm-delete"><i data-lucide="trash-2"></i><span>删除</span></div>
 </div>
+
+<!-- 群发弹窗 -->
+<div class="sheet-overlay" id="mass-send-overlay"></div>
+<div class="action-sheet" id="mass-send-sheet">
+  <div class="action-sheet-handle"></div>
+  <div class="action-sheet-title">群发消息</div>
+  <div class="action-sheet-subtitle">选择发送目标并输入消息内容</div>
+  <div class="action-sheet-targets">
+    <button class="target-btn active" data-target="friends">
+      <i data-lucide="users"></i>
+      <span>所有好友</span>
+    </button>
+    <button class="target-btn" data-target="groups">
+      <i data-lucide="messages-square"></i>
+      <span>所有群组</span>
+    </button>
+  </div>
+  <textarea class="action-sheet-input" id="mass-send-input" placeholder="输入群发消息内容…" rows="3"></textarea>
+  <button class="action-sheet-btn primary" id="mass-send-confirm">发送</button>
+  <button class="action-sheet-btn cancel" id="mass-send-cancel">取消</button>
+</div>
+
+<!-- 转发弹窗 -->
+<div class="sheet-overlay" id="forward-overlay"></div>
+<div class="action-sheet" id="forward-sheet">
+  <div class="action-sheet-handle"></div>
+  <div class="action-sheet-title">转发消息</div>
+  <div class="forward-preview" id="forward-preview"></div>
+  <div class="action-sheet-subtitle">选择转发目标</div>
+  <div class="action-sheet-targets">
+    <button class="target-btn active" data-target="friends">
+      <i data-lucide="users"></i>
+      <span>转发给所有好友</span>
+    </button>
+    <button class="target-btn" data-target="groups">
+      <i data-lucide="messages-square"></i>
+      <span>转发给所有群组</span>
+    </button>
+  </div>
+  <button class="action-sheet-btn primary" id="forward-confirm">确认转发</button>
+  <button class="action-sheet-btn cancel" id="forward-cancel">取消</button>
+</div>
+
+<!-- Toast 提示 -->
+<div class="app-toast" id="app-toast"></div>
 
 <script src="app.js"></script>
 </body>

@@ -904,6 +904,10 @@ document.addEventListener('DOMContentLoaded', () => {
           plusMenu.classList.remove('show');
           plusOverlay.classList.remove('show');
           const action = this.dataset.action;
+          if (action === 'mass-send') {
+            showMassSendSheet();
+            return;
+          }
           if (actionMap[action]) {
             navigateTo(actionMap[action], { direction: 'forward' });
           }
@@ -2096,6 +2100,16 @@ document.addEventListener('DOMContentLoaded', () => {
         hideGroupMsgMenu();
         return;
       }
+      if (item.id === 'gm-forward') {
+        if (selectedMsg) {
+          var bubble = selectedMsg.querySelector('.bubble');
+          if (bubble) {
+            showForwardSheet(bubble.textContent);
+          }
+        }
+        hideGroupMsgMenu();
+        return;
+      }
       if (item.id === 'gm-delete') {
         if (selectedMsg) {
           selectedMsg.style.transition = 'opacity 0.3s, max-height 0.3s';
@@ -2197,6 +2211,15 @@ document.addEventListener('DOMContentLoaded', () => {
             navigator.clipboard.writeText(bubble.textContent).catch(function(){});
             alert('已复制');
           }
+        }
+
+        if (action === 'forward') {
+          var bubble = chatMenuTarget.querySelector('.bubble');
+          if (bubble) {
+            showForwardSheet(bubble.textContent);
+          }
+          hideChatMenu();
+          return;
         }
 
         if (action === 'recall') {
@@ -2425,6 +2448,134 @@ document.addEventListener('DOMContentLoaded', () => {
         hidePanel();
       }
     });
+  })();
+
+  // =============================================
+  //  Toast 提示
+  // =============================================
+  var toastTimer = null;
+  window.showToast = function(msg, type) {
+    var el = document.getElementById('app-toast');
+    if (!el) return;
+    clearTimeout(toastTimer);
+    el.textContent = msg;
+    el.className = 'app-toast' + (type === 'success' ? ' success' : '');
+    void el.offsetWidth;
+    el.classList.add('show');
+    toastTimer = setTimeout(function() {
+      el.classList.remove('show');
+    }, 1800);
+  };
+
+  // =============================================
+  //  群发弹窗
+  // =============================================
+  (function() {
+    var overlay = document.getElementById('mass-send-overlay');
+    var sheet = document.getElementById('mass-send-sheet');
+    var input = document.getElementById('mass-send-input');
+    var confirmBtn = document.getElementById('mass-send-confirm');
+    var cancelBtn = document.getElementById('mass-send-cancel');
+
+    function open() {
+      if (!sheet || !overlay) return;
+      if (input) input.value = '';
+      overlay.classList.add('show');
+      requestAnimationFrame(function() {
+        sheet.classList.add('show');
+      });
+      if (typeof lucide !== 'undefined') lucide.createIcons();
+    }
+
+    function close() {
+      if (!sheet || !overlay) return;
+      sheet.classList.remove('show');
+      setTimeout(function() {
+        overlay.classList.remove('show');
+      }, 350);
+    }
+
+    window.showMassSendSheet = open;
+
+    if (overlay) overlay.addEventListener('click', close);
+    if (cancelBtn) cancelBtn.addEventListener('click', close);
+
+    if (sheet) {
+      sheet.querySelectorAll('.target-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          sheet.querySelectorAll('.target-btn').forEach(function(b) { b.classList.remove('active'); });
+          btn.classList.add('active');
+        });
+      });
+    }
+
+    if (confirmBtn) {
+      confirmBtn.addEventListener('click', function() {
+        var text = input ? input.value.trim() : '';
+        if (!text) {
+          showToast('请输入消息内容');
+          return;
+        }
+        close();
+        setTimeout(function() {
+          showToast('群发成功', 'success');
+        }, 400);
+      });
+    }
+  })();
+
+  // =============================================
+  //  转发弹窗
+  // =============================================
+  (function() {
+    var overlay = document.getElementById('forward-overlay');
+    var sheet = document.getElementById('forward-sheet');
+    var preview = document.getElementById('forward-preview');
+    var confirmBtn = document.getElementById('forward-confirm');
+    var cancelBtn = document.getElementById('forward-cancel');
+
+    function open(msgText) {
+      if (!sheet || !overlay) return;
+      if (preview) {
+        preview.textContent = msgText || '';
+      }
+      overlay.classList.add('show');
+      requestAnimationFrame(function() {
+        sheet.classList.add('show');
+      });
+      if (typeof lucide !== 'undefined') lucide.createIcons();
+    }
+
+    function close() {
+      if (!sheet || !overlay) return;
+      sheet.classList.remove('show');
+      setTimeout(function() {
+        overlay.classList.remove('show');
+      }, 350);
+    }
+
+    window.showForwardSheet = open;
+
+    if (overlay) overlay.addEventListener('click', close);
+    if (cancelBtn) cancelBtn.addEventListener('click', close);
+
+    if (sheet) {
+      sheet.querySelectorAll('.target-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          sheet.querySelectorAll('.target-btn').forEach(function(b) { b.classList.remove('active'); });
+          btn.classList.add('active');
+        });
+      });
+    }
+
+    if (confirmBtn) {
+      confirmBtn.addEventListener('click', function() {
+        close();
+        setTimeout(function() {
+          showToast('转发成功', 'success');
+        }, 400);
+      });
+    }
   })();
 
 });

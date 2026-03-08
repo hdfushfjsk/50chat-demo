@@ -6336,3 +6336,276 @@ label.toggle-switch:has(input:checked) {
 [data-theme="dark"] .at-mention-item:active {
   background: rgba(10, 132, 255, 0.15);
 }
+
+/* ============================== */
+/*  Action Sheet (群发/转发弹窗)  */
+/* ============================== */
+.sheet-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  z-index: 1000;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.sheet-overlay.show {
+  display: block;
+  opacity: 1;
+}
+
+.action-sheet {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1001;
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(40px) saturate(180%);
+  -webkit-backdrop-filter: blur(40px) saturate(180%);
+  border-radius: 20px 20px 0 0;
+  padding: 12px 20px calc(env(safe-area-inset-bottom, 0px) + 20px);
+  transform: translateY(100%);
+  transition: transform 0.35s cubic-bezier(0.32, 0.72, 0, 1);
+  box-shadow: 0 -8px 40px rgba(0, 0, 0, 0.12);
+  border-top: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.action-sheet.show {
+  transform: translateY(0);
+}
+
+.action-sheet-handle {
+  width: 36px;
+  height: 5px;
+  border-radius: 3px;
+  background: rgba(0, 0, 0, 0.15);
+  margin: 0 auto 16px;
+}
+
+.action-sheet-title {
+  font-size: 18px;
+  font-weight: 600;
+  text-align: center;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.action-sheet-subtitle {
+  font-size: 13px;
+  text-align: center;
+  color: var(--text-secondary);
+  margin-bottom: 18px;
+}
+
+.action-sheet-targets {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.target-btn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 16px 12px;
+  border: 2px solid var(--border-color);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.target-btn svg {
+  width: 28px;
+  height: 28px;
+  color: var(--text-secondary);
+  transition: color 0.2s;
+}
+
+.target-btn.active {
+  border-color: #007AFF;
+  background: rgba(0, 122, 255, 0.08);
+}
+
+.target-btn.active svg {
+  color: #007AFF;
+}
+
+.target-btn:active {
+  transform: scale(0.97);
+}
+
+.action-sheet-input {
+  width: 100%;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 12px 14px;
+  font-size: 15px;
+  resize: none;
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: var(--text-primary);
+  outline: none;
+  transition: border-color 0.2s;
+  margin-bottom: 16px;
+  box-sizing: border-box;
+  font-family: inherit;
+}
+
+.action-sheet-input:focus {
+  border-color: #007AFF;
+}
+
+.action-sheet-input::placeholder {
+  color: var(--text-tertiary);
+}
+
+.action-sheet-btn {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 14px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-bottom: 8px;
+}
+
+.action-sheet-btn.primary {
+  background: #007AFF;
+  color: #fff;
+}
+
+.action-sheet-btn.primary:active {
+  background: #0062cc;
+  transform: scale(0.98);
+}
+
+.action-sheet-btn.cancel {
+  background: rgba(0, 0, 0, 0.04);
+  color: var(--text-primary);
+}
+
+.action-sheet-btn.cancel:active {
+  background: rgba(0, 0, 0, 0.08);
+}
+
+/* 转发消息预览 */
+.forward-preview {
+  background: rgba(0, 0, 0, 0.04);
+  border-radius: 12px;
+  padding: 12px 14px;
+  margin-bottom: 14px;
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  max-height: 60px;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.forward-preview:empty {
+  display: none;
+}
+
+/* ============================== */
+/*  Toast 提示                     */
+/* ============================== */
+.app-toast {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.85);
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  color: #fff;
+  padding: 14px 28px;
+  border-radius: 14px;
+  font-size: 15px;
+  font-weight: 500;
+  z-index: 2000;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.3s cubic-bezier(0.32, 0.72, 0, 1);
+  white-space: nowrap;
+}
+
+.app-toast.show {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.app-toast.success {
+  background: rgba(52, 199, 89, 0.92);
+}
+
+/* ============================== */
+/*  Action Sheet / Toast – Dark   */
+/* ============================== */
+[data-theme="dark"] .action-sheet {
+  background: rgba(44, 44, 46, 0.85);
+  border-top-color: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 -8px 40px rgba(0, 0, 0, 0.4);
+}
+
+[data-theme="dark"] .action-sheet-handle {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+[data-theme="dark"] .target-btn {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+[data-theme="dark"] .target-btn.active {
+  background: rgba(10, 132, 255, 0.18);
+  border-color: #0A84FF;
+}
+
+[data-theme="dark"] .target-btn.active svg {
+  color: #0A84FF;
+}
+
+[data-theme="dark"] .action-sheet-input {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.12);
+  color: #fff;
+}
+
+[data-theme="dark"] .action-sheet-input:focus {
+  border-color: #0A84FF;
+}
+
+[data-theme="dark"] .action-sheet-btn.cancel {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+[data-theme="dark"] .action-sheet-btn.cancel:active {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+[data-theme="dark"] .forward-preview {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+[data-theme="dark"] .app-toast {
+  background: rgba(58, 58, 60, 0.88);
+}
+
+[data-theme="dark"] .app-toast.success {
+  background: rgba(48, 209, 88, 0.92);
+}
