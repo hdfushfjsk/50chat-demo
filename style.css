@@ -4000,6 +4000,8 @@ label.toggle-switch:has(input:checked) {
   cursor: pointer;
   box-shadow: 0 4px 12px rgba(231,76,60,0.3);
   transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  position: relative;
+  z-index: 10;
 }
 .rp-send-submit:hover {
   transform: translateY(-1px);
@@ -6125,4 +6127,174 @@ label.toggle-switch:has(input:checked) {
 }
 [data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
   background: rgba(255,255,255,0.25);
+}
+
+/* Private Chat Message Context Menu */
+.chat-msg-menu {
+  position: fixed;
+  z-index: 999;
+  background: var(--bg-card);
+  border-radius: 14px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.15), 0 2px 8px rgba(0,0,0,0.08);
+  border: 1px solid var(--glass-border);
+  overflow: hidden;
+  min-width: 140px;
+  animation: chatMenuFadeIn 0.15s ease;
+}
+
+@keyframes chatMenuFadeIn {
+  from { opacity: 0; transform: scale(0.92); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.chat-msg-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 18px;
+  font-size: 14px;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.chat-msg-menu-item:hover {
+  background: rgba(0,122,255,0.06);
+}
+
+.chat-msg-menu-item:active {
+  background: rgba(0,122,255,0.12);
+}
+
+.chat-msg-menu-item + .chat-msg-menu-item {
+  border-top: 1px solid var(--border-color);
+}
+
+.chat-msg-menu-item svg {
+  width: 16px;
+  height: 16px;
+  color: var(--text-secondary);
+}
+
+.chat-msg-menu-item[data-action="recall"] svg {
+  color: #FF9500;
+}
+
+.chat-msg-menu-item[data-action="recall"] span {
+  color: #FF9500;
+}
+
+.msg-recall-notice {
+  text-align: center;
+  padding: 8px 0;
+  font-size: 12px;
+  color: var(--text-tertiary);
+  animation: msgBounceIn 0.3s ease;
+}
+
+.edited-tag {
+  font-size: 11px;
+  color: rgba(255,255,255,0.5);
+  font-weight: 400;
+  font-style: italic;
+}
+
+.message-row.other .edited-tag {
+  color: var(--text-tertiary);
+}
+
+/* ============================== */
+/*  @成员选择浮层                   */
+/* ============================== */
+.at-mention-panel {
+  display: none;
+  position: absolute;
+  bottom: 100%;
+  left: 12px;
+  right: 12px;
+  margin-bottom: 4px;
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 0.5px solid var(--glass-border);
+  border-radius: 16px;
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+  z-index: 100;
+  animation: atMentionIn 0.2s ease;
+}
+
+.at-mention-panel.show {
+  display: block;
+}
+
+@keyframes atMentionIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.at-mention-header {
+  padding: 10px 16px 6px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  letter-spacing: 0.5px;
+}
+
+.at-mention-list {
+  max-height: 220px;
+  overflow-y: auto;
+  padding-bottom: 6px;
+}
+
+.at-mention-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.at-mention-item:hover,
+.at-mention-item:active {
+  background: rgba(0, 122, 255, 0.08);
+}
+
+.at-mention-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.at-mention-name {
+  font-size: 15px;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+/* @提及高亮 */
+.at-highlight {
+  color: var(--accent);
+  font-weight: 500;
+}
+
+/* chat-input-bar 需要 relative 定位以支撑浮层 */
+#group-input-bar {
+  position: relative;
+}
+
+/* ============================== */
+/*  @成员浮层 – Dark Theme        */
+/* ============================== */
+[data-theme="dark"] .at-mention-panel {
+  background: rgba(44, 44, 46, 0.85);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] .at-mention-item:hover,
+[data-theme="dark"] .at-mention-item:active {
+  background: rgba(10, 132, 255, 0.15);
 }

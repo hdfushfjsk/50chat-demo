@@ -239,6 +239,16 @@ document.addEventListener('DOMContentLoaded', () => {
   // =============================================
   //  10. 消息发送模拟
   // =============================================
+  const groupMembers = ['李娜', '王明', '张伟', '赵雪'];
+
+  function highlightMentions(html) {
+    groupMembers.forEach(function(name) {
+      var regex = new RegExp('@' + name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g');
+      html = html.replace(regex, '<span class="at-highlight">@' + name + '</span>');
+    });
+    return html;
+  }
+
   function sendMessage(inputEl) {
     const text = inputEl.value.trim();
     if (!text) return;
@@ -247,15 +257,18 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!messagesArea) return;
 
     const isGroup = inputEl.closest('#page-group-chat');
+    const bubbleContent = isGroup ? highlightMentions(escapeHtml(text)) : escapeHtml(text);
 
     const row = document.createElement('div');
     row.className = 'message-row self';
     row.innerHTML =
-      '<div class="bubble self-bubble">' + escapeHtml(text) + '</div>' +
+      '<div class="bubble self-bubble">' + bubbleContent + '</div>' +
       '<div class="msg-avatar" style="background:linear-gradient(135deg,#0984E3,#74B9FF)">我</div>';
     messagesArea.appendChild(row);
 
     inputEl.value = '';
+    var mentionPanel = document.getElementById('at-mention-panel');
+    if (mentionPanel) mentionPanel.classList.remove('show');
     lucide.createIcons({ icons: lucide.icons });
     messagesArea.scrollTop = messagesArea.scrollHeight;
 
@@ -291,6 +304,8 @@ document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('.chat-input').forEach(input => {
     input.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') {
+        var mentionPanel = document.getElementById('at-mention-panel');
+        if (mentionPanel && mentionPanel.classList.contains('show')) return;
         e.preventDefault();
         sendMessage(input);
       }
@@ -1642,7 +1657,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (rpAmount) rpAmount.addEventListener('input', updateRpSummary);
 
     if (rpSubmit) {
-      rpSubmit.addEventListener('click', function() {
+      rpSubmit.addEventListener('click', function(e) {
+        e.stopPropagation();
         var count = parseInt(rpCount ? rpCount.value : 1) || 0;
         var amount = parseFloat(rpAmount ? rpAmount.value : 0) || 0;
         if (amount <= 0) { alert('请输入金额'); return; }
@@ -1652,6 +1668,18 @@ document.addEventListener('DOMContentLoaded', () => {
         navigateTo('page-chat', { direction: 'back' });
       });
     }
+
+    document.addEventListener('click', function(e) {
+      if (e.target.closest('#rp-submit')) {
+        var count = parseInt(rpCount ? rpCount.value : 1) || 0;
+        var amount = parseFloat(rpAmount ? rpAmount.value : 0) || 0;
+        if (amount <= 0) { alert('请输入金额'); return; }
+        if (count <= 0) { alert('请输入红包个数'); return; }
+        var typeText = currentRpType === 'lucky' ? '拼手气红包' : '普通红包';
+        alert('已发送' + count + '个' + typeText + '！');
+        navigateTo('page-chat', { direction: 'back' });
+      }
+    });
   })();
 
   // =============================================
@@ -2020,6 +2048,115 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   })();
 
+  // =============================================
+  //  33b. 私聊消息右键/长按菜单
+  // =============================================
+  (function() {
+    var chatMenu = document.getElementById('chat-msg-menu');
+    var chatMenuTarget = null;
+    var chatLongPressTimer = null;
+
+    function showChatMsgMenu(x, y, msgRow) {
+      if (!chatMenu) return;
+      chatMenuTarget = msgRow;
+
+      var isSelf = msgRow.classList.contains('self');
+      var recallItem = chatMenu.querySelector('[data-action="recall"]');
+      var editItem = chatMenu.querySelector('[data-action="edit"]');
+      if (recallItem) recallItem.style.display = isSelf ? '' : 'none';
+      if (editItem) editItem.style.display = isSelf ? '' : 'none';
+
+      chatMenu.style.display = '';
+      chatMenu.style.left = Math.min(x, window.innerWidth - 160) + 'px';
+      chatMenu.style.top = Math.min(y, window.innerHeight - 150) + 'px';
+
+      if (typeof lucide !== 'undefined') lucide.createIcons();
+
+      setTimeout(function() {
+        document.addEventListener('click', hideChatMenu);
+      }, 10);
+    }
+
+    function hideChatMenu() {
+      if (chatMenu) chatMenu.style.display = 'none';
+      chatMenuTarget = null;
+      document.removeEventListener('click', hideChatMenu);
+    }
+
+    var chatPage = document.getElementById('page-chat');
+    if (chatPage) {
+      var msgArea = chatPage.querySelector('.messages-area');
+      if (msgArea) {
+        msgArea.addEventListener('contextmenu', function(e) {
+          var msgRow = e.target.closest('.message-row');
+          if (!msgRow) return;
+          e.preventDefault();
+          showChatMsgMenu(e.clientX, e.clientY, msgRow);
+        });
+
+        msgArea.addEventListener('touchstart', function(e) {
+          var msgRow = e.target.closest('.message-row');
+          if (!msgRow) return;
+          chatLongPressTimer = setTimeout(function() {
+            var touch = e.touches[0];
+            showChatMsgMenu(touch.clientX, touch.clientY, msgRow);
+          }, 500);
+        });
+        msgArea.addEventListener('touchend', function() {
+          clearTimeout(chatLongPressTimer);
+        });
+        msgArea.addEventListener('touchmove', function() {
+          clearTimeout(chatLongPressTimer);
+        });
+      }
+    }
+
+    if (chatMenu) {
+      chatMenu.addEventListener('click', function(e) {
+        var item = e.target.closest('.chat-msg-menu-item');
+        if (!item || !chatMenuTarget) return;
+        var action = item.getAttribute('data-action');
+
+        if (action === 'copy') {
+          var bubble = chatMenuTarget.querySelector('.bubble');
+          if (bubble) {
+            navigator.clipboard.writeText(bubble.textContent).catch(function(){});
+            alert('已复制');
+          }
+        }
+
+        if (action === 'recall') {
+          var bubble = chatMenuTarget.querySelector('.bubble');
+          var row = chatMenuTarget;
+          var statusRow = row.nextElementSibling;
+          row.remove();
+          if (statusRow && statusRow.classList.contains('msg-status-row')) {
+            statusRow.remove();
+          }
+        }
+
+        if (action === 'edit') {
+          var bubble = chatMenuTarget.querySelector('.bubble');
+          if (bubble) {
+            var oldText = bubble.textContent;
+            var newText = prompt('编辑消息：', oldText);
+            if (newText !== null && newText.trim() !== '') {
+              bubble.textContent = newText;
+              if (!bubble.querySelector('.edited-tag')) {
+                var tag = document.createElement('span');
+                tag.className = 'edited-tag';
+                tag.textContent = ' (已编辑)';
+                bubble.appendChild(tag);
+              }
+            }
+          }
+        }
+
+        hideChatMenu();
+      });
+    }
+  })();
+
   // 渲染所有新增图标
   lucide.createIcons({ icons: lucide.icons });
 
@@ -2095,6 +2232,115 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       });
     }
+  })();
+
+  // =============================================
+  //  35. 群聊 @提及功能
+  // =============================================
+  (function() {
+    var panel = document.getElementById('at-mention-panel');
+    var list = document.getElementById('at-mention-list');
+    var groupInput = document.getElementById('group-chat-input');
+    if (!panel || !list || !groupInput) return;
+
+    var atTriggerPos = -1;
+
+    function showPanel() {
+      panel.classList.add('show');
+    }
+
+    function hidePanel() {
+      panel.classList.remove('show');
+      atTriggerPos = -1;
+    }
+
+    function filterMembers(query) {
+      var items = list.querySelectorAll('.at-mention-item');
+      var q = query.toLowerCase();
+      var anyVisible = false;
+      items.forEach(function(item) {
+        var name = item.getAttribute('data-name') || '';
+        var match = !q || name.toLowerCase().indexOf(q) >= 0;
+        item.style.display = match ? '' : 'none';
+        if (match) anyVisible = true;
+      });
+      return anyVisible;
+    }
+
+    groupInput.addEventListener('input', function() {
+      var val = this.value;
+      var cursor = this.selectionStart;
+
+      if (atTriggerPos >= 0) {
+        if (cursor <= atTriggerPos) {
+          hidePanel();
+          return;
+        }
+        var query = val.substring(atTriggerPos + 1, cursor);
+        if (query.indexOf(' ') >= 0) {
+          hidePanel();
+          return;
+        }
+        var hasResults = filterMembers(query);
+        if (hasResults) {
+          showPanel();
+        } else {
+          hidePanel();
+        }
+        return;
+      }
+
+      var charBefore = val.charAt(cursor - 1);
+      if (charBefore === '@') {
+        var charBeforeAt = cursor >= 2 ? val.charAt(cursor - 2) : '';
+        if (cursor === 1 || charBeforeAt === ' ' || charBeforeAt === '\n') {
+          atTriggerPos = cursor - 1;
+          filterMembers('');
+          showPanel();
+        }
+      }
+    });
+
+    groupInput.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && panel.classList.contains('show')) {
+        hidePanel();
+        e.preventDefault();
+        e.stopPropagation();
+      }
+      if (e.key === 'Enter' && panel.classList.contains('show')) {
+        var visibleItem = list.querySelector('.at-mention-item:not([style*="display: none"])');
+        if (visibleItem) {
+          insertMention(visibleItem.getAttribute('data-name'));
+          e.preventDefault();
+          e.stopPropagation();
+        }
+      }
+    });
+
+    list.addEventListener('click', function(e) {
+      var item = e.target.closest('.at-mention-item');
+      if (!item) return;
+      var name = item.getAttribute('data-name');
+      insertMention(name);
+    });
+
+    function insertMention(name) {
+      var val = groupInput.value;
+      var before = val.substring(0, atTriggerPos);
+      var after = val.substring(groupInput.selectionStart);
+      var mention = '@' + name + ' ';
+      groupInput.value = before + mention + after;
+      var newPos = before.length + mention.length;
+      groupInput.setSelectionRange(newPos, newPos);
+      groupInput.focus();
+      hidePanel();
+    }
+
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('.at-mention-panel') && !e.target.closest('#group-chat-input')) {
+        hidePanel();
+      }
+    });
   })();
 
 });

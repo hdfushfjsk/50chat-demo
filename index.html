@@ -921,7 +921,7 @@
           <img class="msg-avatar" src="images/group-wangming.png" alt="王明">
           <div class="msg-content-group">
             <span class="sender-name" data-sender="王明">王明</span>
-            <div class="bubble">@李娜 收到，我看一下</div>
+            <div class="bubble"><span class="at-highlight">@李娜</span> 收到，我看一下</div>
           </div>
         </div>
         <div class="msg-status-row other-status">
@@ -1010,9 +1010,31 @@
       </div>
     </div>
 
-    <div class="chat-input-bar">
+    <div class="chat-input-bar" id="group-input-bar">
+      <!-- @成员选择浮层 -->
+      <div class="at-mention-panel" id="at-mention-panel">
+        <div class="at-mention-header">群成员</div>
+        <div class="at-mention-list" id="at-mention-list">
+          <div class="at-mention-item" data-name="李娜">
+            <img class="at-mention-avatar" src="images/group-lina.png" alt="李娜">
+            <span class="at-mention-name">李娜</span>
+          </div>
+          <div class="at-mention-item" data-name="王明">
+            <img class="at-mention-avatar" src="images/group-wangming.png" alt="王明">
+            <span class="at-mention-name">王明</span>
+          </div>
+          <div class="at-mention-item" data-name="张伟">
+            <img class="at-mention-avatar" src="images/group-zhangwei.png" alt="张伟">
+            <span class="at-mention-name">张伟</span>
+          </div>
+          <div class="at-mention-item" data-name="赵雪">
+            <img class="at-mention-avatar" src="images/group-zhaoxue.png" alt="赵雪">
+            <span class="at-mention-name">赵雪</span>
+          </div>
+        </div>
+      </div>
       <i data-lucide="mic" class="input-bar-icon"></i>
-      <input type="text" placeholder="输入消息..." class="chat-input">
+      <input type="text" placeholder="输入消息..." class="chat-input" id="group-chat-input">
       <span class="input-bar-icon" id="group-smile-btn"><i data-lucide="smile"></i></span>
       <span class="input-bar-icon" id="group-plus-btn"><i data-lucide="plus"></i></span>
     </div>
@@ -2923,6 +2945,18 @@
   <div class="context-menu-item danger" id="ctx-delete">
     <i data-lucide="trash-2"></i>
     <span>删除</span>
+  </div>
+</div>
+
+<div class="chat-msg-menu" id="chat-msg-menu" style="display:none;">
+  <div class="chat-msg-menu-item" data-action="copy">
+    <i data-lucide="copy"></i><span>复制</span>
+  </div>
+  <div class="chat-msg-menu-item" data-action="recall">
+    <i data-lucide="rotate-ccw"></i><span>撤回</span>
+  </div>
+  <div class="chat-msg-menu-item" data-action="edit">
+    <i data-lucide="pencil"></i><span>编辑</span>
   </div>
 </div>
 
