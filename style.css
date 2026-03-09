@@ -1413,7 +1413,7 @@ img.msg-avatar {
   align-items: center;
   gap: 8px;
   padding: 10px 12px;
-  background: #FFF3CD;
+  background: transparent;
   font-size: 13px;
   flex-shrink: 0;
   overflow: hidden;
@@ -1421,7 +1421,7 @@ img.msg-avatar {
 }
 
 [data-theme="dark"] .notice-bar {
-  background: rgba(255,149,0,0.15);
+  background: transparent;
 }
 
 .notice-icon {
@@ -7100,4 +7100,772 @@ label.toggle-switch:has(input:checked) {
   font-size: 12px;
   color: var(--text-secondary);
   text-align: center;
+}
+
+/* ==================== 账号与安全 ==================== */
+.security-list {
+  background: var(--bg-card);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+.security-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px;
+  border-bottom: 1px solid var(--border-color, rgba(0,0,0,0.06));
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.security-item:last-child { border-bottom: none; }
+.security-item:active { background: var(--bg-hover, rgba(0,0,0,0.04)); }
+.security-label {
+  font-size: 15px;
+  color: var(--text-primary);
+}
+.security-value {
+  font-size: 14px;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.security-value svg { width: 16px; height: 16px; }
+.security-danger .security-label { color: #FF3B30; }
+.security-danger .security-value svg { color: var(--text-secondary); }
+
+/* ==================== 修改密码 / 修改手机号 ==================== */
+.pwd-tab-bar {
+  display: flex;
+  background: var(--bg-card);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 16px;
+}
+.pwd-tab {
+  flex: 1;
+  text-align: center;
+  padding: 12px 0;
+  font-size: 14px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  position: relative;
+  transition: color 0.2s;
+}
+.pwd-tab.active {
+  color: #007AFF;
+  font-weight: 600;
+}
+.pwd-tab.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40px;
+  height: 3px;
+  background: linear-gradient(90deg, #007AFF, #5AC8FA);
+  border-radius: 2px;
+}
+.pwd-panel { display: none; }
+.pwd-panel.active { display: block; }
+.pwd-form-card {
+  background: var(--bg-card);
+  border-radius: 12px;
+  padding: 20px 16px;
+  box-shadow: var(--shadow-sm);
+}
+.pwd-field {
+  margin-bottom: 16px;
+}
+.pwd-field label {
+  display: block;
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-bottom: 6px;
+}
+.pwd-input {
+  width: 100%;
+  height: 44px;
+  padding: 0 12px;
+  border: 1px solid var(--border-color, rgba(0,0,0,0.1));
+  border-radius: 10px;
+  font-size: 15px;
+  background: var(--bg-input, #f5f5f7);
+  color: var(--text-primary);
+  outline: none;
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+}
+.pwd-input:focus {
+  border-color: #007AFF;
+}
+.pwd-code-row {
+  display: flex;
+  gap: 10px;
+}
+.pwd-code-input { flex: 1; }
+.pwd-send-code-btn {
+  flex-shrink: 0;
+  height: 44px;
+  padding: 0 14px;
+  border: 1.5px solid #007AFF;
+  border-radius: 10px;
+  background: transparent;
+  color: #007AFF;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: opacity 0.2s;
+}
+.pwd-send-code-btn:disabled {
+  border-color: var(--text-secondary, #999);
+  color: var(--text-secondary, #999);
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+.pwd-submit-btn {
+  width: 100%;
+  height: 46px;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #007AFF, #5AC8FA);
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 8px;
+  transition: opacity 0.2s;
+}
+.pwd-submit-btn:active { opacity: 0.85; }
+.pwd-phone-hint {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-bottom: 16px;
+  text-align: center;
+}
+.phone-step { display: none; }
+.phone-step.active { display: block; }
+.phone-step-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 14px;
+  padding-left: 2px;
+}
+
+/* ============================== */
+/*  群签到活动 — Checkin Feature  */
+/* ============================== */
+
+/* --- 群聊页签到横幅（按钮风格） --- */
+.group-checkin-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 6px 10px;
+  padding: 10px 14px;
+  background: linear-gradient(135deg, #FF6B35 0%, #FF9A56 100%);
+  color: #fff;
+  cursor: pointer;
+  flex-shrink: 0;
+  border-radius: 12px;
+  box-shadow: 0 3px 12px rgba(255,107,53,0.35);
+  transition: all 0.2s ease;
+  user-select: none;
+}
+.group-checkin-bar:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 5px 16px rgba(255,107,53,0.45);
+}
+.group-checkin-bar:active {
+  transform: scale(0.98);
+}
+.checkin-bar-icon {
+  font-size: 20px;
+  flex-shrink: 0;
+  line-height: 1;
+}
+.checkin-bar-text {
+  flex: 1;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+.checkin-bar-arrow {
+  display: flex;
+  align-items: center;
+  opacity: 0.7;
+  margin-right: -4px;
+}
+.checkin-bar-arrow svg { width: 16px; height: 16px; stroke: #fff; }
+.checkin-bar-btn {
+  padding: 5px 18px;
+  border: none;
+  border-radius: 20px;
+  background: #fff;
+  color: #FF6B35;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  transition: all 0.15s;
+  flex-shrink: 0;
+}
+.checkin-bar-btn:active { transform: scale(0.93); }
+.checkin-bar-btn.checked {
+  background: rgba(255,255,255,0.4);
+  color: rgba(255,255,255,0.85);
+  cursor: default;
+  box-shadow: none;
+}
+
+[data-theme="dark"] .group-checkin-bar {
+  background: linear-gradient(135deg, #cc5529 0%, #cc7a45 100%);
+  box-shadow: 0 3px 12px rgba(204,85,41,0.3);
+}
+
+/* --- 群聊签到红包卡片 --- */
+.checkin-redpacket-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  max-width: 280px;
+  margin: 8px auto;
+  padding: 12px 16px;
+  background: linear-gradient(135deg, #ff6b35 0%, #e84118 100%);
+  color: #fff;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 3px 12px rgba(232, 65, 24, 0.3);
+  user-select: none;
+}
+.checkin-redpacket-card:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 5px 18px rgba(232, 65, 24, 0.4);
+}
+.checkin-redpacket-card:active {
+  transform: scale(0.97);
+}
+.checkin-rp-icon {
+  font-size: 28px;
+  flex-shrink: 0;
+}
+.checkin-rp-info {
+  flex: 1;
+  min-width: 0;
+}
+.checkin-rp-name {
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.checkin-rp-points {
+  font-size: 12px;
+  opacity: 0.9;
+  margin-top: 2px;
+}
+.checkin-rp-arrow {
+  flex-shrink: 0;
+  opacity: 0.7;
+}
+.checkin-rp-arrow svg { width: 16px; height: 16px; stroke: #fff; }
+
+[data-theme="dark"] .checkin-redpacket-card {
+  background: linear-gradient(135deg, #c0392b 0%, #a93226 100%);
+  box-shadow: 0 3px 12px rgba(169, 50, 38, 0.35);
+}
+
+/* --- 签到详情页 — 积分总览卡片 --- */
+.checkin-hero-card {
+  margin: 16px;
+  padding: 24px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 16px;
+  color: #fff;
+  box-shadow: 0 8px 24px rgba(102, 126, 234, 0.35);
+}
+.checkin-hero-top {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.checkin-hero-score-wrap,
+.checkin-hero-streak-wrap {
+  text-align: center;
+}
+.checkin-hero-label {
+  font-size: 13px;
+  opacity: 0.8;
+  margin-bottom: 4px;
+}
+.checkin-hero-score {
+  font-size: 42px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+.checkin-hero-streak {
+  font-size: 24px;
+  font-weight: 600;
+}
+.checkin-hero-btn {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 24px;
+  background: rgba(255,255,255,0.95);
+  color: #667eea;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.checkin-hero-btn:hover {
+  background: #fff;
+  box-shadow: 0 2px 12px rgba(255,255,255,0.4);
+}
+.checkin-hero-btn:active {
+  transform: scale(0.97);
+}
+.checkin-hero-btn.checked {
+  background: rgba(255,255,255,0.35);
+  color: rgba(255,255,255,0.8);
+  cursor: default;
+  pointer-events: none;
+}
+
+[data-theme="dark"] .checkin-hero-card {
+  background: linear-gradient(135deg, #4a5a9e 0%, #5c3b7d 100%);
+  box-shadow: 0 8px 24px rgba(74, 90, 158, 0.3);
+}
+
+/* --- 月度日历 --- */
+.checkin-calendar-card {
+  margin: 0 16px 16px;
+  padding: 16px;
+  background: var(--bg-card);
+  border-radius: 12px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+}
+.checkin-cal-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+.checkin-cal-month {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+.checkin-cal-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  text-align: center;
+  margin-bottom: 8px;
+}
+.checkin-cal-weekdays span {
+  font-size: 12px;
+  color: var(--text-secondary);
+  font-weight: 500;
+  padding: 4px 0;
+}
+.checkin-cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+.checkin-cal-day {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  position: relative;
+  transition: all 0.2s;
+}
+.checkin-cal-day .cal-day-num {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+.checkin-cal-day.empty {
+  pointer-events: none;
+}
+.checkin-cal-day.today {
+  border: 2px solid #667eea;
+}
+.checkin-cal-day.checked {
+  background: #34c759;
+}
+.checkin-cal-day.checked .cal-day-num {
+  color: #fff;
+}
+.checkin-cal-day.checked::after {
+  content: '✓';
+  position: absolute;
+  bottom: 2px;
+  right: 3px;
+  font-size: 8px;
+  color: rgba(255,255,255,0.8);
+  font-weight: 700;
+}
+.checkin-cal-day.future .cal-day-num {
+  color: var(--text-secondary);
+  opacity: 0.5;
+}
+
+[data-theme="dark"] .checkin-cal-day.today {
+  border-color: #8b9cf7;
+}
+[data-theme="dark"] .checkin-cal-day.checked {
+  background: #2d9f46;
+}
+
+/* --- 累积签到里程碑 --- */
+.checkin-milestone-card {
+  margin: 0 16px 16px;
+  padding: 16px;
+  background: var(--bg-card);
+  border-radius: 12px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+}
+.checkin-milestone-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 12px;
+}
+.checkin-milestones {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.checkin-ms-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border-color);
+}
+.checkin-ms-item:last-child {
+  border-bottom: none;
+}
+.checkin-ms-days {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+  width: 48px;
+  flex-shrink: 0;
+}
+.checkin-ms-reward {
+  flex: 1;
+  font-size: 13px;
+  color: #ff9500;
+  font-weight: 500;
+}
+.checkin-ms-status {
+  font-size: 12px;
+  color: var(--text-secondary);
+  flex-shrink: 0;
+}
+.checkin-ms-item.achieved .checkin-ms-days {
+  color: #34c759;
+}
+.checkin-ms-item.achieved .checkin-ms-status {
+  color: #34c759;
+  font-weight: 600;
+}
+.checkin-ms-item.achieved .checkin-ms-reward {
+  text-decoration: line-through;
+  opacity: 0.6;
+}
+
+/* --- 签到记录 --- */
+.checkin-history-card {
+  margin: 0 16px 16px;
+  padding: 16px;
+  background: var(--bg-card);
+  border-radius: 12px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+}
+.checkin-history-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 12px;
+}
+.checkin-history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.checkin-history-item {
+  display: flex;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border-color);
+}
+.checkin-history-item:last-child {
+  border-bottom: none;
+}
+.checkin-history-item.checkin-new {
+  animation: checkinSlideIn 0.4s ease-out;
+}
+.checkin-h-date {
+  font-size: 13px;
+  color: var(--text-secondary);
+  width: 60px;
+  flex-shrink: 0;
+}
+.checkin-h-desc {
+  flex: 1;
+  font-size: 13px;
+  color: var(--text-primary);
+}
+.checkin-h-points {
+  font-size: 13px;
+  font-weight: 600;
+  color: #34c759;
+  flex-shrink: 0;
+}
+
+/* --- 积分规则 --- */
+.checkin-rules-card {
+  margin: 0 16px 20px;
+  padding: 16px;
+  background: var(--bg-card);
+  border-radius: 12px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+}
+.checkin-rules-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 10px;
+}
+.checkin-rule-row {
+  font-size: 13px;
+  color: var(--text-secondary);
+  padding: 5px 0;
+  line-height: 1.5;
+}
+
+/* --- 签到动画 --- */
+@keyframes checkinSlideIn {
+  from { opacity: 0; transform: translateY(-12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes checkinFadeIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+/* ============================== */
+/*  积分兑换                       */
+/* ============================== */
+
+.wallet-points-entry {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--bg-card);
+  border-radius: 12px;
+  padding: 14px 16px;
+  margin-bottom: 16px;
+  cursor: pointer;
+  transition: background 0.2s, box-shadow 0.2s;
+}
+.wallet-points-entry:hover {
+  background: var(--bg-hover, rgba(0,0,0,0.03));
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+.points-entry-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+.points-entry-left i { color: #f59e0b; width: 20px; height: 20px; }
+.points-entry-right {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-secondary);
+  font-size: 13px;
+}
+.points-entry-balance { color: #f59e0b; font-weight: 600; }
+.points-entry-right i { width: 16px; height: 16px; opacity: 0.5; }
+
+.points-balance-card {
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  color: #fff;
+  border-radius: 16px;
+  padding: 28px 24px;
+  text-align: center;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 16px rgba(245,158,11,0.3);
+}
+.points-balance-label {
+  font-size: 14px;
+  opacity: 0.85;
+  margin-bottom: 8px;
+}
+.points-balance-num {
+  font-size: 42px;
+  font-weight: 700;
+  line-height: 1.1;
+  margin-bottom: 6px;
+}
+.points-balance-hint {
+  font-size: 13px;
+  opacity: 0.7;
+}
+
+.points-exchange-form {
+  background: var(--bg-card);
+  border-radius: 14px;
+  padding: 20px 16px;
+  margin-bottom: 20px;
+}
+.points-exchange-field { margin-bottom: 16px; }
+.points-exchange-field label {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: 10px;
+}
+.points-exchange-input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 12px 14px;
+  font-size: 20px;
+  text-align: center;
+  border: 1.5px solid var(--border-color, #e5e5e5);
+  border-radius: 10px;
+  background: var(--bg-page, #f9fafb);
+  color: var(--text-primary);
+  outline: none;
+  transition: border-color 0.2s;
+}
+.points-exchange-input:focus {
+  border-color: #f59e0b;
+}
+.points-exchange-input::placeholder {
+  font-size: 15px;
+  color: var(--text-hint, #aaa);
+}
+
+.points-quick-btns {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+.points-quick-btn {
+  flex: 1;
+  padding: 8px 0;
+  border: 1.5px solid var(--border-color, #e5e5e5);
+  border-radius: 8px;
+  background: transparent;
+  font-size: 14px;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.points-quick-btn:hover {
+  border-color: #f59e0b;
+  color: #f59e0b;
+}
+.points-quick-btn.active {
+  background: #f59e0b;
+  border-color: #f59e0b;
+  color: #fff;
+  font-weight: 600;
+}
+
+.points-exchange-preview {
+  background: var(--bg-page, #f4f4f5);
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin-bottom: 18px;
+}
+.points-preview-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 0;
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+.points-preview-row + .points-preview-row {
+  border-top: 1px solid var(--border-color, #eee);
+}
+.points-amount-highlight {
+  color: #f59e0b;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.points-exchange-btn {
+  width: 100%;
+  padding: 14px 0;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 3px 12px rgba(245,158,11,0.3);
+  transition: opacity 0.2s, box-shadow 0.2s;
+}
+.points-exchange-btn:hover { opacity: 0.92; }
+.points-exchange-btn:disabled {
+  background: #ccc;
+  box-shadow: none;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.points-history-card {
+  background: var(--bg-card);
+  border-radius: 14px;
+  padding: 18px 16px;
+  margin-bottom: 20px;
+}
+.points-history-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 12px;
+}
+.points-history-list { }
+.points-history-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border-color, #f0f0f0);
+  font-size: 13px;
+}
+.points-history-item:last-child { border-bottom: none; }
+.points-h-date { color: var(--text-secondary); flex: 1; }
+.points-h-amount { color: #f59e0b; font-weight: 600; min-width: 60px; text-align: right; }
+.points-h-points { color: var(--text-hint, #999); min-width: 70px; text-align: right; margin-left: 8px; }
+.points-history-empty {
+  text-align: center;
+  color: var(--text-hint, #bbb);
+  font-size: 13px;
+  padding: 24px 0;
 }

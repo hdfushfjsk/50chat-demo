@@ -48,6 +48,7 @@
       <a class="nav-link" data-goto="page-search"><i data-lucide="search"></i> 搜索页</a>
       <a class="nav-link" data-goto="page-chat"><i data-lucide="message-square"></i> 私聊页</a>
       <a class="nav-link" data-goto="page-group-chat"><i data-lucide="messages-square"></i> 群聊页</a>
+      <a class="nav-link" data-goto="page-group-checkin"><i data-lucide="gift"></i> 群签到活动</a>
       <a class="nav-link" data-goto="page-group-settings"><i data-lucide="settings"></i> 群聊设置</a>
       <a class="nav-link" data-goto="page-group-admin"><i data-lucide="shield-check"></i> 群管理员</a>
       <a class="nav-link" data-goto="page-group-remark-edit"><i data-lucide="tag"></i> 成员备注</a>
@@ -69,6 +70,7 @@
       <div class="sidebar-group-title">6. 钱包 → 子页面</div>
       <a class="nav-link" data-goto="page-recharge"><i data-lucide="plus-circle"></i> 充值</a>
       <a class="nav-link" data-goto="page-withdraw"><i data-lucide="arrow-up-circle"></i> 提现</a>
+      <a class="nav-link" onclick="navigateTo('page-points-exchange','forward')"><i data-lucide="coins"></i> 积分兑换</a>
       <a class="nav-link" data-goto="page-bind-alipay"><i data-lucide="smartphone"></i> 绑定支付宝</a>
       <a class="nav-link" data-goto="page-bind-bank"><i data-lucide="credit-card"></i> 绑定银行卡</a>
       <a class="nav-link" data-goto="page-bind-virtual"><i data-lucide="wallet"></i> 虚拟币地址</a>
@@ -89,6 +91,9 @@
       <a class="nav-link" data-goto="page-notification"><i data-lucide="bell"></i> 通知设置</a>
       <a class="nav-link" data-goto="page-privacy"><i data-lucide="shield"></i> 隐私设置</a>
       <a class="nav-link" data-goto="page-about"><i data-lucide="info"></i> 关于50聊天</a>
+      <a class="nav-link" data-goto="page-account-security"><i data-lucide="shield-check"></i> 账号与安全</a>
+      <a class="nav-link" data-goto="page-change-password"><i data-lucide="lock"></i> 修改密码</a>
+      <a class="nav-link" data-goto="page-change-phone"><i data-lucide="smartphone"></i> 修改手机号</a>
       <a class="nav-link" data-goto="page-chat-manage"><i data-lucide="database"></i> 聊天记录管理</a>
     </div>
   </div>
@@ -966,10 +971,16 @@
       </div>
     </nav>
 
+    <div class="group-checkin-bar" id="group-checkin-bar">
+      <div class="checkin-bar-icon">🎁</div>
+      <span class="checkin-bar-text">每日签到领积分</span>
+      <span class="checkin-bar-arrow"><i data-lucide="chevron-right"></i></span>
+      <button class="checkin-bar-btn" id="checkin-btn">签到</button>
+    </div>
+
     <div class="notice-bar" id="notice-bar">
       <span class="notice-icon">📢</span>
       <span class="notice-text"><span>本周五下午设计评审，请提前准备素材</span></span>
-      <i data-lucide="x" class="notice-close" id="close-notice"></i>
     </div>
 
     <div class="page-body chat-body">
@@ -1182,6 +1193,112 @@
         <span class="emoji-delete-btn">⌫</span>
         <button class="emoji-add-sticker-btn">+</button>
         <button class="emoji-send-btn">发送</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 群签到活动页 ==================== -->
+  <div class="page" id="page-group-checkin">
+    <nav class="top-nav">
+      <div class="nav-left"><i data-lucide="chevron-left" class="nav-icon back-btn" data-back="page-group-chat"></i></div>
+      <h1 class="nav-title">签到活动</h1>
+      <div class="nav-right"></div>
+    </nav>
+    <div class="page-body">
+      <!-- 积分总览卡片 -->
+      <div class="checkin-hero-card">
+        <div class="checkin-hero-top">
+          <div class="checkin-hero-score-wrap">
+            <div class="checkin-hero-label">累积积分</div>
+            <div class="checkin-hero-score" id="checkin-total-score">0</div>
+          </div>
+          <div class="checkin-hero-streak-wrap">
+            <div class="checkin-hero-label">连续签到</div>
+            <div class="checkin-hero-streak"><span id="checkin-streak-num">0</span> 天</div>
+          </div>
+        </div>
+        <button class="checkin-hero-btn" id="checkin-hero-btn">立即签到</button>
+      </div>
+
+      <!-- 月度日历 -->
+      <div class="checkin-calendar-card">
+        <div class="checkin-cal-header">
+          <span class="checkin-cal-month" id="checkin-cal-month">2026年3月</span>
+        </div>
+        <div class="checkin-cal-weekdays">
+          <span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span><span>日</span>
+        </div>
+        <div class="checkin-cal-grid" id="checkin-cal-grid"></div>
+      </div>
+
+      <!-- 累积签到奖励里程碑 -->
+      <div class="checkin-milestone-card">
+        <div class="checkin-milestone-title">累积签到奖励</div>
+        <div class="checkin-milestones">
+          <div class="checkin-ms-item" data-days="3">
+            <div class="checkin-ms-days">3天</div>
+            <div class="checkin-ms-reward">+5积分</div>
+            <div class="checkin-ms-status">未达成</div>
+          </div>
+          <div class="checkin-ms-item" data-days="7">
+            <div class="checkin-ms-days">7天</div>
+            <div class="checkin-ms-reward">+20积分</div>
+            <div class="checkin-ms-status">未达成</div>
+          </div>
+          <div class="checkin-ms-item" data-days="15">
+            <div class="checkin-ms-days">15天</div>
+            <div class="checkin-ms-reward">+50积分</div>
+            <div class="checkin-ms-status">未达成</div>
+          </div>
+          <div class="checkin-ms-item" data-days="30">
+            <div class="checkin-ms-days">30天</div>
+            <div class="checkin-ms-reward">+100积分</div>
+            <div class="checkin-ms-status">未达成</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 签到记录 -->
+      <div class="checkin-history-card">
+        <div class="checkin-history-title">签到记录</div>
+        <div class="checkin-history-list" id="checkin-history-list">
+          <div class="checkin-history-item">
+            <span class="checkin-h-date">3月6日</span>
+            <span class="checkin-h-desc">每日签到</span>
+            <span class="checkin-h-points">+12 积分</span>
+          </div>
+          <div class="checkin-history-item">
+            <span class="checkin-h-date">3月5日</span>
+            <span class="checkin-h-desc">每日签到</span>
+            <span class="checkin-h-points">+10 积分</span>
+          </div>
+          <div class="checkin-history-item">
+            <span class="checkin-h-date">3月4日</span>
+            <span class="checkin-h-desc">连续签到3天奖励</span>
+            <span class="checkin-h-points">+15 积分</span>
+          </div>
+          <div class="checkin-history-item">
+            <span class="checkin-h-date">3月4日</span>
+            <span class="checkin-h-desc">每日签到</span>
+            <span class="checkin-h-points">+14 积分</span>
+          </div>
+          <div class="checkin-history-item">
+            <span class="checkin-h-date">3月3日</span>
+            <span class="checkin-h-desc">每日签到</span>
+            <span class="checkin-h-points">+11 积分</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 积分规则 -->
+      <div class="checkin-rules-card">
+        <div class="checkin-rules-title">积分规则</div>
+        <div class="checkin-rule-row">📌 每日签到随机获得 10~20 积分</div>
+        <div class="checkin-rule-row">🔥 连续签到3天 额外 +5 积分</div>
+        <div class="checkin-rule-row">🔥 连续签到7天 额外 +20 积分</div>
+        <div class="checkin-rule-row">🔥 连续签到15天 额外 +50 积分</div>
+        <div class="checkin-rule-row">🔥 连续签到30天 额外 +100 积分</div>
+        <div class="checkin-rule-row">💰 积分可兑换群内专属红包</div>
       </div>
     </div>
   </div>
@@ -1685,6 +1802,17 @@
         </div>
       </div>
 
+      <div class="wallet-points-entry" id="wallet-points-entry">
+        <div class="points-entry-left">
+          <i data-lucide="coins"></i>
+          <span>积分兑换</span>
+        </div>
+        <div class="points-entry-right">
+          <span class="points-entry-balance" id="wallet-points-balance">62 积分</span>
+          <i data-lucide="chevron-right"></i>
+        </div>
+      </div>
+
       <div class="rp-summary">
         <div class="rp-summary-card">
           <div class="rp-summary-item income">
@@ -1819,6 +1947,11 @@
         <div class="menu-item" id="menu-about">
           <i data-lucide="info" class="menu-icon" style="color:#0984E3"></i>
           <span>关于50聊天</span>
+          <i data-lucide="chevron-right" class="menu-arrow"></i>
+        </div>
+        <div class="menu-item" id="menu-account-security">
+          <i data-lucide="shield-check" class="menu-icon" style="color:#E17055"></i>
+          <span>账号与安全</span>
           <i data-lucide="chevron-right" class="menu-arrow"></i>
         </div>
         <div class="menu-item" id="menu-chat-manage">
@@ -1962,6 +2095,57 @@
         </div>
         <div class="wallet-form-tip">预计2小时内到账，免手续费</div>
         <button class="wallet-submit-btn" id="withdraw-submit">确认提现</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 积分兑换页 ==================== -->
+  <div class="page" id="page-points-exchange">
+    <nav class="top-nav">
+      <div class="nav-left"><i data-lucide="chevron-left" class="nav-icon back-btn" data-back="page-wallet"></i></div>
+      <h1 class="nav-title">积分兑换</h1>
+      <div class="nav-right"></div>
+    </nav>
+    <div class="page-body">
+      <div class="points-balance-card">
+        <div class="points-balance-label">当前积分</div>
+        <div class="points-balance-num" id="points-current">62</div>
+        <div class="points-balance-hint">10积分 = 1元</div>
+      </div>
+
+      <div class="points-exchange-form">
+        <div class="points-exchange-field">
+          <label>兑换积分</label>
+          <input type="number" class="points-exchange-input" id="points-exchange-input" placeholder="请输入兑换积分数" min="10" step="10">
+          <div class="points-quick-btns">
+            <button class="points-quick-btn" data-points="10">10</button>
+            <button class="points-quick-btn" data-points="50">50</button>
+            <button class="points-quick-btn" data-points="100">100</button>
+            <button class="points-quick-btn" data-points="all">全部</button>
+          </div>
+        </div>
+        <div class="points-exchange-preview">
+          <div class="points-preview-row">
+            <span>兑换积分</span>
+            <span id="points-preview-points">0 积分</span>
+          </div>
+          <div class="points-preview-row">
+            <span>兑换金额</span>
+            <span id="points-preview-amount" class="points-amount-highlight">¥ 0.00</span>
+          </div>
+          <div class="points-preview-row">
+            <span>兑换后剩余</span>
+            <span id="points-preview-remain">62 积分</span>
+          </div>
+        </div>
+        <button class="points-exchange-btn" id="points-exchange-btn">确认兑换</button>
+      </div>
+
+      <div class="points-history-card">
+        <div class="points-history-title">兑换记录</div>
+        <div class="points-history-list" id="points-history-list">
+          <div class="points-history-empty">暂无兑换记录</div>
+        </div>
       </div>
     </div>
   </div>
@@ -3099,6 +3283,130 @@
       <div class="signature-edit-area">
         <textarea class="signature-textarea" id="signature-textarea" maxlength="50" placeholder="写点什么介绍一下自己吧">这个人很懒，什么都没写</textarea>
         <div class="signature-counter"><span id="signature-count">14</span>/50</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 账号与安全页 ==================== -->
+  <div class="page" id="page-account-security">
+    <nav class="top-nav">
+      <div class="nav-left"><i data-lucide="chevron-left" class="nav-icon back-btn" data-back="page-profile"></i></div>
+      <h1 class="nav-title">账号与安全</h1>
+      <div class="nav-right"></div>
+    </nav>
+    <div class="page-body">
+      <div class="security-list">
+        <div class="security-item" id="security-change-phone">
+          <span class="security-label">手机号</span>
+          <span class="security-value">138****8888 <i data-lucide="chevron-right"></i></span>
+        </div>
+        <div class="security-item" id="security-change-pwd">
+          <span class="security-label">修改密码</span>
+          <span class="security-value"><i data-lucide="chevron-right"></i></span>
+        </div>
+        <div class="security-item security-danger" id="security-delete-account">
+          <span class="security-label">注销账号</span>
+          <span class="security-value"><i data-lucide="chevron-right"></i></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 修改密码页 ==================== -->
+  <div class="page" id="page-change-password">
+    <nav class="top-nav">
+      <div class="nav-left"><i data-lucide="chevron-left" class="nav-icon back-btn" data-back="page-account-security"></i></div>
+      <h1 class="nav-title">修改密码</h1>
+      <div class="nav-right"></div>
+    </nav>
+    <div class="page-body">
+      <div class="pwd-tab-bar">
+        <div class="pwd-tab active" data-pwd-tab="old">旧密码修改</div>
+        <div class="pwd-tab" data-pwd-tab="code">验证码修改</div>
+      </div>
+      <!-- 旧密码方式 -->
+      <div class="pwd-panel active" id="pwd-panel-old">
+        <div class="pwd-form-card">
+          <div class="pwd-field">
+            <label>旧密码</label>
+            <input type="password" class="pwd-input" id="pwd-old" placeholder="请输入旧密码">
+          </div>
+          <div class="pwd-field">
+            <label>新密码</label>
+            <input type="password" class="pwd-input" id="pwd-new1" placeholder="请输入新密码">
+          </div>
+          <div class="pwd-field">
+            <label>确认密码</label>
+            <input type="password" class="pwd-input" id="pwd-new2" placeholder="请再次输入新密码">
+          </div>
+          <button class="pwd-submit-btn" id="pwd-submit-old">确认修改</button>
+        </div>
+      </div>
+      <!-- 验证码方式 -->
+      <div class="pwd-panel" id="pwd-panel-code">
+        <div class="pwd-form-card">
+          <div class="pwd-phone-hint">验证码将发送至 138****8888</div>
+          <div class="pwd-field pwd-code-field">
+            <label>验证码</label>
+            <div class="pwd-code-row">
+              <input type="text" class="pwd-input pwd-code-input" id="pwd-code" placeholder="请输入验证码" maxlength="6">
+              <button class="pwd-send-code-btn" id="pwd-send-code">发送验证码</button>
+            </div>
+          </div>
+          <div class="pwd-field">
+            <label>新密码</label>
+            <input type="password" class="pwd-input" id="pwd-code-new1" placeholder="请输入新密码">
+          </div>
+          <div class="pwd-field">
+            <label>确认密码</label>
+            <input type="password" class="pwd-input" id="pwd-code-new2" placeholder="请再次输入新密码">
+          </div>
+          <button class="pwd-submit-btn" id="pwd-submit-code">确认修改</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 修改手机号页 ==================== -->
+  <div class="page" id="page-change-phone">
+    <nav class="top-nav">
+      <div class="nav-left"><i data-lucide="chevron-left" class="nav-icon back-btn" data-back="page-account-security"></i></div>
+      <h1 class="nav-title">修改手机号</h1>
+      <div class="nav-right"></div>
+    </nav>
+    <div class="page-body">
+      <!-- 第一步：验证当前手机 -->
+      <div class="phone-step active" id="phone-step-1">
+        <div class="phone-step-title">第1步：验证当前手机号</div>
+        <div class="pwd-form-card">
+          <div class="pwd-phone-hint">验证码将发送至 138****8888</div>
+          <div class="pwd-field pwd-code-field">
+            <label>验证码</label>
+            <div class="pwd-code-row">
+              <input type="text" class="pwd-input pwd-code-input" id="phone-old-code" placeholder="请输入验证码" maxlength="6">
+              <button class="pwd-send-code-btn" id="phone-old-send">发送验证码</button>
+            </div>
+          </div>
+          <button class="pwd-submit-btn" id="phone-step-next">下一步</button>
+        </div>
+      </div>
+      <!-- 第二步：绑定新手机 -->
+      <div class="phone-step" id="phone-step-2">
+        <div class="phone-step-title">第2步：绑定新手机号</div>
+        <div class="pwd-form-card">
+          <div class="pwd-field">
+            <label>新手机号</label>
+            <input type="tel" class="pwd-input" id="phone-new-number" placeholder="请输入新手机号" maxlength="11">
+          </div>
+          <div class="pwd-field pwd-code-field">
+            <label>验证码</label>
+            <div class="pwd-code-row">
+              <input type="text" class="pwd-input pwd-code-input" id="phone-new-code" placeholder="请输入验证码" maxlength="6">
+              <button class="pwd-send-code-btn" id="phone-new-send">发送验证码</button>
+            </div>
+          </div>
+          <button class="pwd-submit-btn" id="phone-bind-submit">确认绑定</button>
+        </div>
       </div>
     </div>
   </div>

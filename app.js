@@ -3008,4 +3008,409 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   })();
 
+  // =============================================
+  //  账号与安全
+  // =============================================
+  (function() {
+    var securityEntry = document.getElementById('menu-account-security');
+    if (securityEntry) securityEntry.addEventListener('click', function() { navigateTo('page-account-security', { direction: 'forward' }); });
+
+    var changePwd = document.getElementById('security-change-pwd');
+    var changePhone = document.getElementById('security-change-phone');
+    if (changePwd) changePwd.addEventListener('click', function() { navigateTo('page-change-password', { direction: 'forward' }); });
+    if (changePhone) changePhone.addEventListener('click', function() { navigateTo('page-change-phone', { direction: 'forward' }); });
+
+    var deleteAccount = document.getElementById('security-delete-account');
+    if (deleteAccount) deleteAccount.addEventListener('click', function() {
+      window._showConfirmDialog({
+        title: '注销账号',
+        message: '注销后账号将无法恢复，所有数据将被清除。确认注销？',
+        okText: '确认注销',
+        onConfirm: function() { showToast('账号已注销', 'success'); }
+      });
+    });
+
+    document.querySelectorAll('.pwd-tab').forEach(function(tab) {
+      tab.addEventListener('click', function() {
+        document.querySelectorAll('.pwd-tab').forEach(function(t) { t.classList.remove('active'); });
+        document.querySelectorAll('.pwd-panel').forEach(function(p) { p.classList.remove('active'); });
+        tab.classList.add('active');
+        var panel = document.getElementById('pwd-panel-' + tab.getAttribute('data-pwd-tab'));
+        if (panel) panel.classList.add('active');
+      });
+    });
+
+    function startCountdown(btn) {
+      var seconds = 60;
+      btn.disabled = true;
+      btn.textContent = seconds + 's';
+      var timer = setInterval(function() {
+        seconds--;
+        btn.textContent = seconds + 's';
+        if (seconds <= 0) {
+          clearInterval(timer);
+          btn.disabled = false;
+          btn.textContent = '发送验证码';
+        }
+      }, 1000);
+    }
+
+    ['pwd-send-code', 'phone-old-send', 'phone-new-send'].forEach(function(id) {
+      var btn = document.getElementById(id);
+      if (btn) btn.addEventListener('click', function() {
+        startCountdown(btn);
+        showToast('验证码已发送', 'success');
+      });
+    });
+
+    var pwdSubmitOld = document.getElementById('pwd-submit-old');
+    if (pwdSubmitOld) pwdSubmitOld.addEventListener('click', function() {
+      var old = document.getElementById('pwd-old').value.trim();
+      var n1 = document.getElementById('pwd-new1').value.trim();
+      var n2 = document.getElementById('pwd-new2').value.trim();
+      if (!old) { showToast('请输入旧密码'); return; }
+      if (!n1) { showToast('请输入新密码'); return; }
+      if (n1.length < 6) { showToast('密码至少6位'); return; }
+      if (n1 !== n2) { showToast('两次密码不一致'); return; }
+      showToast('密码修改成功', 'success');
+      navigateTo('page-account-security', { direction: 'back' });
+    });
+
+    var pwdSubmitCode = document.getElementById('pwd-submit-code');
+    if (pwdSubmitCode) pwdSubmitCode.addEventListener('click', function() {
+      var code = document.getElementById('pwd-code').value.trim();
+      var n1 = document.getElementById('pwd-code-new1').value.trim();
+      var n2 = document.getElementById('pwd-code-new2').value.trim();
+      if (!code) { showToast('请输入验证码'); return; }
+      if (!n1) { showToast('请输入新密码'); return; }
+      if (n1.length < 6) { showToast('密码至少6位'); return; }
+      if (n1 !== n2) { showToast('两次密码不一致'); return; }
+      showToast('密码修改成功', 'success');
+      navigateTo('page-account-security', { direction: 'back' });
+    });
+
+    var phoneNext = document.getElementById('phone-step-next');
+    if (phoneNext) phoneNext.addEventListener('click', function() {
+      var code = document.getElementById('phone-old-code').value.trim();
+      if (!code) { showToast('请输入验证码'); return; }
+      document.getElementById('phone-step-1').classList.remove('active');
+      document.getElementById('phone-step-2').classList.add('active');
+    });
+
+    var phoneBind = document.getElementById('phone-bind-submit');
+    if (phoneBind) phoneBind.addEventListener('click', function() {
+      var phone = document.getElementById('phone-new-number').value.trim();
+      var code = document.getElementById('phone-new-code').value.trim();
+      if (!phone || phone.length !== 11) { showToast('请输入正确的手机号'); return; }
+      if (!code) { showToast('请输入验证码'); return; }
+      var masked = phone.substring(0, 3) + '****' + phone.substring(7);
+      var secVal = document.querySelector('#security-change-phone .security-value');
+      if (secVal) secVal.innerHTML = masked + ' <i data-lucide="chevron-right"></i>';
+      if (typeof lucide !== 'undefined') lucide.createIcons();
+      showToast('手机号绑定成功', 'success');
+      navigateTo('page-account-security', { direction: 'back' });
+    });
+  })();
+
+  /* ============================== */
+  /*  群签到活动                     */
+  /* ============================== */
+  (function() {
+    var checkinDone = false;
+    var totalScore = 62;
+    window._checkinScore = totalScore;
+    var streakDays = 3;
+    var checkedDates = [3, 4, 5, 6];
+
+    function renderCalendar() {
+      var grid = document.getElementById('checkin-cal-grid');
+      var monthLabel = document.getElementById('checkin-cal-month');
+      if (!grid) return;
+
+      var now = new Date();
+      var year = now.getFullYear();
+      var month = now.getMonth();
+      var today = now.getDate();
+
+      if (monthLabel) monthLabel.textContent = year + '年' + (month + 1) + '月';
+
+      var firstDay = new Date(year, month, 1).getDay();
+      var startOffset = firstDay === 0 ? 6 : firstDay - 1;
+      var daysInMonth = new Date(year, month + 1, 0).getDate();
+
+      grid.innerHTML = '';
+      for (var i = 0; i < startOffset; i++) {
+        var empty = document.createElement('div');
+        empty.className = 'checkin-cal-day empty';
+        grid.appendChild(empty);
+      }
+      for (var d = 1; d <= daysInMonth; d++) {
+        var dayEl = document.createElement('div');
+        dayEl.className = 'checkin-cal-day';
+        dayEl.setAttribute('data-date', d);
+        if (d === today) dayEl.classList.add('today');
+        if (d > today) dayEl.classList.add('future');
+        if (checkedDates.indexOf(d) !== -1) dayEl.classList.add('checked');
+        dayEl.innerHTML = '<span class="cal-day-num">' + d + '</span>';
+        grid.appendChild(dayEl);
+      }
+    }
+
+    function updateMilestones() {
+      var items = document.querySelectorAll('.checkin-ms-item');
+      items.forEach(function(item) {
+        var days = parseInt(item.getAttribute('data-days'));
+        var statusEl = item.querySelector('.checkin-ms-status');
+        if (streakDays >= days) {
+          item.classList.add('achieved');
+          if (statusEl) statusEl.textContent = '✓ 已达成';
+        } else {
+          item.classList.remove('achieved');
+          if (statusEl) statusEl.textContent = '还差 ' + (days - streakDays) + ' 天';
+        }
+      });
+    }
+
+    function updateDisplay() {
+      var scoreEl = document.getElementById('checkin-total-score');
+      if (scoreEl) scoreEl.textContent = totalScore;
+      var streakEl = document.getElementById('checkin-streak-num');
+      if (streakEl) streakEl.textContent = streakDays;
+      var oldScore = document.getElementById('checkin-score');
+      if (oldScore) oldScore.textContent = totalScore;
+      var oldStreak = document.getElementById('checkin-streak-days');
+      if (oldStreak) oldStreak.textContent = streakDays;
+      updateMilestones();
+    }
+
+    function doCheckin() {
+      if (checkinDone) return;
+      checkinDone = true;
+
+      var basePoints = 10 + Math.floor(Math.random() * 11);
+      var bonusPoints = 0;
+      streakDays++;
+
+      if (streakDays === 3) bonusPoints += 5;
+      if (streakDays === 7) bonusPoints += 20;
+      if (streakDays === 15) bonusPoints += 50;
+      if (streakDays === 30) bonusPoints += 100;
+
+      var earnedPoints = basePoints + bonusPoints;
+      totalScore += earnedPoints;
+      window._checkinScore = totalScore;
+
+      var today = new Date().getDate();
+      if (checkedDates.indexOf(today) === -1) checkedDates.push(today);
+
+      var todayEl = document.querySelector('.checkin-cal-day.today');
+      if (todayEl) todayEl.classList.add('checked');
+
+      var btns = [
+        document.getElementById('checkin-btn'),
+        document.getElementById('checkin-big-btn'),
+        document.getElementById('checkin-hero-btn')
+      ];
+      btns.forEach(function(btn) {
+        if (btn) {
+          btn.textContent = '今日已签到 ✓';
+          btn.classList.add('checked');
+          btn.disabled = true;
+        }
+      });
+
+      updateDisplay();
+
+      var msgArea = document.getElementById('group-messages-area');
+      if (msgArea) {
+        var nickEl = document.querySelector('.profile-name');
+        var nickname = nickEl ? nickEl.textContent.trim() : '小明';
+        var row = document.createElement('div');
+        row.className = 'message-row system';
+        var bonusText = bonusPoints > 0 ? '（含连续签到奖励 +' + bonusPoints + '）' : '';
+        row.innerHTML = '<div class="checkin-redpacket-card">' +
+          '<div class="checkin-rp-icon">🎁</div>' +
+          '<div class="checkin-rp-info">' +
+          '<div class="checkin-rp-name">' + nickname + ' 签到成功</div>' +
+          '<div class="checkin-rp-points">+' + earnedPoints + ' 积分 ' + bonusText + '</div>' +
+          '</div>' +
+          '<div class="checkin-rp-arrow"><i data-lucide="chevron-right"></i></div>' +
+          '</div>';
+        msgArea.appendChild(row);
+        msgArea.scrollTop = msgArea.scrollHeight;
+
+        row.querySelector('.checkin-redpacket-card').addEventListener('click', function() {
+          navigateTo('page-group-checkin', 'forward');
+        });
+
+        if (typeof lucide !== 'undefined') lucide.createIcons();
+      }
+
+      var historyList = document.getElementById('checkin-history-list');
+      if (historyList) {
+        var now = new Date();
+        var dateStr = (now.getMonth() + 1) + '月' + now.getDate() + '日';
+        var newItem = document.createElement('div');
+        newItem.className = 'checkin-history-item checkin-new';
+        newItem.innerHTML = '<span class="checkin-h-date">' + dateStr + '</span>' +
+          '<span class="checkin-h-desc">每日签到</span>' +
+          '<span class="checkin-h-points">+' + earnedPoints + ' 积分</span>';
+        historyList.insertBefore(newItem, historyList.firstChild);
+
+        if (bonusPoints > 0) {
+          var bonusItem = document.createElement('div');
+          bonusItem.className = 'checkin-history-item checkin-new';
+          bonusItem.innerHTML = '<span class="checkin-h-date">' + dateStr + '</span>' +
+            '<span class="checkin-h-desc">连续签到' + streakDays + '天奖励</span>' +
+            '<span class="checkin-h-points">+' + bonusPoints + ' 积分</span>';
+          historyList.insertBefore(bonusItem, historyList.firstChild);
+        }
+      }
+
+      var membersList = document.getElementById('checkin-members-list');
+      if (membersList) {
+        var myNick = document.querySelector('.profile-name');
+        var myName = myNick ? myNick.textContent.trim() : '小明';
+        var now2 = new Date();
+        var timeStr = String(now2.getHours()).padStart(2,'0') + ':' + String(now2.getMinutes()).padStart(2,'0');
+        var newMember = document.createElement('div');
+        newMember.className = 'checkin-member-item checkin-new';
+        newMember.innerHTML = '<img class="checkin-member-avatar" src="https://i.pravatar.cc/100?img=3" alt="">' +
+          '<span class="checkin-member-name">' + myName + '</span>' +
+          '<span class="checkin-member-time">' + timeStr + '</span>' +
+          '<span class="checkin-member-score">+' + earnedPoints + '</span>';
+        membersList.insertBefore(newMember, membersList.firstChild);
+      }
+
+      var toastMsg = '签到成功！+' + earnedPoints + ' 积分';
+      if (bonusPoints > 0) toastMsg += '（含连签奖励 +' + bonusPoints + '）';
+      showToast(toastMsg, 'success');
+    }
+
+    var checkinBtn = document.getElementById('checkin-btn');
+    var checkinBigBtn = document.getElementById('checkin-big-btn');
+    var checkinHeroBtn = document.getElementById('checkin-hero-btn');
+
+    if (checkinBtn) checkinBtn.addEventListener('click', function(e) { e.stopPropagation(); doCheckin(); });
+    if (checkinBigBtn) checkinBigBtn.addEventListener('click', doCheckin);
+    if (checkinHeroBtn) checkinHeroBtn.addEventListener('click', doCheckin);
+
+    var checkinBar = document.getElementById('group-checkin-bar');
+    if (checkinBar) checkinBar.addEventListener('click', function(e) {
+      if (e.target.closest('.checkin-bar-btn')) return;
+      navigateTo('page-group-checkin', 'forward');
+    });
+
+    renderCalendar();
+    updateDisplay();
+  })();
+
+  /* ============================== */
+  /*  积分兑换                       */
+  /* ============================== */
+  (function() {
+    function getScore() {
+      return window._checkinScore || 62;
+    }
+    function setScore(val) {
+      window._checkinScore = val;
+      var el1 = document.getElementById('checkin-total-score');
+      if (el1) el1.textContent = val;
+      var el2 = document.getElementById('checkin-score');
+      if (el2) el2.textContent = val;
+    }
+
+    var input = document.getElementById('points-exchange-input');
+    var currentEl = document.getElementById('points-current');
+    var previewPoints = document.getElementById('points-preview-points');
+    var previewAmount = document.getElementById('points-preview-amount');
+    var previewRemain = document.getElementById('points-preview-remain');
+    var exchangeBtn = document.getElementById('points-exchange-btn');
+    var walletBalance = document.getElementById('wallet-points-balance');
+
+    function updatePreview() {
+      var score = getScore();
+      var val = parseInt(input ? input.value : 0) || 0;
+      if (val < 0) val = 0;
+      if (val > score) val = score;
+      var amount = Math.floor(val / 10);
+      var actualPoints = amount * 10;
+
+      if (previewPoints) previewPoints.textContent = actualPoints + ' 积分';
+      if (previewAmount) previewAmount.textContent = '¥ ' + amount.toFixed(2);
+      if (previewRemain) previewRemain.textContent = (score - actualPoints) + ' 积分';
+      if (exchangeBtn) exchangeBtn.disabled = (actualPoints <= 0);
+    }
+
+    if (input) input.addEventListener('input', updatePreview);
+
+    document.getElementById('app').addEventListener('click', function(e) {
+      var qbtn = e.target.closest('.points-quick-btn');
+      if (qbtn && input) {
+        var pts = qbtn.getAttribute('data-points');
+        if (pts === 'all') {
+          var score = getScore();
+          input.value = Math.floor(score / 10) * 10;
+        } else {
+          input.value = pts;
+        }
+        document.querySelectorAll('.points-quick-btn').forEach(function(b) { b.classList.remove('active'); });
+        qbtn.classList.add('active');
+        updatePreview();
+      }
+    });
+
+    if (exchangeBtn) exchangeBtn.addEventListener('click', function() {
+      var score = getScore();
+      var val = parseInt(input.value) || 0;
+      var amount = Math.floor(val / 10);
+      var actualPoints = amount * 10;
+      if (actualPoints <= 0 || actualPoints > score) {
+        showToast('积分不足或输入无效'); return;
+      }
+
+      window._showConfirmDialog({
+        title: '确认兑换',
+        message: '确认将 ' + actualPoints + ' 积分兑换为 ¥' + amount.toFixed(2) + '？兑换后不可撤销。',
+        okText: '确认兑换',
+        onConfirm: function() {
+          var newScore = score - actualPoints;
+          setScore(newScore);
+
+          if (currentEl) currentEl.textContent = newScore;
+          if (walletBalance) walletBalance.textContent = newScore + ' 积分';
+          if (input) input.value = '';
+          updatePreview();
+
+          var historyList = document.getElementById('points-history-list');
+          if (historyList) {
+            var emptyEl = historyList.querySelector('.points-history-empty');
+            if (emptyEl) emptyEl.remove();
+
+            var now = new Date();
+            var dateStr = (now.getMonth()+1) + '月' + now.getDate() + '日 ' +
+              String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0');
+            var item = document.createElement('div');
+            item.className = 'points-history-item';
+            item.innerHTML = '<span class="points-h-date">' + dateStr + '</span>' +
+              '<span class="points-h-amount">¥' + amount.toFixed(2) + '</span>' +
+              '<span class="points-h-points">-' + actualPoints + '积分</span>';
+            historyList.insertBefore(item, historyList.firstChild);
+          }
+
+          showToast('兑换成功！¥' + amount.toFixed(2) + ' 已到账', 'success');
+        }
+      });
+    });
+
+    var entry = document.getElementById('wallet-points-entry');
+    if (entry) entry.addEventListener('click', function() {
+      var score = getScore();
+      if (currentEl) currentEl.textContent = score;
+      if (walletBalance) walletBalance.textContent = score + ' 积分';
+      updatePreview();
+      navigateTo('page-points-exchange', 'forward');
+    });
+  })();
+
 });
