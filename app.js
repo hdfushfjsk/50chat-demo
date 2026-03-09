@@ -3589,7 +3589,7 @@ document.addEventListener('DOMContentLoaded', () => {
   (function() {
     document.addEventListener('click', function(e) {
       if (e.target.closest('#go-vip-detail')) {
-        navigateTo('page-vip-detail', { direction: 'forward' });
+        navigateTo('page-vip', { direction: 'forward' });
       }
     });
   })();

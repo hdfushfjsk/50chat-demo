@@ -2902,42 +2902,79 @@
       <div class="nav-right"></div>
     </nav>
     <div class="page-body">
-      <div class="vip-card">
-        <div class="vip-level">VIP 3</div>
-        <div class="vip-expire">有效期至 2026-12-31</div>
-      </div>
-      <div class="privilege-list">
-        <div class="privilege-title">会员特权</div>
-        <div class="privilege-item">
-          <span class="privilege-icon">🎨</span>
-          <div class="privilege-info">
-            <div class="privilege-name">专属皮肤</div>
-            <div class="privilege-desc">解锁多款精美主题皮肤</div>
-          </div>
+
+      <!-- VIP 等级详情 -->
+      <div class="vip-current-card">
+        <div class="vip-current-level">
+          <span class="vip-badge vip-lv8" style="font-size:14px;padding:3px 10px;"><span class="vip-lvl">VIP8</span><span class="vip-icon">💎</span><span class="vip-text">至尊</span></span>
         </div>
-        <div class="privilege-item">
-          <span class="privilege-icon">✅</span>
-          <div class="privilege-info">
-            <div class="privilege-name">消息已读回执</div>
-            <div class="privilege-desc">查看对方是否已读消息</div>
+        <div class="vip-current-info">
+          <div class="vip-exp-label">当前经验值：<strong>12,580</strong></div>
+          <div class="vip-progress-bar">
+            <div class="vip-progress-fill" style="width:68%"></div>
           </div>
-        </div>
-        <div class="privilege-item">
-          <span class="privilege-icon">☁️</span>
-          <div class="privilege-info">
-            <div class="privilege-name">聊天记录云备份</div>
-            <div class="privilege-desc">自动备份聊天记录到云端</div>
-          </div>
-        </div>
-        <div class="privilege-item">
-          <span class="privilege-icon">📁</span>
-          <div class="privilege-info">
-            <div class="privilege-name">更大文件传输</div>
-            <div class="privilege-desc">单文件最大支持200MB</div>
-          </div>
+          <div class="vip-exp-hint">距离 VIP9 还需 <strong>5,420</strong> 经验</div>
         </div>
       </div>
-      <button class="vip-subscribe-btn">开通/续费 VIP</button>
+
+      <div class="vip-rules-card">
+        <div class="vip-rules-title">晋升规则</div>
+        <div class="vip-rules-list">
+          <div class="vip-rule-item"><span class="vip-rule-icon">💬</span><span class="vip-rule-text">群内发言 +2 经验/条</span></div>
+          <div class="vip-rule-item"><span class="vip-rule-icon">📅</span><span class="vip-rule-text">每日签到 +10 经验</span></div>
+          <div class="vip-rule-item"><span class="vip-rule-icon">🧧</span><span class="vip-rule-text">发送红包 +5 经验/次</span></div>
+          <div class="vip-rule-item"><span class="vip-rule-icon">👥</span><span class="vip-rule-text">邀请好友 +50 经验/人</span></div>
+          <div class="vip-rule-item"><span class="vip-rule-icon">🔥</span><span class="vip-rule-text">连续签到额外奖励经验</span></div>
+        </div>
+      </div>
+
+      <div class="vip-levels-card">
+        <div class="vip-levels-title">全部等级</div>
+        <div class="vip-levels-list">
+          <div class="vip-level-row">
+            <span class="vip-badge vip-lv1"><span class="vip-lvl">VIP1</span><span class="vip-icon">🌱</span><span class="vip-text">新芽</span></span>
+            <span class="vip-level-exp">0 经验</span>
+          </div>
+          <div class="vip-level-row">
+            <span class="vip-badge vip-lv2"><span class="vip-lvl">VIP2</span><span class="vip-icon">🌿</span><span class="vip-text">探索者</span></span>
+            <span class="vip-level-exp">200 经验</span>
+          </div>
+          <div class="vip-level-row">
+            <span class="vip-badge vip-lv3"><span class="vip-lvl">VIP3</span><span class="vip-icon">🛡️</span><span class="vip-text">守护者</span></span>
+            <span class="vip-level-exp">600 经验</span>
+          </div>
+          <div class="vip-level-row">
+            <span class="vip-badge vip-lv4"><span class="vip-lvl">VIP4</span><span class="vip-icon">⚔️</span><span class="vip-text">勇士</span></span>
+            <span class="vip-level-exp">1,200 经验</span>
+          </div>
+          <div class="vip-level-row">
+            <span class="vip-badge vip-lv5"><span class="vip-lvl">VIP5</span><span class="vip-icon">📖</span><span class="vip-text">贤者</span></span>
+            <span class="vip-level-exp">2,500 经验</span>
+          </div>
+          <div class="vip-level-row">
+            <span class="vip-badge vip-lv6"><span class="vip-lvl">VIP6</span><span class="vip-icon">🏆</span><span class="vip-text">王者</span></span>
+            <span class="vip-level-exp">5,000 经验</span>
+          </div>
+          <div class="vip-level-row">
+            <span class="vip-badge vip-lv7"><span class="vip-lvl">VIP7</span><span class="vip-icon">👑</span><span class="vip-text">传奇</span></span>
+            <span class="vip-level-exp">8,000 经验</span>
+          </div>
+          <div class="vip-level-row active">
+            <span class="vip-badge vip-lv8"><span class="vip-lvl">VIP8</span><span class="vip-icon">💎</span><span class="vip-text">至尊</span></span>
+            <span class="vip-level-exp">12,000 经验</span>
+            <span class="vip-level-current">当前</span>
+          </div>
+          <div class="vip-level-row">
+            <span class="vip-badge vip-lv9"><span class="vip-lvl">VIP9</span><span class="vip-icon">🌟</span><span class="vip-text">神话</span></span>
+            <span class="vip-level-exp">18,000 经验</span>
+          </div>
+          <div class="vip-level-row">
+            <span class="vip-badge vip-lv10"><span class="vip-lvl">VIP10</span><span class="vip-icon">🔱</span><span class="vip-text">不朽</span></span>
+            <span class="vip-level-exp">30,000 经验</span>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 
@@ -2972,10 +3009,6 @@
       </div>
       <div class="settings-group-title">其他通知</div>
       <div class="settings-list">
-        <div class="settings-toggle-row">
-          <span class="settings-toggle-label">朋友圈更新提醒</span>
-          <div class="toggle-switch"><div class="toggle-knob"></div></div>
-        </div>
         <div class="settings-toggle-row">
           <div>
             <span class="settings-toggle-label">免打扰</span>
