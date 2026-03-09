@@ -96,6 +96,7 @@
       <a class="nav-link" data-goto="page-change-password"><i data-lucide="lock"></i> 修改密码</a>
       <a class="nav-link" data-goto="page-change-phone"><i data-lucide="smartphone"></i> 修改手机号</a>
       <a class="nav-link" data-goto="page-chat-manage"><i data-lucide="database"></i> 聊天记录管理</a>
+      <a class="nav-link" data-goto="page-vip-detail"><i data-lucide="gem"></i> VIP等级详情</a>
     </div>
   </div>
 </div>
@@ -2010,6 +2011,9 @@
         <img class="profile-avatar" src="images/avatar-xiaoming.png" alt="小明">
         <div class="profile-info">
           <span class="profile-name">小明</span>
+          <div class="profile-vip-entry" id="go-vip-detail">
+            <span class="vip-badge vip-lv8"><span class="vip-lvl">VIP8</span><span class="vip-icon">💎</span><span class="vip-text">至尊</span></span>
+          </div>
           <span class="profile-id">ID: 50888666</span>
         </div>
         <i data-lucide="chevron-right" class="profile-arrow"></i>
@@ -3503,6 +3507,90 @@
             </div>
           </div>
           <button class="pwd-submit-btn" id="phone-bind-submit">确认绑定</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== VIP等级详情页 ==================== -->
+  <div class="page" id="page-vip-detail">
+    <nav class="top-nav">
+      <div class="nav-left"><i data-lucide="chevron-left" class="nav-icon back-btn" data-back="page-profile"></i></div>
+      <div class="nav-center">VIP等级</div>
+      <div class="nav-right"></div>
+    </nav>
+    <div class="page-body">
+      <!-- 当前等级卡片 -->
+      <div class="vip-current-card">
+        <div class="vip-current-level">
+          <span class="vip-badge vip-lv8" style="font-size:14px;padding:3px 10px;"><span class="vip-lvl">VIP8</span><span class="vip-icon">💎</span><span class="vip-text">至尊</span></span>
+        </div>
+        <div class="vip-current-info">
+          <div class="vip-exp-label">当前经验值：<strong>12,580</strong></div>
+          <div class="vip-progress-bar">
+            <div class="vip-progress-fill" style="width:68%"></div>
+          </div>
+          <div class="vip-exp-hint">距离 VIP9 还需 <strong>5,420</strong> 经验</div>
+        </div>
+      </div>
+
+      <!-- 晋升规则 -->
+      <div class="vip-rules-card">
+        <div class="vip-rules-title">晋升规则</div>
+        <div class="vip-rules-list">
+          <div class="vip-rule-item"><span class="vip-rule-icon">💬</span><span class="vip-rule-text">群内发言 +2 经验/条</span></div>
+          <div class="vip-rule-item"><span class="vip-rule-icon">📅</span><span class="vip-rule-text">每日签到 +10 经验</span></div>
+          <div class="vip-rule-item"><span class="vip-rule-icon">🧧</span><span class="vip-rule-text">发送红包 +5 经验/次</span></div>
+          <div class="vip-rule-item"><span class="vip-rule-icon">👥</span><span class="vip-rule-text">邀请好友 +50 经验/人</span></div>
+          <div class="vip-rule-item"><span class="vip-rule-icon">🔥</span><span class="vip-rule-text">连续签到额外奖励经验</span></div>
+        </div>
+      </div>
+
+      <!-- 等级列表 -->
+      <div class="vip-levels-card">
+        <div class="vip-levels-title">全部等级</div>
+        <div class="vip-levels-list">
+          <div class="vip-level-row">
+            <span class="vip-badge vip-lv1"><span class="vip-lvl">VIP1</span><span class="vip-icon">🌱</span><span class="vip-text">新芽</span></span>
+            <span class="vip-level-exp">0 经验</span>
+          </div>
+          <div class="vip-level-row">
+            <span class="vip-badge vip-lv2"><span class="vip-lvl">VIP2</span><span class="vip-icon">🌿</span><span class="vip-text">探索者</span></span>
+            <span class="vip-level-exp">200 经验</span>
+          </div>
+          <div class="vip-level-row">
+            <span class="vip-badge vip-lv3"><span class="vip-lvl">VIP3</span><span class="vip-icon">🛡️</span><span class="vip-text">守护者</span></span>
+            <span class="vip-level-exp">600 经验</span>
+          </div>
+          <div class="vip-level-row">
+            <span class="vip-badge vip-lv4"><span class="vip-lvl">VIP4</span><span class="vip-icon">⚔️</span><span class="vip-text">勇士</span></span>
+            <span class="vip-level-exp">1,200 经验</span>
+          </div>
+          <div class="vip-level-row">
+            <span class="vip-badge vip-lv5"><span class="vip-lvl">VIP5</span><span class="vip-icon">📖</span><span class="vip-text">贤者</span></span>
+            <span class="vip-level-exp">2,500 经验</span>
+          </div>
+          <div class="vip-level-row">
+            <span class="vip-badge vip-lv6"><span class="vip-lvl">VIP6</span><span class="vip-icon">🏆</span><span class="vip-text">王者</span></span>
+            <span class="vip-level-exp">5,000 经验</span>
+          </div>
+          <div class="vip-level-row">
+            <span class="vip-badge vip-lv7"><span class="vip-lvl">VIP7</span><span class="vip-icon">👑</span><span class="vip-text">传奇</span></span>
+            <span class="vip-level-exp">8,000 经验</span>
+          </div>
+          <div class="vip-level-row active">
+            <span class="vip-badge vip-lv8"><span class="vip-lvl">VIP8</span><span class="vip-icon">💎</span><span class="vip-text">至尊</span></span>
+            <span class="vip-level-exp">12,000 经验</span>
+            <span class="vip-level-current">当前</span>
+          </div>
+          <div class="vip-level-row">
+            <span class="vip-badge vip-lv9"><span class="vip-lvl">VIP9</span><span class="vip-icon">🌟</span><span class="vip-text">神话</span></span>
+            <span class="vip-level-exp">18,000 经验</span>
+          </div>
+          <div class="vip-level-row">
+            <span class="vip-badge vip-lv10"><span class="vip-lvl">VIP10</span><span class="vip-icon">🔱</span><span class="vip-text">不朽</span></span>
+            <span class="vip-level-exp">30,000 经验</span>
+          </div>
         </div>
       </div>
     </div>
