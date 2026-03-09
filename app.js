@@ -259,6 +259,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const isGroup = inputEl.closest('#page-group-chat');
     const bubbleContent = isGroup ? highlightMentions(escapeHtml(text)) : escapeHtml(text);
 
+    if (isGroup && typeof window._recordGroupSpeak === 'function') {
+      window._recordGroupSpeak(text);
+    }
+
     const row = document.createElement('div');
     row.className = 'message-row self';
     row.innerHTML =
@@ -280,7 +284,7 @@ document.addEventListener('DOMContentLoaded', () => {
         reply.innerHTML =
           '<div class="msg-avatar" style="background:linear-gradient(135deg,#007AFF,#5AC8FA)">张</div>' +
           '<div class="msg-content-group">' +
-            '<span class="sender-name">张伟</span>' +
+            '<div class="sender-line"><span class="sender-name" data-sender="张伟">张伟</span><span class="vip-badge vip-lv2"><span class="vip-lvl">VIP2</span><span class="vip-icon">🌿</span><span class="vip-text">探索者</span></span></div>' +
             '<div class="bubble">收到</div>' +
           '</div>';
       } else {
@@ -713,9 +717,9 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
 
-    overlay.addEventListener('click', hideMenu);
+    if (overlay) overlay.addEventListener('click', hideMenu);
 
-    pinBtn.addEventListener('click', function() {
+    if (pinBtn) pinBtn.addEventListener('click', function() {
       if (!activeCard) return;
       const list = activeCard.parentElement;
       if (activeCard.classList.contains('pinned')) {
@@ -736,7 +740,7 @@ document.addEventListener('DOMContentLoaded', () => {
       hideMenu();
     });
 
-    readBtn.addEventListener('click', function() {
+    if (readBtn) readBtn.addEventListener('click', function() {
       if (!activeCard) return;
       const badge = activeCard.querySelector('.badge');
       if (badge) {
@@ -749,7 +753,7 @@ document.addEventListener('DOMContentLoaded', () => {
       hideMenu();
     });
 
-    muteBtn.addEventListener('click', function() {
+    if (muteBtn) muteBtn.addEventListener('click', function() {
       if (!activeCard) return;
       activeCard.classList.toggle('muted');
       const muteIcon = activeCard.querySelector('.mute-icon');
@@ -767,7 +771,7 @@ document.addEventListener('DOMContentLoaded', () => {
       hideMenu();
     });
 
-    hideBtn.addEventListener('click', function() {
+    if (hideBtn) hideBtn.addEventListener('click', function() {
       if (!activeCard) return;
       var cardToHide = activeCard;
       cardToHide.style.transition = 'opacity 0.3s, max-height 0.3s';
@@ -778,7 +782,7 @@ document.addEventListener('DOMContentLoaded', () => {
       hideMenu();
     });
 
-    deleteBtn.addEventListener('click', function() {
+    if (deleteBtn) deleteBtn.addEventListener('click', function() {
       if (!activeCard) return;
       var cardToDelete = activeCard;
       cardToDelete.style.transition = 'opacity 0.3s, transform 0.3s';
@@ -837,6 +841,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function renderResults(query) {
+      if (!searchResults || !searchEmpty) return;
       if (!query) {
         searchResults.innerHTML = '';
         searchResults.appendChild(searchEmpty);
@@ -856,8 +861,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
       let html = '<div class="search-section-title">联系人与聊天</div>';
       filtered.forEach(c => {
-        const highlightName = c.name.replace(new RegExp(query, 'g'), '<span class="search-highlight">' + query + '</span>');
-        const highlightMsg = c.msg.replace(new RegExp(query, 'g'), '<span class="search-highlight">' + query + '</span>');
+        var escapedQuery = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        const highlightName = c.name.replace(new RegExp(escapedQuery, 'g'), '<span class="search-highlight">' + query + '</span>');
+        const highlightMsg = c.msg.replace(new RegExp(escapedQuery, 'g'), '<span class="search-highlight">' + query + '</span>');
         html +=
           '<div class="search-result-item">' +
             '<img class="search-result-avatar" src="' + c.avatar + '" alt="' + c.name + '">' +
@@ -1253,7 +1259,8 @@ document.addEventListener('DOMContentLoaded', () => {
             if (area) {
               const row = document.createElement('div');
               row.className = 'message-row self';
-              row.innerHTML = '<div class="bubble self-bubble">' + input.value + '</div><img class="msg-avatar" src="images/chat-me1.png" alt="我">';
+              var safeText = escapeHtml(input.value);
+              row.innerHTML = '<div class="bubble self-bubble">' + safeText + '</div><img class="msg-avatar" src="images/chat-me1.png" alt="我">';
               area.appendChild(row);
               area.scrollTop = area.scrollHeight;
             }
@@ -1444,7 +1451,8 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       if (e.target.closest('#save-name-btn')) {
-        var newName = document.getElementById('edit-name-input').value.trim();
+        var _inp = document.getElementById('edit-name-input');
+        var newName = _inp ? _inp.value.trim() : '';
         if (newName) {
           var nameRow = document.getElementById('edit-name-row');
           if (nameRow) {
@@ -1469,7 +1477,8 @@ document.addEventListener('DOMContentLoaded', () => {
     app.addEventListener('click', function(e) {
       // 点击性别行 → 跳转修改性别页
       if (e.target.closest('#edit-gender-row')) {
-        var currentGender = document.querySelector('#edit-gender-row .settings-value').childNodes[0].textContent.trim();
+        var _el1 = document.querySelector('#edit-gender-row .settings-value');
+        var currentGender = (_el1 && _el1.childNodes[0]) ? _el1.childNodes[0].textContent.trim() : '';
         document.querySelectorAll('#page-edit-gender .select-option-item').forEach(function(item) {
           item.classList.toggle('selected', item.dataset.gender === currentGender);
         });
@@ -1479,7 +1488,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // 点击地区行 → 跳转修改地区页
       if (e.target.closest('#edit-region-row')) {
-        var currentRegion = document.querySelector('#edit-region-row .settings-value').childNodes[0].textContent.trim();
+        var _el2 = document.querySelector('#edit-region-row .settings-value');
+        var currentRegion = (_el2 && _el2.childNodes[0]) ? _el2.childNodes[0].textContent.trim() : '';
         document.querySelectorAll('#region-list .select-option-item').forEach(function(item) {
           item.classList.toggle('selected', item.dataset.region === currentRegion);
         });
@@ -1494,7 +1504,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // 点击签名行 → 跳转修改签名页
       if (e.target.closest('#edit-signature-row')) {
-        var currentSig = document.querySelector('#edit-signature-row .settings-value').childNodes[0].textContent.trim();
+        var _el3 = document.querySelector('#edit-signature-row .settings-value');
+        var currentSig = (_el3 && _el3.childNodes[0]) ? _el3.childNodes[0].textContent.trim() : '';
         var textarea = document.getElementById('signature-textarea');
         if (textarea) {
           textarea.value = currentSig;
@@ -1802,7 +1813,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (isGroup) {
               row.innerHTML =
                 '<div class="msg-content-group">' +
-                  '<span class="sender-name" data-sender="我">我</span>' +
+                  '<div class="sender-line"><span class="sender-name" data-sender="我">我</span><span class="vip-badge vip-lv8"><span class="vip-lvl">VIP8</span><span class="vip-icon">💎</span><span class="vip-text">至尊</span></span></div>' +
                   '<div class="red-packet-card">' +
                     '<div class="rp-icon">🧧</div>' +
                     '<div class="rp-info">' +
@@ -2101,6 +2112,7 @@ document.addEventListener('DOMContentLoaded', () => {
     var touchStartY = 0;
 
     function showGroupMsgMenu(x, y, msgEl) {
+      if (!menu || !menuOverlay) return;
       selectedMsg = msgEl;
       window._groupMenuSelectedMsg = msgEl;
       var isOther = msgEl.classList.contains('other');
@@ -2197,7 +2209,7 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
 
-    menu.addEventListener('click', function(e) {
+    if (menu) menu.addEventListener('click', function(e) {
       var item = e.target.closest('.group-msg-menu-item');
       if (!item) return;
 
@@ -2262,11 +2274,12 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       if (item.id === 'gm-delete') {
         if (selectedMsg) {
-          selectedMsg.style.transition = 'opacity 0.3s, max-height 0.3s';
-          selectedMsg.style.opacity = '0';
-          selectedMsg.style.maxHeight = '0';
-          selectedMsg.style.overflow = 'hidden';
-          setTimeout(function() { selectedMsg.style.display = 'none'; }, 300);
+          var target = selectedMsg;
+          target.style.transition = 'opacity 0.3s, max-height 0.3s';
+          target.style.opacity = '0';
+          target.style.maxHeight = '0';
+          target.style.overflow = 'hidden';
+          setTimeout(function() { if (target) target.style.display = 'none'; }, 300);
         }
         hideGroupMsgMenu();
         return;
@@ -2335,9 +2348,10 @@ document.addEventListener('DOMContentLoaded', () => {
         msgArea.addEventListener('touchstart', function(e) {
           var msgRow = e.target.closest('.message-row');
           if (!msgRow) return;
+          var tx = e.touches[0].clientX;
+          var ty = e.touches[0].clientY;
           chatLongPressTimer = setTimeout(function() {
-            var touch = e.touches[0];
-            showChatMsgMenu(touch.clientX, touch.clientY, msgRow);
+            showChatMsgMenu(tx, ty, msgRow);
           }, 500);
         });
         msgArea.addEventListener('touchend', function() {
@@ -2434,6 +2448,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 转账详情页交互
   (function() {
+    var app = document.getElementById('app');
     var transferLastPage = 'page-chat';
 
     app.addEventListener('click', function(e) {
@@ -2844,7 +2859,7 @@ document.addEventListener('DOMContentLoaded', () => {
   //  36. 一键撤回指定成员所有消息
   // =============================================
   (function() {
-    function doRecallAll(memberName) {
+    function doRecallAndKick(memberName) {
       var msgArea = document.getElementById('group-messages-area');
       if (!msgArea) return;
       var rows = msgArea.querySelectorAll('.message-row.other');
@@ -2865,17 +2880,22 @@ document.addEventListener('DOMContentLoaded', () => {
           }
         }
       });
+      var sysMsg = document.createElement('div');
+      sysMsg.className = 'system-msg';
+      sysMsg.textContent = '"' + memberName + '" 已被管理员移出群聊，其 ' + removedCount + ' 条消息已撤回';
+      msgArea.appendChild(sysMsg);
+      msgArea.scrollTop = msgArea.scrollHeight;
       if (typeof showToast === 'function') {
-        showToast('已撤回 ' + memberName + ' 的 ' + removedCount + ' 条消息', 'success');
+        showToast(memberName + ' 已被踢出群聊，撤回 ' + removedCount + ' 条消息', 'success');
       }
     }
 
     function showRecallConfirm(memberName) {
       window._showConfirmDialog({
-        title: '撤回所有消息',
-        message: '确认撤回 "' + memberName + '" 的所有消息？此操作不可恢复。',
-        okText: '确认撤回',
-        onConfirm: function() { doRecallAll(memberName); }
+        title: '撤回TA所有消息并踢出',
+        message: '确认撤回 "' + memberName + '" 的所有消息并将其踢出群组？此操作不可恢复。',
+        okText: '确认执行',
+        onConfirm: function() { doRecallAndKick(memberName); }
       });
     }
 
@@ -2910,7 +2930,7 @@ document.addEventListener('DOMContentLoaded', () => {
     var app = document.getElementById('app');
 
     var chatManageEntry = document.getElementById('menu-chat-manage');
-    if (chatManageEntry) chatManageEntry.addEventListener('click', function() { navigateTo('page-chat-manage', 'forward'); });
+    if (chatManageEntry) chatManageEntry.addEventListener('click', function() { navigateTo('page-chat-manage', { direction: 'forward' }); });
 
     var allCheck = document.getElementById('chat-manage-all-check');
     var deleteBtn = document.getElementById('chat-manage-delete-btn');
@@ -3093,8 +3113,10 @@ document.addEventListener('DOMContentLoaded', () => {
     if (phoneNext) phoneNext.addEventListener('click', function() {
       var code = document.getElementById('phone-old-code').value.trim();
       if (!code) { showToast('请输入验证码'); return; }
-      document.getElementById('phone-step-1').classList.remove('active');
-      document.getElementById('phone-step-2').classList.add('active');
+      var phoneStep1 = document.getElementById('phone-step-1');
+      var phoneStep2 = document.getElementById('phone-step-2');
+      if (phoneStep1) phoneStep1.classList.remove('active');
+      if (phoneStep2) phoneStep2.classList.add('active');
     });
 
     var phoneBind = document.getElementById('phone-bind-submit');
@@ -3240,7 +3262,7 @@ document.addEventListener('DOMContentLoaded', () => {
         msgArea.scrollTop = msgArea.scrollHeight;
 
         row.querySelector('.checkin-redpacket-card').addEventListener('click', function() {
-          navigateTo('page-group-checkin', 'forward');
+          navigateTo('page-group-checkin', { direction: 'forward' });
         });
 
         if (typeof lucide !== 'undefined') lucide.createIcons();
@@ -3298,7 +3320,7 @@ document.addEventListener('DOMContentLoaded', () => {
     var checkinBar = document.getElementById('group-checkin-bar');
     if (checkinBar) checkinBar.addEventListener('click', function(e) {
       if (e.target.closest('.checkin-bar-btn')) return;
-      navigateTo('page-group-checkin', 'forward');
+      navigateTo('page-group-checkin', { direction: 'forward' });
     });
 
     renderCalendar();
@@ -3409,8 +3431,158 @@ document.addEventListener('DOMContentLoaded', () => {
       if (currentEl) currentEl.textContent = score;
       if (walletBalance) walletBalance.textContent = score + ' 积分';
       updatePreview();
-      navigateTo('page-points-exchange', 'forward');
+      navigateTo('page-points-exchange', { direction: 'forward' });
     });
+  })();
+
+  // 发言领积分活动
+  (function() {
+    var speakCount = 0;
+    var speakPoints = 0;
+    var tiers = [
+      { count: 20, reward: 10 },
+      { count: 50, reward: 20 },
+      { count: 100, reward: 50 },
+      { count: 200, reward: 100 },
+      { count: 500, reward: 200 }
+    ];
+    var claimedTiers = [];
+
+    function updateSpeakDisplay() {
+      var countEl = document.getElementById('speak-today-count');
+      var pointsEl = document.getElementById('speak-today-points');
+      var progressFill = document.getElementById('speak-progress-fill');
+      var nextTarget = document.getElementById('speak-next-target');
+
+      if (countEl) countEl.textContent = speakCount;
+      if (pointsEl) pointsEl.textContent = speakPoints;
+
+      var nextTier = null;
+      var nextIdx = -1;
+      for (var i = 0; i < tiers.length; i++) {
+        if (speakCount < tiers[i].count) { nextTier = tiers[i]; nextIdx = i; break; }
+      }
+
+      if (progressFill) {
+        if (nextTier) {
+          var prevCount = (nextIdx > 0) ? tiers[nextIdx - 1].count : 0;
+          var pct = ((speakCount - prevCount) / (nextTier.count - prevCount)) * 100;
+          progressFill.style.width = Math.min(pct, 100) + '%';
+        } else {
+          progressFill.style.width = '100%';
+        }
+      }
+      if (nextTarget) {
+        nextTarget.textContent = nextTier ? (nextTier.count + '条') : '已全部达成！';
+      }
+
+      tiers.forEach(function(t) {
+        var btn = document.getElementById('speak-tier-' + t.count);
+        if (!btn) return;
+        if (claimedTiers.indexOf(t.count) !== -1) {
+          btn.textContent = '已领取 ✓';
+          btn.className = 'speak-tier-btn claimed';
+          btn.disabled = true;
+        } else if (speakCount >= t.count) {
+          btn.textContent = '领取';
+          btn.className = 'speak-tier-btn claimable';
+          btn.disabled = false;
+        } else {
+          btn.textContent = '还差 ' + (t.count - speakCount) + ' 条';
+          btn.className = 'speak-tier-btn';
+          btn.disabled = true;
+        }
+      });
+    }
+
+    function recordSpeak(text) {
+      speakCount++;
+
+      var historyList = document.getElementById('speak-history-list');
+      if (historyList) {
+        var emptyEl = historyList.querySelector('.speak-history-empty');
+        if (emptyEl) emptyEl.remove();
+
+        var now = new Date();
+        var timeStr = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
+        var item = document.createElement('div');
+        item.className = 'speak-history-item';
+        var truncText = text.length > 20 ? text.substring(0, 20) + '...' : text;
+        item.innerHTML = '<span class="speak-h-time">' + timeStr + '</span>' +
+          '<span class="speak-h-text">' + truncText + '</span>' +
+          '<span class="speak-h-status">有效</span>';
+        historyList.insertBefore(item, historyList.firstChild);
+      }
+
+      updateSpeakDisplay();
+      
+      // 检查是否有新阶梯可领取，提示用户
+      tiers.forEach(function(t) {
+        if (speakCount === t.count && claimedTiers.indexOf(t.count) === -1) {
+          showToast('发言达到' + t.count + '条！去领取 +' + t.reward + ' 积分', 'success');
+        }
+      });
+    }
+
+    // 点击领取按钮
+    document.getElementById('app').addEventListener('click', function(e) {
+      var btn = e.target.closest('.speak-tier-btn.claimable');
+      if (!btn) return;
+      var tierItem = btn.closest('.speak-tier-item');
+      if (!tierItem) return;
+      var tierCount = parseInt(tierItem.getAttribute('data-tier'));
+      var tierReward = parseInt(tierItem.getAttribute('data-reward'));
+      if (!tierCount || !tierReward) return;
+      if (claimedTiers.indexOf(tierCount) !== -1) return;
+
+      claimedTiers.push(tierCount);
+      speakPoints += tierReward;
+
+      if (typeof window._checkinScore === 'number') {
+        window._checkinScore += tierReward;
+        var scoreEl = document.getElementById('checkin-total-score');
+        if (scoreEl) scoreEl.textContent = window._checkinScore;
+      }
+
+      btn.textContent = '已领取 ✓';
+      btn.className = 'speak-tier-btn claimed';
+      btn.disabled = true;
+
+      updateSpeakDisplay();
+      showToast('领取成功！+' + tierReward + ' 积分', 'success');
+
+      // 全群通报
+      var msgArea = document.getElementById('group-messages-area');
+      if (msgArea) {
+        var nickEl = document.querySelector('.profile-name');
+        var nickname = nickEl ? nickEl.textContent.trim() : '小明';
+        var sysMsg = document.createElement('div');
+        sysMsg.className = 'system-msg checkin-system-msg';
+        sysMsg.innerHTML = '🎉 ' + nickname + ' 发言达到 ' + tierCount + ' 条，领取了 <span class="checkin-points">+' + tierReward + ' 积分</span>';
+        msgArea.appendChild(sysMsg);
+        msgArea.scrollTop = msgArea.scrollHeight;
+      }
+    });
+
+    window._recordGroupSpeak = function(text) {
+      if (text && text.length >= 5) {
+        recordSpeak(text);
+      }
+    };
+
+    var speakCard = document.getElementById('activity-speak-card');
+    if (speakCard) speakCard.addEventListener('click', function() {
+      updateSpeakDisplay();
+      navigateTo('page-speak-reward', { direction: 'forward' });
+    });
+
+    var checkinCard = document.getElementById('activity-checkin-card');
+    if (checkinCard) checkinCard.addEventListener('click', function(e) {
+      if (e.target.closest('.activity-btn')) return;
+      navigateTo('page-group-checkin', { direction: 'forward' });
+    });
+
+    updateSpeakDisplay();
   })();
 
 });

@@ -49,6 +49,7 @@
       <a class="nav-link" data-goto="page-chat"><i data-lucide="message-square"></i> 私聊页</a>
       <a class="nav-link" data-goto="page-group-chat"><i data-lucide="messages-square"></i> 群聊页</a>
       <a class="nav-link" data-goto="page-group-checkin"><i data-lucide="gift"></i> 群签到活动</a>
+      <a class="nav-link" data-goto="page-speak-reward"><i data-lucide="message-circle"></i> 发言领积分</a>
       <a class="nav-link" data-goto="page-group-settings"><i data-lucide="settings"></i> 群聊设置</a>
       <a class="nav-link" data-goto="page-group-admin"><i data-lucide="shield-check"></i> 群管理员</a>
       <a class="nav-link" data-goto="page-group-remark-edit"><i data-lucide="tag"></i> 成员备注</a>
@@ -70,7 +71,7 @@
       <div class="sidebar-group-title">6. 钱包 → 子页面</div>
       <a class="nav-link" data-goto="page-recharge"><i data-lucide="plus-circle"></i> 充值</a>
       <a class="nav-link" data-goto="page-withdraw"><i data-lucide="arrow-up-circle"></i> 提现</a>
-      <a class="nav-link" onclick="navigateTo('page-points-exchange','forward')"><i data-lucide="coins"></i> 积分兑换</a>
+      <a class="nav-link" data-goto="page-points-exchange"><i data-lucide="coins"></i> 积分兑换</a>
       <a class="nav-link" data-goto="page-bind-alipay"><i data-lucide="smartphone"></i> 绑定支付宝</a>
       <a class="nav-link" data-goto="page-bind-bank"><i data-lucide="credit-card"></i> 绑定银行卡</a>
       <a class="nav-link" data-goto="page-bind-virtual"><i data-lucide="wallet"></i> 虚拟币地址</a>
@@ -971,11 +972,17 @@
       </div>
     </nav>
 
-    <div class="group-checkin-bar" id="group-checkin-bar">
-      <div class="checkin-bar-icon">🎁</div>
-      <span class="checkin-bar-text">每日签到领积分</span>
-      <span class="checkin-bar-arrow"><i data-lucide="chevron-right"></i></span>
-      <button class="checkin-bar-btn" id="checkin-btn">签到</button>
+    <div class="group-activities-bar">
+      <div class="activity-card activity-checkin" id="activity-checkin-card">
+        <span class="activity-icon">🎁</span>
+        <span class="activity-name">每日签到</span>
+        <button class="activity-btn" id="checkin-btn">签到</button>
+      </div>
+      <div class="activity-card activity-speak" id="activity-speak-card">
+        <span class="activity-icon">💬</span>
+        <span class="activity-name">发言领积分</span>
+        <span class="activity-arrow"><i data-lucide="chevron-right"></i></span>
+      </div>
     </div>
 
     <div class="notice-bar" id="notice-bar">
@@ -987,6 +994,15 @@
       <div class="messages-area" id="group-messages-area">
         <div class="time-label"><span>今天 14:20</span></div>
 
+        <!-- 签到活动通报 -->
+        <div class="system-msg checkin-system-msg">🎁 Lina 签到成功，领取 <span class="checkin-points">+12 积分</span></div>
+        <div class="system-msg checkin-system-msg">🎁 老王 签到成功，领取 <span class="checkin-points">+10 积分</span></div>
+        <div class="system-msg checkin-system-msg">🎁 李雷 签到成功，领取 <span class="checkin-points">+15 积分</span>（含连签奖励 +5）</div>
+
+        <!-- 发言领积分通报 -->
+        <div class="system-msg checkin-system-msg">🎉 Lina 发言达到 20 条，领取了 <span class="checkin-points">+10 积分</span></div>
+        <div class="system-msg checkin-system-msg">🎉 李雷 发言达到 50 条，领取了 <span class="checkin-points">+20 积分</span></div>
+
         <div class="msg-system-admin" data-admin-only="1">
           <span class="msg-system-text">赵雪 加入了群聊</span>
         </div>
@@ -995,7 +1011,7 @@
         <div class="message-row other">
           <img class="msg-avatar" src="images/group-lina.png" alt="李娜">
           <div class="msg-content-group">
-            <span class="sender-name" data-sender="李娜">李娜</span>
+            <div class="sender-line"><span class="sender-name" data-sender="李娜">李娜</span><span class="vip-badge vip-lv7"><span class="vip-lvl">VIP7</span><span class="vip-icon">👑</span><span class="vip-text">传奇</span></span></div>
             <div class="bubble">素材我已经传到群文件了</div>
           </div>
         </div>
@@ -1007,7 +1023,7 @@
         <div class="message-row other">
           <img class="msg-avatar" src="images/group-wangming.png" alt="王明">
           <div class="msg-content-group">
-            <span class="sender-name" data-sender="王明">王明</span>
+            <div class="sender-line"><span class="sender-name" data-sender="王明">王明</span><span class="vip-badge vip-lv3"><span class="vip-lvl">VIP3</span><span class="vip-icon">🛡️</span><span class="vip-text">守护者</span></span></div>
             <div class="bubble"><span class="at-highlight">@李娜</span> 收到，我看一下</div>
           </div>
         </div>
@@ -1017,9 +1033,9 @@
 
         <!-- 赵雪发的语音消息 -->
         <div class="message-row other">
-          <img class="msg-avatar" src="images/group-zhaoxue.png" alt="赵雪">
+          <img class="msg-avatar" src="images/avatar-zhaoxue.png" alt="赵雪">
           <div class="msg-content-group">
-            <span class="sender-name" data-sender="赵雪">赵雪</span>
+            <div class="sender-line"><span class="sender-name" data-sender="赵雪">赵雪</span><span class="vip-badge vip-lv5"><span class="vip-lvl">VIP5</span><span class="vip-icon">📖</span><span class="vip-text">贤者</span></span></div>
             <div class="msg-voice-bubble">
               <i data-lucide="volume-2" class="voice-icon"></i>
               <div class="voice-wave">
@@ -1057,7 +1073,7 @@
         <div class="message-row other">
           <img class="msg-avatar" src="images/group-zhangwei.png" alt="张伟">
           <div class="msg-content-group">
-            <span class="sender-name" data-sender="张伟">张伟</span>
+            <div class="sender-line"><span class="sender-name" data-sender="张伟">张伟</span><span class="vip-badge vip-lv2"><span class="vip-lvl">VIP2</span><span class="vip-icon">🌿</span><span class="vip-text">探索者</span></span></div>
             <div class="red-packet-card">
               <div class="rp-icon">🧧</div>
               <div class="rp-info">
@@ -1075,7 +1091,7 @@
         <div class="message-row other">
           <img class="msg-avatar" src="images/group-lina.png" alt="李娜">
           <div class="msg-content-group">
-            <span class="sender-name" data-sender="李娜">李娜</span>
+            <div class="sender-line"><span class="sender-name" data-sender="李娜">李娜</span><span class="vip-badge vip-lv7"><span class="vip-lvl">VIP7</span><span class="vip-icon">👑</span><span class="vip-text">传奇</span></span></div>
             <div class="msg-video-wrap">
               <div class="msg-video-thumb" style="background: url('https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=400&h=300&fit=crop') center/cover no-repeat;">
                 <div class="video-play-btn"><i data-lucide="play" class="play-icon"></i></div>
@@ -1115,7 +1131,7 @@
             <span class="at-mention-name">张伟</span>
           </div>
           <div class="at-mention-item" data-name="赵雪">
-            <img class="at-mention-avatar" src="images/group-zhaoxue.png" alt="赵雪">
+            <img class="at-mention-avatar" src="images/avatar-zhaoxue.png" alt="赵雪">
             <span class="at-mention-name">赵雪</span>
           </div>
         </div>
@@ -1299,6 +1315,85 @@
         <div class="checkin-rule-row">🔥 连续签到15天 额外 +50 积分</div>
         <div class="checkin-rule-row">🔥 连续签到30天 额外 +100 积分</div>
         <div class="checkin-rule-row">💰 积分可兑换群内专属红包</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 发言领积分页 ==================== -->
+  <div class="page" id="page-speak-reward">
+    <nav class="top-nav">
+      <div class="nav-left"><i data-lucide="chevron-left" class="nav-icon back-btn" data-back="page-group-chat"></i></div>
+      <h1 class="nav-title">发言领积分</h1>
+      <div class="nav-right"></div>
+    </nav>
+    <div class="page-body">
+      <div class="speak-hero-card">
+        <div class="speak-hero-top">
+          <div class="speak-stat-item">
+            <div class="speak-stat-label">今日有效发言</div>
+            <div class="speak-stat-num" id="speak-today-count">0</div>
+          </div>
+          <div class="speak-stat-item">
+            <div class="speak-stat-label">今日获得积分</div>
+            <div class="speak-stat-num" id="speak-today-points">0</div>
+          </div>
+        </div>
+        <div class="speak-progress-wrap">
+          <div class="speak-progress-bar">
+            <div class="speak-progress-fill" id="speak-progress-fill" style="width: 0%"></div>
+          </div>
+          <div class="speak-progress-text">下一档奖励：<span id="speak-next-target">5条</span> 发言</div>
+        </div>
+      </div>
+
+      <div class="speak-tiers-card">
+        <div class="speak-tiers-title">积分阶梯</div>
+        <div class="speak-tiers-list">
+          <div class="speak-tier-item" data-tier="20" data-reward="10">
+            <div class="speak-tier-count">20条</div>
+            <div class="speak-tier-reward">+10积分</div>
+            <button class="speak-tier-btn" id="speak-tier-20" disabled>未达成</button>
+          </div>
+          <div class="speak-tier-item" data-tier="50" data-reward="20">
+            <div class="speak-tier-count">50条</div>
+            <div class="speak-tier-reward">+20积分</div>
+            <button class="speak-tier-btn" id="speak-tier-50" disabled>未达成</button>
+          </div>
+          <div class="speak-tier-item" data-tier="100" data-reward="50">
+            <div class="speak-tier-count">100条</div>
+            <div class="speak-tier-reward">+50积分</div>
+            <button class="speak-tier-btn" id="speak-tier-100" disabled>未达成</button>
+          </div>
+          <div class="speak-tier-item" data-tier="200" data-reward="100">
+            <div class="speak-tier-count">200条</div>
+            <div class="speak-tier-reward">+100积分</div>
+            <button class="speak-tier-btn" id="speak-tier-200" disabled>未达成</button>
+          </div>
+          <div class="speak-tier-item" data-tier="500" data-reward="200">
+            <div class="speak-tier-count">500条</div>
+            <div class="speak-tier-reward">+200积分</div>
+            <button class="speak-tier-btn" id="speak-tier-500" disabled>未达成</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="speak-rules-card">
+        <div class="speak-rules-title">活动规则</div>
+          <div class="speak-rule-row">📌 单句消息 ≥5个字 为有效发言</div>
+          <div class="speak-rule-row">📌 每日0点重置发言计数</div>
+          <div class="speak-rule-row">🔥 发言达到20条 奖励 +10 积分</div>
+          <div class="speak-rule-row">🔥 发言达到50条 奖励 +20 积分</div>
+          <div class="speak-rule-row">🔥 发言达到100条 奖励 +50 积分</div>
+          <div class="speak-rule-row">🔥 发言达到200条 奖励 +100 积分</div>
+          <div class="speak-rule-row">🔥 发言达到500条 奖励 +200 积分</div>
+          <div class="speak-rule-row">💰 积分累计到签到积分中，可在钱包兑换</div>
+      </div>
+
+      <div class="speak-history-card">
+        <div class="speak-history-title">今日发言记录</div>
+        <div class="speak-history-list" id="speak-history-list">
+          <div class="speak-history-empty">今日暂无有效发言</div>
+        </div>
       </div>
     </div>
   </div>
@@ -1554,7 +1649,7 @@
               <span class="admin-member-name">李娜</span>
               <span class="admin-mute-status" id="mute-lina">未禁言</span>
             </div>
-            <button class="admin-recall-all-btn" data-member="李娜">撤回所有</button>
+            <button class="admin-recall-all-btn" data-member="李娜">撤回TA所有消息并踢出</button>
             <button class="admin-mute-btn" data-mute-target="lina">禁言</button>
           </div>
           <div class="admin-member-item">
@@ -1563,7 +1658,7 @@
               <span class="admin-member-name">张伟</span>
               <span class="admin-mute-status" id="mute-zhangwei">未禁言</span>
             </div>
-            <button class="admin-recall-all-btn" data-member="张伟">撤回所有</button>
+            <button class="admin-recall-all-btn" data-member="张伟">撤回TA所有消息并踢出</button>
             <button class="admin-mute-btn" data-mute-target="zhangwei">禁言</button>
           </div>
           <div class="admin-member-item">
@@ -1572,7 +1667,7 @@
               <span class="admin-member-name">王明</span>
               <span class="admin-mute-status" id="mute-wangming">未禁言</span>
             </div>
-            <button class="admin-recall-all-btn" data-member="王明">撤回所有</button>
+            <button class="admin-recall-all-btn" data-member="王明">撤回TA所有消息并踢出</button>
             <button class="admin-mute-btn" data-mute-target="wangming">禁言</button>
           </div>
           <div class="admin-member-item">
@@ -1581,7 +1676,7 @@
               <span class="admin-member-name">赵雪</span>
               <span class="admin-mute-status" id="mute-zhaoxue">未禁言</span>
             </div>
-            <button class="admin-recall-all-btn" data-member="赵雪">撤回所有</button>
+            <button class="admin-recall-all-btn" data-member="赵雪">撤回TA所有消息并踢出</button>
             <button class="admin-mute-btn" data-mute-target="zhaoxue">禁言</button>
           </div>
         </div>
@@ -2203,7 +2298,7 @@
   <div class="page" id="page-bind-virtual">
     <nav class="top-nav">
       <div class="nav-left">
-        <i data-lucide="chevron-left" class="nav-icon back-btn" data-back="page-wallet"></i>
+        <i data-lucide="chevron-left" class="nav-icon back-btn" data-back="page-withdraw"></i>
       </div>
       <div class="nav-center"><span class="nav-title">虚拟币地址</span></div>
       <div class="nav-right"></div>
@@ -2273,11 +2368,13 @@
 
   <!-- ==================== 交易明细页 ==================== -->
   <div class="page" id="page-transactions">
-    <div class="top-nav">
-      <i data-lucide="chevron-left" class="nav-icon back-btn" data-back="page-wallet"></i>
-      <span class="nav-title">交易明细</span>
-      <span style="width:24px"></span>
-    </div>
+    <nav class="top-nav">
+      <div class="nav-left">
+        <i data-lucide="chevron-left" class="nav-icon back-btn" data-back="page-wallet"></i>
+      </div>
+      <div class="nav-center"><span class="nav-title">交易明细</span></div>
+      <div class="nav-right"></div>
+    </nav>
 
     <!-- 筛选栏 -->
     <div class="tx-filter-bar">
@@ -3461,7 +3558,7 @@
   <div class="group-msg-menu-item" id="gm-at-ta" style="display:none"><i data-lucide="at-sign"></i><span>@TA</span></div>
   <div class="group-msg-menu-item" id="gm-recall"><i data-lucide="undo-2"></i><span>撤回消息</span></div>
   <div class="group-msg-menu-item" id="gm-mute"><i data-lucide="volume-x"></i><span>禁言此人</span></div>
-  <div class="group-msg-menu-item" id="gm-recall-all"><i data-lucide="trash"></i><span>撤回TA所有消息</span></div>
+  <div class="group-msg-menu-item" id="gm-recall-all"><i data-lucide="trash"></i><span>撤回TA所有消息并踢出</span></div>
   <div class="group-msg-menu-item danger" id="gm-delete"><i data-lucide="trash-2"></i><span>删除</span></div>
 </div>
 

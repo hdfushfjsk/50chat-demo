@@ -1060,10 +1060,15 @@ img.msg-avatar {
 
 /* Sender Name (group chat) */
 .msg-sender,
+.sender-line {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 2px;
+}
 .sender-name {
   font-size: 12px;
   color: var(--text-secondary);
-  margin-bottom: 2px;
   padding-left: 4px;
 }
 
@@ -3105,7 +3110,7 @@ label.toggle-switch:has(input:checked) {
   background: #2C2C2E;
   border-radius: 12px;
   box-shadow: 0 8px 30px rgba(0,0,0,0.3);
-  z-index: 100;
+  z-index: 200;
   overflow: hidden;
   padding: 4px 0;
 }
@@ -6429,7 +6434,7 @@ label.toggle-switch:has(input:checked) {
   border-radius: 16px;
   box-shadow: var(--shadow-lg);
   overflow: hidden;
-  z-index: 100;
+  z-index: 150;
   animation: atMentionIn 0.2s ease;
 }
 
@@ -6793,7 +6798,7 @@ label.toggle-switch:has(input:checked) {
   border-radius: 14px;
   font-size: 15px;
   font-weight: 500;
-  z-index: 2000;
+  z-index: 3000;
   opacity: 0;
   pointer-events: none;
   transition: all 0.3s cubic-bezier(0.32, 0.72, 0, 1);
@@ -7327,6 +7332,134 @@ label.toggle-switch:has(input:checked) {
   background: linear-gradient(135deg, #cc5529 0%, #cc7a45 100%);
   box-shadow: 0 3px 12px rgba(204,85,41,0.3);
 }
+
+/* --- 双活动入口 --- */
+.group-activities-bar {
+  display: flex;
+  gap: 8px;
+  margin: 6px 10px;
+}
+.activity-card {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  cursor: pointer;
+  color: #fff;
+  transition: all 0.2s;
+  user-select: none;
+}
+.activity-card:hover { transform: translateY(-1px); }
+.activity-card:active { transform: scale(0.97); }
+.activity-checkin {
+  background: linear-gradient(135deg, #FF6B35, #FF9A56);
+  box-shadow: 0 3px 10px rgba(255,107,53,0.3);
+}
+.activity-speak {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  box-shadow: 0 3px 10px rgba(102,126,234,0.3);
+}
+.activity-icon { font-size: 18px; flex-shrink: 0; }
+.activity-name { flex: 1; font-size: 13px; font-weight: 600; }
+.activity-btn {
+  padding: 4px 14px; border: none; border-radius: 16px;
+  background: #fff; font-size: 12px; font-weight: 700; cursor: pointer;
+  transition: all 0.15s;
+}
+.activity-checkin .activity-btn { color: #FF6B35; }
+.activity-btn:active { transform: scale(0.93); }
+.activity-btn.checked { background: rgba(255,255,255,0.4); color: rgba(255,255,255,0.85); cursor: default; }
+.activity-arrow { display: flex; align-items: center; opacity: 0.7; }
+.activity-arrow svg { width: 16px; height: 16px; stroke: #fff; }
+
+[data-theme="dark"] .activity-checkin { background: linear-gradient(135deg, #cc5529, #cc7a45); }
+[data-theme="dark"] .activity-speak { background: linear-gradient(135deg, #4a5a9e, #5c3b7d); }
+
+/* --- 发言领积分页面 --- */
+.speak-hero-card {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: #fff; border-radius: 16px; padding: 20px;
+  box-shadow: 0 6px 20px rgba(102,126,234,0.3); margin-bottom: 16px;
+}
+.speak-hero-top { display: flex; gap: 16px; margin-bottom: 16px; }
+.speak-stat-item { flex: 1; text-align: center; }
+.speak-stat-label { font-size: 12px; opacity: 0.8; margin-bottom: 4px; }
+.speak-stat-num { font-size: 36px; font-weight: 800; }
+.speak-progress-wrap { margin-top: 8px; }
+.speak-progress-bar { height: 8px; background: rgba(255,255,255,0.2); border-radius: 4px; overflow: hidden; }
+.speak-progress-fill { height: 100%; background: #fff; border-radius: 4px; transition: width 0.5s ease; }
+.speak-progress-text { font-size: 12px; opacity: 0.8; margin-top: 6px; text-align: center; }
+
+.speak-tiers-card, .speak-rules-card, .speak-history-card {
+  background: var(--bg-card); border-radius: 12px; padding: 16px; margin-bottom: 12px;
+  box-shadow: var(--shadow-sm, 0 1px 3px rgba(0,0,0,0.06));
+}
+.speak-tiers-title, .speak-rules-title, .speak-history-title {
+  font-size: 15px; font-weight: 600; color: var(--text-primary); margin-bottom: 12px;
+}
+.speak-tier-item {
+  display: flex; align-items: center; padding: 10px 0;
+  border-bottom: 1px solid var(--border-color, rgba(0,0,0,0.06));
+}
+.speak-tier-item:last-child { border-bottom: none; }
+.speak-tier-count { width: 60px; font-size: 14px; font-weight: 600; color: var(--text-primary); }
+.speak-tier-reward { flex: 1; font-size: 14px; color: #FF9500; font-weight: 600; }
+.speak-tier-btn {
+  padding: 5px 14px;
+  border: 1px solid var(--border-color, #ddd);
+  border-radius: 16px;
+  background: var(--bg-input, #f5f5f5);
+  color: var(--text-secondary);
+  font-size: 12px;
+  cursor: not-allowed;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+.speak-tier-btn:disabled {
+  opacity: 0.6;
+}
+.speak-tier-btn.claimable {
+  background: linear-gradient(135deg, #FF6B35, #FF9A56);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  opacity: 1;
+  box-shadow: 0 2px 8px rgba(255,107,53,0.3);
+  animation: tierPulse 1.5s ease-in-out infinite;
+}
+.speak-tier-btn.claimable:hover {
+  transform: scale(1.05);
+  box-shadow: 0 3px 12px rgba(255,107,53,0.45);
+}
+.speak-tier-btn.claimable:active {
+  transform: scale(0.95);
+}
+.speak-tier-btn.claimed {
+  background: #34C759;
+  color: #fff;
+  border: none;
+  cursor: default;
+  opacity: 1;
+  box-shadow: none;
+  animation: none;
+}
+@keyframes tierPulse {
+  0%, 100% { box-shadow: 0 2px 8px rgba(255,107,53,0.3); }
+  50% { box-shadow: 0 3px 14px rgba(255,107,53,0.5); }
+}
+.speak-rule-row { font-size: 13px; color: var(--text-secondary); line-height: 2; }
+.speak-history-list { max-height: 300px; overflow-y: auto; }
+.speak-history-item {
+  display: flex; align-items: center; padding: 8px 0;
+  border-bottom: 1px solid var(--border-color, rgba(0,0,0,0.06));
+}
+.speak-history-item:last-child { border-bottom: none; }
+.speak-h-time { width: 50px; font-size: 12px; color: var(--text-secondary); }
+.speak-h-text { flex: 1; font-size: 13px; color: var(--text-primary); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.speak-h-status { font-size: 11px; color: #34C759; font-weight: 600; margin-left: 8px; }
+.speak-history-empty { text-align: center; color: var(--text-secondary); font-size: 13px; padding: 20px 0; }
 
 /* --- 群聊签到红包卡片 --- */
 .checkin-redpacket-card {
@@ -7868,4 +8001,146 @@ label.toggle-switch:has(input:checked) {
   color: var(--text-hint, #bbb);
   font-size: 13px;
   padding: 24px 0;
+}
+
+/* ===== VIP等级徽章 ===== */
+.vip-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 1px 6px;
+  border-radius: 8px;
+  font-size: 10px;
+  font-weight: 600;
+  vertical-align: middle;
+  line-height: 1.4;
+}
+.vip-lvl {
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  margin-right: 1px;
+}
+.vip-icon { font-size: 10px; }
+.vip-text { font-size: 10px; }
+
+.vip-lv1 { background: rgba(139,195,74,0.15); color: #689F38; }
+.vip-lv2 { background: rgba(76,175,80,0.15); color: #388E3C; }
+.vip-lv3 { background: rgba(33,150,243,0.15); color: #1976D2; }
+.vip-lv4 { background: rgba(63,81,181,0.15); color: #303F9F; }
+.vip-lv5 { background: rgba(156,39,176,0.15); color: #7B1FA2; }
+.vip-lv6 { background: rgba(224,64,251,0.15); color: #AB47BC; }
+.vip-lv7 { background: rgba(255,152,0,0.15); color: #F57C00; }
+.vip-lv8 { background: rgba(255,87,34,0.15); color: #E64A19; }
+.vip-lv9 { background: rgba(244,67,54,0.15); color: #D32F2F; }
+.vip-lv10 { background: linear-gradient(135deg, rgba(255,215,0,0.2), rgba(255,152,0,0.2)); color: #FF8F00; border: 1px solid rgba(255,215,0,0.3); }
+
+[data-theme="dark"] .vip-lv1 { background: rgba(139,195,74,0.2); color: #AED581; }
+[data-theme="dark"] .vip-lv2 { background: rgba(76,175,80,0.2); color: #81C784; }
+[data-theme="dark"] .vip-lv3 { background: rgba(33,150,243,0.2); color: #64B5F6; }
+[data-theme="dark"] .vip-lv4 { background: rgba(63,81,181,0.2); color: #7986CB; }
+[data-theme="dark"] .vip-lv5 { background: rgba(156,39,176,0.2); color: #BA68C8; }
+[data-theme="dark"] .vip-lv6 { background: rgba(224,64,251,0.2); color: #CE93D8; }
+[data-theme="dark"] .vip-lv7 { background: rgba(255,152,0,0.2); color: #FFB74D; }
+[data-theme="dark"] .vip-lv8 { background: rgba(255,87,34,0.2); color: #FF8A65; }
+[data-theme="dark"] .vip-lv9 { background: rgba(244,67,54,0.2); color: #EF5350; }
+[data-theme="dark"] .vip-lv10 { background: linear-gradient(135deg, rgba(255,215,0,0.25), rgba(255,152,0,0.25)); color: #FFD54F; }
+
+/* ============================== */
+/*  签到成员列表                   */
+/* ============================== */
+.checkin-member-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border-color);
+}
+.checkin-member-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.checkin-member-name {
+  flex: 1;
+  font-size: 14px;
+  color: var(--text-primary);
+}
+.checkin-member-time {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-right: 8px;
+}
+.checkin-member-score {
+  font-size: 13px;
+  font-weight: 600;
+  color: #f59e0b;
+}
+
+/* 系统消息通用 */
+.system-msg {
+  text-align: center;
+  font-size: 12px;
+  color: var(--text-secondary);
+  padding: 6px 12px;
+  margin: 8px 0;
+}
+
+/* 签到系统消息 */
+.checkin-system-msg {
+  text-align: center;
+  font-size: 12px;
+  color: var(--text-secondary);
+  padding: 6px 12px;
+  margin: 8px 0;
+}
+
+/* 签到积分高亮 */
+.checkin-points {
+  color: #f59e0b;
+  font-weight: 600;
+}
+
+/* ============================== */
+/*  发红包暗色主题适配              */
+/* ============================== */
+[data-theme="dark"] .rp-send-card {
+  background: var(--bg-card);
+}
+[data-theme="dark"] .rp-send-label,
+[data-theme="dark"] .rp-yen,
+[data-theme="dark"] .rp-amount-field {
+  color: var(--text-primary);
+}
+[data-theme="dark"] .rp-send-row {
+  border-color: var(--border-color);
+}
+
+/* ============================== */
+/*  暗色主题 toggle-switch          */
+/* ============================== */
+[data-theme="dark"] .toggle-switch {
+  background: #444;
+}
+
+/* ============================== */
+/*  暗色主题 play-icon              */
+/* ============================== */
+[data-theme="dark"] .play-icon {
+  color: #fff;
+}
+
+/* ============================== */
+/*  暗色主题 qrcode/receive         */
+/* ============================== */
+[data-theme="dark"] .qrcode-placeholder,
+[data-theme="dark"] .receive-qr-wrapper {
+  background: var(--bg-card);
+}
+
+/* ============================== */
+/*  暗色主题 balance-btn.primary    */
+/* ============================== */
+[data-theme="dark"] .balance-btn.primary {
+  background: var(--bg-card);
 }
