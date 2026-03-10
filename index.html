@@ -94,6 +94,9 @@
       <a class="nav-link" data-goto="page-about"><i data-lucide="info"></i> 关于50聊天</a>
       <a class="nav-link" data-goto="page-account-security"><i data-lucide="shield-check"></i> 账号与安全</a>
       <a class="nav-link" data-goto="page-change-password"><i data-lucide="lock"></i> 修改密码</a>
+      <a class="nav-link" data-goto="page-change-login-pwd"><i data-lucide="lock-keyhole"></i> 修改登录密码</a>
+      <a class="nav-link" data-goto="page-change-pay-pwd"><i data-lucide="shield-check"></i> 修改支付密码</a>
+      <a class="nav-link" data-goto="page-set-pay-pwd"><i data-lucide="key-round"></i> 设置支付密码</a>
       <a class="nav-link" data-goto="page-change-phone"><i data-lucide="smartphone"></i> 修改手机号</a>
       <a class="nav-link" data-goto="page-chat-manage"><i data-lucide="database"></i> 聊天记录管理</a>
       <a class="nav-link" data-goto="page-vip-detail"><i data-lucide="gem"></i> VIP等级详情</a>
@@ -1898,6 +1901,16 @@
         </div>
       </div>
 
+      <div class="wallet-security-section">
+        <div class="wallet-security-title">支付安全</div>
+        <div class="wallet-security-item" id="go-pay-pwd-manage">
+          <span class="wallet-security-icon">🔐</span>
+          <span class="wallet-security-label">支付密码管理</span>
+          <span class="wallet-security-status" id="pay-pwd-status">未设置</span>
+          <i data-lucide="chevron-right" class="wallet-security-arrow"></i>
+        </div>
+      </div>
+
       <div class="wallet-points-entry" id="wallet-points-entry">
         <div class="points-entry-left">
           <i data-lucide="coins"></i>
@@ -1973,6 +1986,7 @@
           <span class="tx-amount income">+¥8.88</span>
         </div>
       </div>
+
     </div>
 
     <div class="tab-bar">
@@ -3454,48 +3468,130 @@
       <div class="nav-right"></div>
     </nav>
     <div class="page-body">
+      <div class="pwd-type-list">
+        <div class="pwd-type-item" id="go-change-login-pwd">
+          <div class="pwd-type-info">
+            <span class="pwd-type-icon">🔑</span>
+            <div>
+              <div class="pwd-type-name">登录密码</div>
+              <div class="pwd-type-desc">用于账号登录验证</div>
+            </div>
+          </div>
+          <i data-lucide="chevron-right"></i>
+        </div>
+        <div class="pwd-type-item" id="go-change-pay-pwd">
+          <div class="pwd-type-info">
+            <span class="pwd-type-icon">🔐</span>
+            <div>
+              <div class="pwd-type-name">支付密码</div>
+              <div class="pwd-type-desc">用于红包、转账、提现等资金操作</div>
+            </div>
+          </div>
+          <i data-lucide="chevron-right"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 修改登录密码页 ==================== -->
+  <div class="page" id="page-change-login-pwd">
+    <nav class="top-nav">
+      <div class="nav-left"><i data-lucide="chevron-left" class="nav-icon back-btn" data-back="page-change-password"></i></div>
+      <div class="nav-center">修改登录密码</div>
+      <div class="nav-right"></div>
+    </nav>
+    <div class="page-body">
       <div class="pwd-tab-bar">
         <div class="pwd-tab active" data-pwd-tab="old">旧密码修改</div>
         <div class="pwd-tab" data-pwd-tab="code">验证码修改</div>
       </div>
-      <!-- 旧密码方式 -->
       <div class="pwd-panel active" id="pwd-panel-old">
         <div class="pwd-form-card">
           <div class="pwd-field">
             <label>旧密码</label>
-            <input type="password" class="pwd-input" id="pwd-old" placeholder="请输入旧密码">
+            <input type="password" placeholder="请输入旧密码" id="login-old-pwd">
           </div>
           <div class="pwd-field">
             <label>新密码</label>
-            <input type="password" class="pwd-input" id="pwd-new1" placeholder="请输入新密码">
+            <input type="password" placeholder="请输入新密码" id="login-new-pwd">
           </div>
           <div class="pwd-field">
             <label>确认密码</label>
-            <input type="password" class="pwd-input" id="pwd-new2" placeholder="请再次输入新密码">
+            <input type="password" placeholder="请再次输入新密码" id="login-confirm-pwd">
           </div>
-          <button class="pwd-submit-btn" id="pwd-submit-old">确认修改</button>
+          <button class="pwd-submit-btn" id="submit-login-pwd-old">确认修改</button>
         </div>
       </div>
-      <!-- 验证码方式 -->
       <div class="pwd-panel" id="pwd-panel-code">
         <div class="pwd-form-card">
-          <div class="pwd-phone-hint">验证码将发送至 138****8888</div>
-          <div class="pwd-field pwd-code-field">
-            <label>验证码</label>
-            <div class="pwd-code-row">
-              <input type="text" class="pwd-input pwd-code-input" id="pwd-code" placeholder="请输入验证码" maxlength="6">
-              <button class="pwd-send-code-btn" id="pwd-send-code">发送验证码</button>
-            </div>
+          <div class="pwd-field">
+            <span class="pwd-code-hint">验证码将发送至 138****8888</span>
+          </div>
+          <div class="pwd-field pwd-code-row">
+            <input type="text" placeholder="请输入验证码" maxlength="6" id="login-code-input">
+            <button class="pwd-send-code-btn" id="login-send-code">发送验证码</button>
           </div>
           <div class="pwd-field">
             <label>新密码</label>
-            <input type="password" class="pwd-input" id="pwd-code-new1" placeholder="请输入新密码">
+            <input type="password" placeholder="请输入新密码" id="login-code-new-pwd">
           </div>
           <div class="pwd-field">
             <label>确认密码</label>
-            <input type="password" class="pwd-input" id="pwd-code-new2" placeholder="请再次输入新密码">
+            <input type="password" placeholder="请再次输入新密码" id="login-code-confirm-pwd">
           </div>
-          <button class="pwd-submit-btn" id="pwd-submit-code">确认修改</button>
+          <button class="pwd-submit-btn" id="submit-login-pwd-code">确认修改</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 修改支付密码页 ==================== -->
+  <div class="page" id="page-change-pay-pwd">
+    <nav class="top-nav">
+      <div class="nav-left"><i data-lucide="chevron-left" class="nav-icon back-btn" data-back="page-change-password"></i></div>
+      <div class="nav-center">修改支付密码</div>
+      <div class="nav-right"></div>
+    </nav>
+    <div class="page-body">
+      <div class="pwd-tab-bar">
+        <div class="pwd-tab active" data-pwd-tab="pay-old">旧密码修改</div>
+        <div class="pwd-tab" data-pwd-tab="pay-code">验证码修改</div>
+      </div>
+      <div class="pwd-panel active" id="pwd-panel-pay-old">
+        <div class="pwd-form-card">
+          <div class="pwd-field">
+            <label>当前支付密码</label>
+            <input type="password" maxlength="6" inputmode="numeric" placeholder="请输入6位数字" id="pay-old-pwd">
+          </div>
+          <div class="pwd-field">
+            <label>新支付密码</label>
+            <input type="password" maxlength="6" inputmode="numeric" placeholder="请输入6位数字" id="pay-new-pwd">
+          </div>
+          <div class="pwd-field">
+            <label>确认新支付密码</label>
+            <input type="password" maxlength="6" inputmode="numeric" placeholder="请输入6位数字" id="pay-confirm-pwd">
+          </div>
+          <button class="pwd-submit-btn" id="submit-pay-pwd-old">确认修改</button>
+        </div>
+      </div>
+      <div class="pwd-panel" id="pwd-panel-pay-code">
+        <div class="pwd-form-card">
+          <div class="pwd-field">
+            <span class="pwd-code-hint">验证码将发送至 138****8888</span>
+          </div>
+          <div class="pwd-field pwd-code-row">
+            <input type="text" placeholder="请输入验证码" maxlength="6" id="pay-code-input">
+            <button class="pwd-send-code-btn" id="pay-send-code">发送验证码</button>
+          </div>
+          <div class="pwd-field">
+            <label>新支付密码</label>
+            <input type="password" maxlength="6" inputmode="numeric" placeholder="请输入6位数字" id="pay-code-new-pwd">
+          </div>
+          <div class="pwd-field">
+            <label>确认新支付密码</label>
+            <input type="password" maxlength="6" inputmode="numeric" placeholder="请输入6位数字" id="pay-code-confirm-pwd">
+          </div>
+          <button class="pwd-submit-btn" id="submit-pay-pwd-code">确认修改</button>
         </div>
       </div>
     </div>
@@ -3629,6 +3725,137 @@
     </div>
   </div>
 
+  <!-- ==================== 设置支付密码页 ==================== -->
+  <div class="page" id="page-set-pay-pwd">
+    <nav class="top-nav">
+      <div class="nav-left"><i data-lucide="chevron-left" class="nav-icon back-btn" data-back="page-wallet"></i></div>
+      <div class="nav-center">支付密码管理</div>
+      <div class="nav-right"></div>
+    </nav>
+    <div class="page-body">
+      <!-- 未设置状态 -->
+      <div class="pay-manage-section" id="pay-pwd-not-set">
+        <div class="pay-manage-notice">
+          <span class="pay-manage-notice-icon">⚠️</span>
+          <span>您尚未设置支付密码，设置后可保障资金安全</span>
+        </div>
+        <div class="pay-manage-card">
+          <div class="pay-manage-title">设置支付密码</div>
+          <div class="pay-manage-desc">支付密码为6位数字，用于红包、转账、提现等资金操作验证</div>
+          <div class="pay-manage-field">
+            <label>输入支付密码</label>
+            <div class="pay-pwd-input-dots" id="set-pwd-dots-1">
+              <div class="pwd-input-dot"></div>
+              <div class="pwd-input-dot"></div>
+              <div class="pwd-input-dot"></div>
+              <div class="pwd-input-dot"></div>
+              <div class="pwd-input-dot"></div>
+              <div class="pwd-input-dot"></div>
+            </div>
+          </div>
+          <div class="pay-manage-field">
+            <label>确认支付密码</label>
+            <div class="pay-pwd-input-dots" id="set-pwd-dots-2">
+              <div class="pwd-input-dot"></div>
+              <div class="pwd-input-dot"></div>
+              <div class="pwd-input-dot"></div>
+              <div class="pwd-input-dot"></div>
+              <div class="pwd-input-dot"></div>
+              <div class="pwd-input-dot"></div>
+            </div>
+          </div>
+          <div class="pay-pwd-numpad-inline" id="set-pwd-numpad">
+            <div class="numpad-row">
+              <button class="numpad-key" data-num="1">1</button>
+              <button class="numpad-key" data-num="2">2</button>
+              <button class="numpad-key" data-num="3">3</button>
+            </div>
+            <div class="numpad-row">
+              <button class="numpad-key" data-num="4">4</button>
+              <button class="numpad-key" data-num="5">5</button>
+              <button class="numpad-key" data-num="6">6</button>
+            </div>
+            <div class="numpad-row">
+              <button class="numpad-key" data-num="7">7</button>
+              <button class="numpad-key" data-num="8">8</button>
+              <button class="numpad-key" data-num="9">9</button>
+            </div>
+            <div class="numpad-row">
+              <button class="numpad-key numpad-empty"></button>
+              <button class="numpad-key" data-num="0">0</button>
+              <button class="numpad-key numpad-del" data-num="del">⌫</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 已设置状态 -->
+      <div class="pay-manage-section" id="pay-pwd-already-set" style="display:none;">
+        <div class="pay-manage-status-card">
+          <div class="pay-manage-status-icon">✅</div>
+          <div class="pay-manage-status-text">支付密码已设置</div>
+        </div>
+        <div class="pay-manage-list">
+          <div class="pay-manage-list-item" id="btn-change-pay-pwd">
+            <span>修改支付密码</span>
+            <i data-lucide="chevron-right"></i>
+          </div>
+          <div class="pay-manage-list-item" id="btn-reset-pay-pwd">
+            <span>重置支付密码</span>
+            <i data-lucide="chevron-right"></i>
+          </div>
+        </div>
+        <div class="pay-manage-tips">
+          <div class="pay-manage-tips-title">安全提示</div>
+          <div class="pay-manage-tips-item">• 支付密码用于红包、转账、提现等资金操作</div>
+          <div class="pay-manage-tips-item">• 请勿将支付密码告知他人</div>
+          <div class="pay-manage-tips-item">• 建议定期修改支付密码</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- 支付密码验证弹窗 -->
+<div class="pay-pwd-overlay" id="pay-pwd-overlay" style="display:none;">
+  <div class="pay-pwd-modal">
+    <div class="pay-pwd-modal-header">
+      <span class="pay-pwd-modal-title">请输入支付密码</span>
+      <span class="pay-pwd-modal-close" id="pay-pwd-close">&times;</span>
+    </div>
+    <div class="pay-pwd-dots" id="verify-pwd-dots">
+      <div class="pay-pwd-dot"></div>
+      <div class="pay-pwd-dot"></div>
+      <div class="pay-pwd-dot"></div>
+      <div class="pay-pwd-dot"></div>
+      <div class="pay-pwd-dot"></div>
+      <div class="pay-pwd-dot"></div>
+    </div>
+    <div class="pay-pwd-forget">忘记密码？</div>
+    <div class="pay-pwd-numpad" id="verify-numpad">
+      <div class="numpad-row">
+        <button class="numpad-key" data-num="1">1</button>
+        <button class="numpad-key" data-num="2">2</button>
+        <button class="numpad-key" data-num="3">3</button>
+      </div>
+      <div class="numpad-row">
+        <button class="numpad-key" data-num="4">4</button>
+        <button class="numpad-key" data-num="5">5</button>
+        <button class="numpad-key" data-num="6">6</button>
+      </div>
+      <div class="numpad-row">
+        <button class="numpad-key" data-num="7">7</button>
+        <button class="numpad-key" data-num="8">8</button>
+        <button class="numpad-key" data-num="9">9</button>
+      </div>
+      <div class="numpad-row">
+        <button class="numpad-key numpad-empty"></button>
+        <button class="numpad-key" data-num="0">0</button>
+        <button class="numpad-key numpad-del" data-num="del">⌫</button>
+      </div>
+    </div>
+  </div>
 </div>
 
 <!-- 长按上下文菜单（放在 #app 外部避免层叠上下文遮挡） -->

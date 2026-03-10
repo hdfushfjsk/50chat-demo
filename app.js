@@ -475,8 +475,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (methodType === 'alipay' && !window._alipayBound) { alert('请先绑定支付宝账号'); return; }
         if (methodType === 'bank' && !window._bankBound) { alert('请先绑定银行卡'); return; }
         if (methodType === 'virtual' && (!window._virtualAddresses || window._virtualAddresses.length === 0)) { alert('请先绑定虚拟币地址'); return; }
-        alert('提现 ¥' + amount.toFixed(2) + ' 已提交，预计2小时内到账');
-        navigateTo('page-wallet', { direction: 'back' });
+        window._requirePayPwd(function() {
+          alert('提现 ¥' + amount.toFixed(2) + ' 已提交，预计2小时内到账');
+          navigateTo('page-wallet', { direction: 'back' });
+        });
       });
     }
 
@@ -1800,20 +1802,32 @@ document.addEventListener('DOMContentLoaded', () => {
         var wish = document.getElementById('rp-wish');
         var wishText = (wish && wish.value.trim()) || '恭喜发财，大吉大利';
 
-        var targetPage = document.getElementById(rpSourcePage);
-        if (targetPage) {
-          var msgArea = targetPage.querySelector('.messages-area');
-          if (msgArea) {
-            var isGroup = rpSourcePage === 'page-group-chat';
-            var avatarSrc = isGroup ? 'images/group-me.png' : 'images/chat-me1.png';
+        window._requirePayPwd(function() {
+          var targetPage = document.getElementById(rpSourcePage);
+          if (targetPage) {
+            var msgArea = targetPage.querySelector('.messages-area');
+            if (msgArea) {
+              var isGroup = rpSourcePage === 'page-group-chat';
+              var avatarSrc = isGroup ? 'images/group-me.png' : 'images/chat-me1.png';
 
-            var row = document.createElement('div');
-            row.className = 'message-row self';
+              var row = document.createElement('div');
+              row.className = 'message-row self';
 
-            if (isGroup) {
-              row.innerHTML =
-                '<div class="msg-content-group">' +
-                  '<div class="sender-line"><span class="sender-name" data-sender="我">我</span><span class="vip-badge vip-lv8"><span class="vip-lvl">VIP8</span><span class="vip-icon">💎</span><span class="vip-text">至尊</span></span></div>' +
+              if (isGroup) {
+                row.innerHTML =
+                  '<div class="msg-content-group">' +
+                    '<div class="sender-line"><span class="sender-name" data-sender="我">我</span><span class="vip-badge vip-lv8"><span class="vip-lvl">VIP8</span><span class="vip-icon">💎</span><span class="vip-text">至尊</span></span></div>' +
+                    '<div class="red-packet-card">' +
+                      '<div class="rp-icon">🧧</div>' +
+                      '<div class="rp-info">' +
+                        '<div class="rp-text">' + wishText + '</div>' +
+                        '<div class="rp-label">' + typeText + '</div>' +
+                      '</div>' +
+                    '</div>' +
+                  '</div>' +
+                  '<img class="msg-avatar" src="' + avatarSrc + '" alt="我">';
+              } else {
+                row.innerHTML =
                   '<div class="red-packet-card">' +
                     '<div class="rp-icon">🧧</div>' +
                     '<div class="rp-info">' +
@@ -1821,31 +1835,21 @@ document.addEventListener('DOMContentLoaded', () => {
                       '<div class="rp-label">' + typeText + '</div>' +
                     '</div>' +
                   '</div>' +
-                '</div>' +
-                '<img class="msg-avatar" src="' + avatarSrc + '" alt="我">';
-            } else {
-              row.innerHTML =
-                '<div class="red-packet-card">' +
-                  '<div class="rp-icon">🧧</div>' +
-                  '<div class="rp-info">' +
-                    '<div class="rp-text">' + wishText + '</div>' +
-                    '<div class="rp-label">' + typeText + '</div>' +
-                  '</div>' +
-                '</div>' +
-                '<img class="msg-avatar" src="' + avatarSrc + '" alt="我">';
+                  '<img class="msg-avatar" src="' + avatarSrc + '" alt="我">';
+              }
+              msgArea.appendChild(row);
+
+              var statusRow = document.createElement('div');
+              statusRow.className = 'msg-status-row';
+              statusRow.innerHTML = '<span class="msg-status unread">✓ 已发送</span>';
+              msgArea.appendChild(statusRow);
+
+              msgArea.scrollTop = msgArea.scrollHeight;
             }
-            msgArea.appendChild(row);
-
-            var statusRow = document.createElement('div');
-            statusRow.className = 'msg-status-row';
-            statusRow.innerHTML = '<span class="msg-status unread">✓ 已发送</span>';
-            msgArea.appendChild(statusRow);
-
-            msgArea.scrollTop = msgArea.scrollHeight;
           }
-        }
 
-        navigateTo(rpSourcePage, { direction: 'back' });
+          navigateTo(rpSourcePage, { direction: 'back' });
+        });
       });
     }
   })();
@@ -3052,8 +3056,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.querySelectorAll('.pwd-tab').forEach(function(tab) {
       tab.addEventListener('click', function() {
-        document.querySelectorAll('.pwd-tab').forEach(function(t) { t.classList.remove('active'); });
-        document.querySelectorAll('.pwd-panel').forEach(function(p) { p.classList.remove('active'); });
+        var container = tab.closest('.page');
+        if (!container) return;
+        container.querySelectorAll('.pwd-tab').forEach(function(t) { t.classList.remove('active'); });
+        container.querySelectorAll('.pwd-panel').forEach(function(p) { p.classList.remove('active'); });
         tab.classList.add('active');
         var panel = document.getElementById('pwd-panel-' + tab.getAttribute('data-pwd-tab'));
         if (panel) panel.classList.add('active');
@@ -3075,7 +3081,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }, 1000);
     }
 
-    ['pwd-send-code', 'phone-old-send', 'phone-new-send'].forEach(function(id) {
+    ['pwd-send-code', 'phone-old-send', 'phone-new-send', 'login-send-code', 'pay-send-code'].forEach(function(id) {
       var btn = document.getElementById(id);
       if (btn) btn.addEventListener('click', function() {
         startCountdown(btn);
@@ -3083,30 +3089,68 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
 
-    var pwdSubmitOld = document.getElementById('pwd-submit-old');
-    if (pwdSubmitOld) pwdSubmitOld.addEventListener('click', function() {
-      var old = document.getElementById('pwd-old').value.trim();
-      var n1 = document.getElementById('pwd-new1').value.trim();
-      var n2 = document.getElementById('pwd-new2').value.trim();
+    // 修改密码类型选择导航
+    document.addEventListener('click', function(e) {
+      if (e.target.closest('#go-change-login-pwd')) {
+        navigateTo('page-change-login-pwd', { direction: 'forward' });
+      }
+      if (e.target.closest('#go-change-pay-pwd')) {
+        navigateTo('page-change-pay-pwd', { direction: 'forward' });
+      }
+    });
+
+    // 登录密码 — 旧密码方式
+    var submitLoginOld = document.getElementById('submit-login-pwd-old');
+    if (submitLoginOld) submitLoginOld.addEventListener('click', function() {
+      var old = document.getElementById('login-old-pwd').value.trim();
+      var n1 = document.getElementById('login-new-pwd').value.trim();
+      var n2 = document.getElementById('login-confirm-pwd').value.trim();
       if (!old) { showToast('请输入旧密码'); return; }
       if (!n1) { showToast('请输入新密码'); return; }
       if (n1.length < 6) { showToast('密码至少6位'); return; }
       if (n1 !== n2) { showToast('两次密码不一致'); return; }
-      showToast('密码修改成功', 'success');
-      navigateTo('page-account-security', { direction: 'back' });
+      showToast('登录密码修改成功', 'success');
+      navigateTo('page-change-password', { direction: 'back' });
     });
 
-    var pwdSubmitCode = document.getElementById('pwd-submit-code');
-    if (pwdSubmitCode) pwdSubmitCode.addEventListener('click', function() {
-      var code = document.getElementById('pwd-code').value.trim();
-      var n1 = document.getElementById('pwd-code-new1').value.trim();
-      var n2 = document.getElementById('pwd-code-new2').value.trim();
+    // 登录密码 — 验证码方式
+    var submitLoginCode = document.getElementById('submit-login-pwd-code');
+    if (submitLoginCode) submitLoginCode.addEventListener('click', function() {
+      var code = document.getElementById('login-code-input').value.trim();
+      var n1 = document.getElementById('login-code-new-pwd').value.trim();
+      var n2 = document.getElementById('login-code-confirm-pwd').value.trim();
       if (!code) { showToast('请输入验证码'); return; }
       if (!n1) { showToast('请输入新密码'); return; }
       if (n1.length < 6) { showToast('密码至少6位'); return; }
       if (n1 !== n2) { showToast('两次密码不一致'); return; }
-      showToast('密码修改成功', 'success');
-      navigateTo('page-account-security', { direction: 'back' });
+      showToast('登录密码修改成功', 'success');
+      navigateTo('page-change-password', { direction: 'back' });
+    });
+
+    // 支付密码 — 旧密码方式
+    var submitPayOld = document.getElementById('submit-pay-pwd-old');
+    if (submitPayOld) submitPayOld.addEventListener('click', function() {
+      var old = document.getElementById('pay-old-pwd').value.trim();
+      var n1 = document.getElementById('pay-new-pwd').value.trim();
+      var n2 = document.getElementById('pay-confirm-pwd').value.trim();
+      if (!old || old.length !== 6) { showToast('请输入6位当前支付密码'); return; }
+      if (!n1 || n1.length !== 6) { showToast('请输入6位新支付密码'); return; }
+      if (n1 !== n2) { showToast('两次输入不一致'); return; }
+      showToast('支付密码修改成功', 'success');
+      navigateTo('page-change-password', { direction: 'back' });
+    });
+
+    // 支付密码 — 验证码方式
+    var submitPayCode = document.getElementById('submit-pay-pwd-code');
+    if (submitPayCode) submitPayCode.addEventListener('click', function() {
+      var code = document.getElementById('pay-code-input').value.trim();
+      var n1 = document.getElementById('pay-code-new-pwd').value.trim();
+      var n2 = document.getElementById('pay-code-confirm-pwd').value.trim();
+      if (!code) { showToast('请输入验证码'); return; }
+      if (!n1 || n1.length !== 6) { showToast('请输入6位新支付密码'); return; }
+      if (n1 !== n2) { showToast('两次输入不一致'); return; }
+      showToast('支付密码修改成功', 'success');
+      navigateTo('page-change-password', { direction: 'back' });
     });
 
     var phoneNext = document.getElementById('phone-step-next');
@@ -3591,6 +3635,243 @@ document.addEventListener('DOMContentLoaded', () => {
       if (e.target.closest('#go-vip-detail')) {
         navigateTo('page-vip', { direction: 'forward' });
       }
+    });
+  })();
+
+  // =============================================
+  //  支付密码功能
+  // =============================================
+  (function() {
+    window._payPwdSet = false;
+    window._payPwdPending = null;
+
+    window._requirePayPwd = function(callback) {
+      if (!window._payPwdSet) {
+        window._payPwdPending = callback;
+        navigateTo('page-set-pay-pwd', { direction: 'forward' });
+        return;
+      }
+      window._payPwdPending = callback;
+      showPayPwdModal();
+    };
+
+    // === 设置支付密码页面逻辑（双 dots 新版）===
+    var dots1 = document.getElementById('set-pwd-dots-1');
+    var dots2 = document.getElementById('set-pwd-dots-2');
+    var setNumpad = document.getElementById('set-pwd-numpad');
+    var notSetSection = document.getElementById('pay-pwd-not-set');
+    var alreadySetSection = document.getElementById('pay-pwd-already-set');
+    var payPwdStatusEl = document.getElementById('pay-pwd-status');
+    var pwd1 = '';
+    var pwd2 = '';
+    var currentDotsField = 1;
+
+    function updateDots(dotsEl, value) {
+      if (!dotsEl) return;
+      var items = dotsEl.querySelectorAll('.pwd-input-dot');
+      items.forEach(function(dot, i) {
+        dot.classList.toggle('filled', i < value.length);
+      });
+    }
+
+    function setActiveField(field) {
+      currentDotsField = field;
+      if (dots1) dots1.classList.toggle('active', field === 1);
+      if (dots2) dots2.classList.toggle('active', field === 2);
+    }
+
+    function resetSetup() {
+      pwd1 = '';
+      pwd2 = '';
+      currentDotsField = 1;
+      updateDots(dots1, '');
+      updateDots(dots2, '');
+      setActiveField(1);
+    }
+
+    function switchPayManageView() {
+      if (notSetSection) notSetSection.style.display = window._payPwdSet ? 'none' : '';
+      if (alreadySetSection) alreadySetSection.style.display = window._payPwdSet ? '' : 'none';
+      if (payPwdStatusEl) {
+        payPwdStatusEl.textContent = window._payPwdSet ? '已设置' : '未设置';
+        payPwdStatusEl.classList.toggle('set', window._payPwdSet);
+      }
+    }
+
+    if (dots1) dots1.addEventListener('click', function() { setActiveField(1); });
+    if (dots2) dots2.addEventListener('click', function() { setActiveField(2); });
+
+    setActiveField(1);
+
+    if (setNumpad) {
+      setNumpad.addEventListener('click', function(e) {
+        var key = e.target.closest('.numpad-key');
+        if (!key) return;
+        var num = key.getAttribute('data-num');
+        if (!num) return;
+
+        if (num === 'del') {
+          if (currentDotsField === 1) {
+            pwd1 = pwd1.slice(0, -1);
+            updateDots(dots1, pwd1);
+          } else {
+            pwd2 = pwd2.slice(0, -1);
+            updateDots(dots2, pwd2);
+          }
+          return;
+        }
+
+        if (currentDotsField === 1) {
+          if (pwd1.length >= 6) return;
+          pwd1 += num;
+          updateDots(dots1, pwd1);
+          if (pwd1.length === 6) {
+            setActiveField(2);
+          }
+        } else {
+          if (pwd2.length >= 6) return;
+          pwd2 += num;
+          updateDots(dots2, pwd2);
+          if (pwd2.length === 6) {
+            if (pwd1 === pwd2) {
+              window._payPwdSet = true;
+              if (window.showToast) window.showToast('支付密码设置成功');
+              resetSetup();
+              switchPayManageView();
+              if (window._payPwdPending) {
+                history.back();
+                setTimeout(function() {
+                  var cb = window._payPwdPending;
+                  window._payPwdPending = null;
+                  if (cb) cb();
+                }, 400);
+              } else {
+                switchPayManageView();
+              }
+            } else {
+              if (window.showToast) window.showToast('两次输入不一致，请重新设置');
+              resetSetup();
+            }
+          }
+        }
+      });
+    }
+
+    // === 钱包入口点击 ===
+    var goPayPwdManage = document.getElementById('go-pay-pwd-manage');
+    if (goPayPwdManage) {
+      goPayPwdManage.addEventListener('click', function() {
+        resetSetup();
+        switchPayManageView();
+        navigateTo('page-set-pay-pwd', { direction: 'forward' });
+      });
+    }
+
+    // === 修改支付密码按钮 ===
+    var btnChangePayPwd = document.getElementById('btn-change-pay-pwd');
+    if (btnChangePayPwd) {
+      btnChangePayPwd.addEventListener('click', function() {
+        navigateTo('page-change-pay-pwd', { direction: 'forward' });
+      });
+    }
+
+    // === 重置支付密码按钮 ===
+    var btnResetPayPwd = document.getElementById('btn-reset-pay-pwd');
+    if (btnResetPayPwd) {
+      btnResetPayPwd.addEventListener('click', function() {
+        if (confirm('确定要重置支付密码吗？重置后需要重新设置。')) {
+          window._payPwdSet = false;
+          resetSetup();
+          switchPayManageView();
+          if (window.showToast) window.showToast('支付密码已重置');
+        }
+      });
+    }
+
+    // === 验证弹窗逻辑 ===
+    var verifyOverlay = document.getElementById('pay-pwd-overlay');
+    var verifyDots = document.getElementById('verify-pwd-dots');
+    var verifyNumpad = document.getElementById('verify-numpad');
+    var verifyClose = document.getElementById('pay-pwd-close');
+    var verifyPwd = '';
+
+    function showPayPwdModal() {
+      verifyPwd = '';
+      updateVerifyDots();
+      if (verifyOverlay) verifyOverlay.style.display = 'flex';
+    }
+
+    function hidePayPwdModal() {
+      if (verifyOverlay) verifyOverlay.style.display = 'none';
+      verifyPwd = '';
+      updateVerifyDots();
+    }
+
+    function updateVerifyDots() {
+      if (!verifyDots) return;
+      var dots = verifyDots.querySelectorAll('.pay-pwd-dot');
+      dots.forEach(function(dot, i) {
+        dot.classList.toggle('filled', i < verifyPwd.length);
+      });
+    }
+
+    if (verifyClose) {
+      verifyClose.addEventListener('click', function() {
+        hidePayPwdModal();
+        window._payPwdPending = null;
+      });
+    }
+
+    if (verifyOverlay) {
+      verifyOverlay.addEventListener('click', function(e) {
+        if (e.target === verifyOverlay) {
+          hidePayPwdModal();
+          window._payPwdPending = null;
+        }
+      });
+    }
+
+    if (verifyNumpad) {
+      verifyNumpad.addEventListener('click', function(e) {
+        var key = e.target.closest('.numpad-key');
+        if (!key) return;
+        var num = key.getAttribute('data-num');
+        if (!num) return;
+
+        if (num === 'del') {
+          verifyPwd = verifyPwd.slice(0, -1);
+          updateVerifyDots();
+          return;
+        }
+
+        if (verifyPwd.length >= 6) return;
+        verifyPwd += num;
+        updateVerifyDots();
+
+        if (verifyPwd.length === 6) {
+          hidePayPwdModal();
+          if (window.showToast) window.showToast('支付密码验证成功');
+          var cb = window._payPwdPending;
+          window._payPwdPending = null;
+          if (cb) setTimeout(cb, 300);
+        }
+      });
+    }
+
+    // (旧 submit-pay-pwd 逻辑已移至 page-change-pay-pwd 页面处理)
+
+    // === 转账页提交逻辑（原先未实现）===
+    document.addEventListener('click', function(e) {
+      var btn = e.target.closest('.transfer-submit');
+      if (!btn || !btn.closest('#page-transfer')) return;
+      e.stopPropagation();
+      var input = document.getElementById('transfer-amount');
+      var amount = input && parseFloat(input.value);
+      if (!amount || amount <= 0) { alert('请输入转账金额'); return; }
+      window._requirePayPwd(function() {
+        if (window.showToast) window.showToast('转账 ¥' + amount.toFixed(2) + ' 已发送');
+        navigateTo('page-chat', { direction: 'back' });
+      });
     });
   })();
 
